@@ -85,7 +85,7 @@ body {
 .sidebar-links {
   list-style: none;
   margin-top: 20px;
-  height: 90%;
+  height: 95%;
   overflow-y: auto;
   scrollbar-width: none;
 }
