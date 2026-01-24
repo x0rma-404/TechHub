@@ -17,8 +17,8 @@
 <body>
   <aside class="sidebar">
     <div class="sidebar-header">
-      <a href="index.html">
-      <img src="../images/logo.png" alt="logo" />
+      <a href="/index">
+        <img src="../static/images/logo.png" alt="logo" />
       </a>
       <h2>TechHub</h2>
     </div>
@@ -34,7 +34,7 @@
         <a href="#"><span class="material-symbols-outlined"> question_exchange </span>Q&A</a>
       </li>
       <li>
-        <a href="tools.html"><span class="material-symbols-outlined"> terminal </span>Tools</a>
+        <a href="/tools"><span class="material-symbols-outlined"> terminal </span>Tools</a>
       </li>
       <h4>
         <span>Team Work</span>
@@ -50,7 +50,7 @@
       <li>
         <a href="#"><span class="material-symbols-outlined"> flag </span>All Reports</a>
       </li>
-            <h4>
+      <h4>
         <span>Account</span>
         <div class="menu-separator"></div>
       </h4>
@@ -59,29 +59,35 @@
       </li>
 
       <li>
-        <a href="#"><span class="material-symbols-outlined"> account_circle </span>Profile</a>
+        <a href="/profile"><span class="material-symbols-outlined"> account_circle </span>Profile</a>
       </li>
       <li>
         <a href="#"><span class="material-symbols-outlined"> settings </span>Settings</a>
       </li>
       <li>
-        <a href="#"><span class="material-symbols-outlined"> logout </span>Logout</a>
+        <a href="#" id="logoutBtn"><span class="material-symbols-outlined"> logout </span>Logout</a>
       </li>
       <li class="mode-item" id="theme-toggle">
         <div class="mode-label">
           <span class="material-symbols-outlined sun">light_mode</span>
           <span class="material-symbols-outlined moon">dark_mode</span>
-          <span class="mode-text">Night Mode</span>
+          <span class="mode-text">Gece Modu</span>
         </div>
       </li>
     </ul>
   </aside>
 
-<li>
-  <a href="#">
-    <i class="si si-linux"></i> 
-  </a>
-</li>
+
+<main class="main-content">
+  <div class="tools-grid">
+    <div class="tool-card"><i class="si si-linux"></i> <span>Terminal</span></div>
+    <div class="tool-card"><i class="si si-python"></i> <span>Python</span></div>
+    <div class="tool-card"><i class="si si-docker"></i> <span>Docker</span></div>
+    <div class="tool-card"><i class="si si-git"></i> <span>Git</span></div>
+    <div class="tool-card"><i class="si si-gnubash"></i> <span>Bash</span></div>
+    <div class="tool-card"><span class="material-symbols-outlined"">schema</span>logic</div>
+    </div>
+</main>
 
   <script src="../static/script.js"></script>
 

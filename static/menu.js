@@ -1,252 +1,238 @@
-// --- Utilities ---
-    const qs = (sel, el=document) => el.querySelector(sel);
-    const qsa = (sel, el=document) => [...el.querySelectorAll(sel)];
+/**
+ * TechHub - Modern SPA Logic
+ * Fix: Veri kalıcılığı ve otomatik yedekleme senkronizasyonu
+ */
 
-    const toast = (msg, type='info') => {
-      const t = document.createElement('div');
-      t.className = 'toast-item fade-in';
-      t.innerHTML = `<div class="flex items-start gap-3">
-        <span class="mt-0.5 h-2.5 w-2.5 rounded-full ${type==='success'?'bg-emerald-400':type==='error'?'bg-rose-400':'bg-indigo-400'}"></span>
+// --- 1. Utilities ---
+const qs = (sel, el = document) => el.querySelector(sel);
+const qsa = (sel, el = document) => [...el.querySelectorAll(sel)];
+
+const toast = (msg, type = 'info') => {
+    const t = document.createElement('div');
+    t.className = 'toast-item fade-in';
+    t.innerHTML = `
+      <div class="flex items-start gap-3">
+        <span class="mt-0.5 h-2.5 w-2.5 rounded-full ${type === 'success' ? 'bg-emerald-400' : type === 'error' ? 'bg-rose-400' : 'bg-indigo-400'}"></span>
         <div class="text-sm">${msg}</div>
       </div>`;
-      const wrap = qs('#toaster');
-      wrap.appendChild(t);
-      setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(6px)'; }, 3600);
-      setTimeout(() => t.remove(), 4200);
-    };
-
-    const storage = {
-      getUsers(){
-        try { return JSON.parse(localStorage.getItem('users')||'{}'); } catch { return {}; }
-      },
-      setUsers(users){ localStorage.setItem('users', JSON.stringify(users)); },
-      setSession(email, remember){
-        const payload = JSON.stringify({ email, remember, lastLogin: Date.now() });
-        if(remember){ localStorage.setItem('auth', payload); sessionStorage.removeItem('auth'); }
-        else { sessionStorage.setItem('auth', payload); localStorage.removeItem('auth'); }
-      },
-      getSession(){
-        const s = sessionStorage.getItem('auth');
-        if(s) return JSON.parse(s);
-        const p = localStorage.getItem('auth');
-        if(p) return JSON.parse(p);
-        return null;
-      },
-      clearSession(){ sessionStorage.removeItem('auth'); localStorage.removeItem('auth'); }
-    };
-
-    const auth = {
-      current(){ const s = storage.getSession(); return s?.email || null; },
-      isRemembered(){ const s = localStorage.getItem('auth'); return !!s; },
-      getUser(){
-        const email = auth.current(); if(!email) return null; const users = storage.getUsers(); return users[email] || null;
-      },
-      register({name, email, password, remember}){
-        const users = storage.getUsers();
-        const key = email.toLowerCase().trim();
-        if(users[key]) throw new Error('Bu e-posta ile bir hesap zaten var.');
-        users[key] = { name: name.trim(), email: key, password: String(password), createdAt: Date.now(), about: '' };
-        storage.setUsers(users);
-        storage.setSession(key, !!remember);
-        return users[key];
-      },
-      login({email, password, remember}){
-        const users = storage.getUsers();
-        const key = email.toLowerCase().trim();
-        const user = users[key];
-        if(!user || user.password !== String(password)) throw new Error('E-posta veya şifre hatalı.');
-        storage.setSession(key, !!remember);
-        const users2 = storage.getUsers();
-        users2[key].lastLogin = Date.now();
-        storage.setUsers(users2);
-        return user;
-      },
-      logout(){ storage.clearSession(); }
-    };
-
-    // --- Routing ---
-    const routes = {
-      home: () => showView('view-home'),
-      auth: () => showView('view-auth'),
-      profile: () => { if(!auth.current()) { location.hash = '#/auth'; return; } showView('view-profile'); renderProfile(); }
-    };
-
-    function showView(id){
-      qsa('main section').forEach(s => s.classList.add('hidden'));
-      const el = qs('#'+id);
-      if(el){ el.classList.remove('hidden'); el.classList.add('fade-in'); }
-      updateHeader();
+    const wrap = qs('#toaster');
+    if (wrap) {
+        wrap.appendChild(t);
+        setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateY(6px)'; }, 3000);
+        setTimeout(() => t.remove(), 3500);
     }
+};
 
-    function navigate(){
-      const h = location.hash.replace('#','');
-      if(h.startsWith('/profile')) return routes.profile();
-      if(h.startsWith('/auth')) return routes.auth();
-      return routes.home();
+// --- 2. Storage & Backup ---
+// NOTE: "users" are now managed by backend. We only keep a session flag or user info cache.
+const storage = {
+    // Only used for caching user info for UI to avoid flicker, but mainly rely on API
+    getUser() {
+        const data = localStorage.getItem('user_cache');
+        try { return data ? JSON.parse(data) : null; } catch (e) { return null; }
+    },
+    setUser(user) {
+        localStorage.setItem('user_cache', JSON.stringify(user));
+    },
+    clearSession() {
+        localStorage.removeItem('user_cache');
+        sessionStorage.removeItem('user_cache'); // Just in case
     }
+};
 
-    // --- UI Binding ---
-    function updateHeader(){
-      const logged = !!auth.current();
-      const btn = qs('#headerPrimaryBtn');
-      const btnText = qs('#headerPrimaryBtnText');
-      const logoutBtn = qs('#logoutBtn');
-      if(logged){
-        btnText.textContent = 'Profilim';
-        btn.onclick = () => location.hash = '#/profile';
-        logoutBtn.classList.remove('hidden');
-      } else {
-        btnText.textContent = 'Başla';
-        btn.onclick = () => location.hash = '#/auth';
-        logoutBtn.classList.add('hidden');
-      }
-    }
+// JSON İndirme Fonksiyonu (Backend verisi indirmeli, fakat şimdilik devre dışı bırakıyoruz veya sadece frontend önbelleği indiriyoruz)
+// Backend'den indirmek için ayrı bir endpoint gerekebilir.
+function downloadUsersAsJson() {
+    // Demo amaçlı: sadece cache'i indirir ya da boş verir.
+    // Gerçek implementasyonda backend'den '/api/export' gibi bir yer çağrılmalı.
+    toast('Bu özellik backend modunda devre dışı.', 'info');
+}
 
-    function bindAuthUI(){
-      const tabLogin = qs('#tab-login');
-      const tabRegister = qs('#tab-register');
-      const formLogin = qs('#form-login');
-      const formRegister = qs('#form-register');
+// --- 3. Authentication ---
+const auth = {
+    // Check local cache first, but async check backend is better. 
+    // For sync UI rendering we use cache, then validate.
+    current() { return storage.getUser()?.email || null; },
+    getUser() { return storage.getUser(); },
 
-      const activate = (mode) => {
-        if(mode==='login'){
-          tabLogin.classList.add('tab-active'); tabRegister.classList.remove('tab-active');
-          formLogin.classList.remove('hidden'); formRegister.classList.add('hidden');
-        } else {
-          tabRegister.classList.add('tab-active'); tabLogin.classList.remove('tab-active');
-          formRegister.classList.remove('hidden'); formLogin.classList.add('hidden');
+    // Async check to sync session
+    async checkSession() {
+        try {
+            const res = await fetch('/api/user');
+            const user = await res.json();
+            if (user) {
+                storage.setUser(user);
+                return user;
+            } else {
+                storage.clearSession();
+                return null;
+            }
+        } catch (e) {
+            console.error(e);
+            return null;
         }
-      };
+    },
 
-      tabLogin.onclick = () => activate('login');
-      tabRegister.onclick = () => activate('register');
+    async register({ name, email, password }) {
+        const res = await fetch('/register', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password })
+        });
+        const data = await res.json();
 
-      formLogin.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const email = qs('#loginEmail').value;
-        const password = qs('#loginPassword').value;
-        const remember = qs('#loginRemember').checked;
-        try{ auth.login({email, password, remember}); toast('Hoş geldin!','success'); window.location.href = 'templates/index.html'; }
-        catch(err){ toast(err.message,'error'); }
-      });
+        if (!res.ok) throw new Error(data.message || 'Kayıt başarısız');
 
-      formRegister.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = qs('#regName').value;
-        const email = qs('#regEmail').value;
-        const password = qs('#regPassword').value;
-        const password2 = qs('#regPassword2').value;
-        const remember = qs('#regRemember').checked;
-        if(password !== password2){ toast('Şifreler eşleşmiyor.','error'); return; }
-        try{ auth.register({name, email, password, remember}); toast('Kayıt başarılı!','success'); window.location.href = 'templates/index.html'; }
-        catch(err){ toast(err.message,'error'); }
-      });
+        storage.setUser(data.user);
+        return data.user;
+    },
 
-      // Header logout buttons
-      qs('#logoutBtn').onclick = () => { auth.logout(); toast('Çıkış yapıldı.'); navigate(); };
-      qs('#logoutBtn2').onclick = () => { auth.logout(); toast('Çıkış yapıldı.'); location.hash = '#/home'; };
+    async login({ email, password }) {
+        const res = await fetch('/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
+        const data = await res.json();
 
-      // Home CTA adjusts by auth state
-      const cta = qs('#ctaStart');
-      cta.onclick = (e) => {
-        if(auth.current()){ e.preventDefault(); window.location.href = 'templates/index.html'; }
-      };
+        if (!res.ok) throw new Error(data.message || 'Giriş başarısız');
+
+        storage.setUser(data.user);
+        return data.user;
+    },
+
+    async logout() {
+        await fetch('/logout');
+        storage.clearSession();
+        location.hash = '#/home';
+        updateHeader();
     }
+};
 
-    // --- Profile Rendering ---
-    async function renderProfile(){
-      const user = auth.getUser();
-      if(!user) return;
-      // Header bits
-      qs('#profileName').textContent = user.name || 'Kullanıcı';
-      qs('#profileEmail').textContent = user.email;
-      qs('#aboutText').textContent = user.about?.trim() || 'Henüz bir bilgi eklenmedi.';
-      qs('#avatar').textContent = initials(user.name || user.email);
+// --- 4. UI & Routing ---
+function updateHeader() {
+    // We might need to wait for session check? 
+    // For now use cache to be fast.
+    const user = auth.getUser();
+    const btnText = qs('#headerPrimaryBtnText');
+    const logoutBtn = qs('#logoutBtn');
+    const logoutBtn2 = qs('#logoutBtn2');
 
-      const created = user.createdAt ? new Date(user.createdAt) : new Date();
-      const days = Math.max(1, Math.ceil((Date.now() - created.getTime()) / 86400000));
-      qs('#memberSince').textContent = 'Üyelik: ' + created.toLocaleDateString('tr-TR');
-      qs('#daysCount').textContent = String(days);
-
-      const s = storage.getSession();
-      const lastLogin = user.lastLogin || s?.lastLogin || user.createdAt;
-      qs('#lastLogin').textContent = lastLogin ? new Date(lastLogin).toLocaleString('tr-TR') : '-';
-
-      // Load external profile template or fallback
-      await loadProfileTemplate(user, { days, created });
-
-      // Bind edit modal
-      bindEditProfile(user);
+    if (user) {
+        if (btnText) btnText.textContent = 'Profilim';
+        if (logoutBtn) logoutBtn.classList.remove('hidden');
+        qs('#headerPrimaryBtn').onclick = () => location.hash = '#/profile';
+        if (logoutBtn) logoutBtn.onclick = () => auth.logout();
+        if (logoutBtn2) logoutBtn2.onclick = () => auth.logout();
+    } else {
+        if (btnText) btnText.textContent = 'Başla';
+        if (logoutBtn) logoutBtn.classList.add('hidden');
+        qs('#headerPrimaryBtn').onclick = () => location.hash = '#/auth';
     }
+}
 
-    function initials(name){
-      return (name||'').split(/\s+/).filter(Boolean).slice(0,2).map(s=>s[0]?.toUpperCase()).join('') || 'U';
-    }
+function showView(id) {
+    qsa('main section').forEach(s => s.classList.add('hidden'));
+    const view = qs('#' + id);
+    if (view) view.classList.remove('hidden');
+    updateHeader();
+}
 
-    async function loadProfileTemplate(user, {days, created}){
-      const container = qs('#profileTemplateContainer');
-      container.innerHTML = `<div class="text-slate-400">Şablon yükleniyor...</div>`;
-      try{
-        const res = await fetch('../script/index.html', { cache:'no-store' });
-        if(res.ok){
-          const html = await res.text();
-          if(html && html.trim().length){
-            container.innerHTML = html;
-            toast('Harici profil şablonu yüklendi.','success');
-            console.info('Profil şablonu ../script/index.html adresinden yüklendi.');
-            return;
-          }
+const routes = {
+    home: () => showView('view-home'),
+    auth: () => showView('view-auth'),
+    profile: async () => {
+        // Double check session before showing profile
+        if (!auth.current()) {
+            // Try explicit check
+            const user = await auth.checkSession();
+            if (!user) {
+                location.hash = '#/auth';
+                return;
+            }
         }
-        throw new Error('Boş içerik');
-      }catch(err){
-        const tpl = qs('#fallbackProfileTemplate').innerHTML;
-        const filled = tpl
-          .replaceAll('{{name}}', escapeHtml(user.name||''))
-          .replaceAll('{{email}}', escapeHtml(user.email||''))
-          .replaceAll('{{about}}', escapeHtml(user.about?.trim()||'Henüz bir bilgi eklenmedi.'))
-          .replaceAll('{{days}}', String(days))
-          .replaceAll('{{createdAt}}', created.toLocaleDateString('tr-TR'))
-          .replaceAll('{{initials}}', initials(user.name||user.email));
-        container.innerHTML = filled;
-        toast('Harici şablon bulunamadı, varsayılan kullanılıyor.');
-      }
-    }
-
-    function escapeHtml(s){
-      return String(s).replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-    }
-
-    function bindEditProfile(user){
-      const modal = qs('#editModal');
-      const open = () => { modal.classList.remove('hidden'); qs('#editName').value = user.name||''; qs('#editAbout').value = user.about||''; };
-      const close = () => modal.classList.add('hidden');
-      qs('#editProfileBtn').onclick = open;
-      qs('#closeEditModal').onclick = close;
-      qs('#form-edit').onsubmit = (e) => {
-        e.preventDefault();
-        const users = storage.getUsers();
-        const email = user.email;
-        users[email] = { ...users[email], name: qs('#editName').value.trim(), about: qs('#editAbout').value.trim() };
-        storage.setUsers(users);
-        toast('Profil güncellendi.','success');
-        close();
+        showView('view-profile');
         renderProfile();
-      };
     }
+};
 
-    // --- App Init ---
-    document.addEventListener('DOMContentLoaded', () => {
-      bindAuthUI();
+async function navigate() {
+    const path = location.hash.slice(2) || 'home';
+    if (routes[path]) {
+        await routes[path]();
+    }
+}
 
-      // If remembered and no explicit route, go directly to profile
-      if(!location.hash || location.hash === '#' || location.hash === '#/' || location.hash === '#/home'){
-        if(auth.current() && auth.isRemembered()){
-          window.location.href = 'templates/index.html';
-        } else {
-          location.hash = '#/home';
+// --- 5. Form Bindings ---
+function bindAuthUI() {
+    const formLogin = qs('#form-login');
+    const formRegister = qs('#form-register');
+
+    // Tab geçişleri
+    qs('#tab-login').onclick = () => {
+        qs('#form-login').classList.remove('hidden');
+        qs('#form-register').classList.add('hidden');
+        qs('#tab-login').classList.add('tab-active');
+        qs('#tab-register').classList.remove('tab-active');
+    };
+    qs('#tab-register').onclick = () => {
+        qs('#form-register').classList.remove('hidden');
+        qs('#form-login').classList.add('hidden');
+        qs('#tab-register').classList.add('tab-active');
+        qs('#tab-login').classList.remove('tab-active');
+    };
+
+    formLogin.onsubmit = async (e) => {
+        e.preventDefault();
+        try {
+            await auth.login({
+                email: qs('#loginEmail').value,
+                password: qs('#loginPassword').value
+            });
+            toast('Hoş geldiniz!', 'success');
+            setTimeout(() => window.location.href = '/dashboard', 1000);
+        } catch (e) { toast(e.message, 'error'); }
+    };
+
+    formRegister.onsubmit = async (e) => {
+        e.preventDefault();
+        if (qs('#regPassword').value !== qs('#regPassword2').value) {
+            return toast('Şifreler eşleşmiyor!', 'error');
         }
-      }
+        try {
+            await auth.register({
+                name: qs('#regName').value,
+                email: qs('#regEmail').value,
+                password: qs('#regPassword').value
+            });
+            toast('Kayıt başarılı!', 'success');
 
-      window.addEventListener('hashchange', navigate);
-      navigate();
-    });
+            setTimeout(() => window.location.href = '/dashboard', 1500);
+        } catch (e) { toast(e.message, 'error'); }
+    };
+}
+
+function renderProfile() {
+    const user = auth.getUser();
+    if (!user) return;
+    qs('#profileName').textContent = user.name;
+    qs('#profileEmail').textContent = user.email;
+    if (qs('#avatar')) qs('#avatar').textContent = user.name[0].toUpperCase();
+    if (qs('#lastLogin')) qs('#lastLogin').textContent = new Date(user.lastLogin).toLocaleTimeString();
+
+    // Calculate days since reg (mock logic or real)
+    const diff = Date.now() - (user.createdAt || Date.now());
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    if (qs('#daysCount')) qs('#daysCount').textContent = days;
+    if (qs('#memberSince')) qs('#memberSince').textContent = 'Üyelik: ' + new Date(user.createdAt || Date.now()).toLocaleDateString();
+}
+
+// --- Init ---
+document.addEventListener('DOMContentLoaded', async () => {
+    // Initial session check
+    await auth.checkSession();
+
+    bindAuthUI();
+    window.onhashchange = navigate;
+    navigate();
+});

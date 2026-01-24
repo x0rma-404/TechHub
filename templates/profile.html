@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/png" href="../images/logo.png">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile - TechHub</title>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons-font@v15/font/simple-icons.min.css">
+    <link rel="stylesheet" href="../static/toggle.css">
+    <style>
+        .profile-container {
+            padding: 2rem;
+            color: var(--text-color);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--toggle-color);
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background-color: var(--primary-color);
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            margin-right: 2rem;
+        }
+
+        .profile-info h1 {
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-info p {
+            color: var(--text-color);
+            opacity: 0.8;
+        }
+
+        .profile-details {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .detail-item label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .detail-box {
+            background: var(--primary-color-light);
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid var(--toggle-color);
+        }
+    </style>
+
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <a href="/index">
+        <img src="../static/images/logo.png" alt="logo" />
+      </a>
+      <h2>TechHub</h2>
+    </div>
+    <ul class="sidebar-links">
+      <h4>
+        <span>Main Menu</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="#"><span class="material-symbols-outlined"> route </span>Courses</a>
+      </li>
+      <li>
+        <a href="#"><span class="material-symbols-outlined"> question_exchange </span>Q&A</a>
+      </li>
+      <li>
+        <a href="/tools"><span class="material-symbols-outlined"> terminal </span>Tools</a>
+      </li>
+      <h4>
+        <span>Team Work</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="#"><span class="material-symbols-outlined"> folder </span>Projects</a>
+      </li>
+      <li>
+        <a href="#"><span class="material-symbols-outlined"> groups </span>Groups</a>
+      </li>
+
+      <li>
+        <a href="#"><span class="material-symbols-outlined"> flag </span>All Reports</a>
+      </li>
+      <h4>
+        <span>Account</span>
+        <div class="menu-separator"></div>
+      </h4>
+      <li>
+        <a href="#"><span class="material-symbols-outlined"> notifications_active </span>Notifications</a>
+      </li>
+
+      <li>
+        <a href="/profile"><span class="material-symbols-outlined"> account_circle </span>Profile</a>
+      </li>
+      <li>
+        <a href="#"><span class="material-symbols-outlined"> settings </span>Settings</a>
+      </li>
+      <li>
+        <a href="#" id="logoutBtn"><span class="material-symbols-outlined"> logout </span>Logout</a>
+      </li>
+      <li class="mode-item" id="theme-toggle">
+        <div class="mode-label">
+          <span class="material-symbols-outlined sun">light_mode</span>
+          <span class="material-symbols-outlined moon">dark_mode</span>
+          <span class="mode-text">Gece Modu</span>
+        </div>
+      </li>
+    </ul>
+  </aside>
+
+    <main style="margin-left: 260px; padding: 20px; transition: var(--tran-05);">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    {{ user.name[0] | upper }}
+                </div>
+                <div class="profile-info">
+                    <h1>{{ user.name }}</h1>
+                    <p>{{ user.email }}</p>
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <div class="detail-item">
+                    <label>About</label>
+                    <div class="detail-box">
+                        {{ user.about or 'No information provided yet.' }}
+                    </div>
+                </div>
+                <div class="detail-item">
+                    <label>Member Since</label>
+                    <div class="detail-box">
+                        <span id="joinDate"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../static/script.js"></script>
+    <script>
+        // Format date
+        const profileCreatedAt = "{{ user.createdAt }}";
+        if (profileCreatedAt) {
+            const date = new Date(profileCreatedAt);
+            document.getElementById('joinDate').innerText = date.toLocaleDateString();
+        }
+    </script>
+
+</body>
+
+</html>
