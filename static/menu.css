@@ -1,39 +1,66 @@
-:root{
-      --bg:#0b1220;
-      --bg2:#0f172a;
-      --card:rgba(15,23,42,.6);
-      --border:rgba(148,163,184,.15);
-      --accent:#6366f1;
-      --accent-2:#0ea5e9;
-      --text:#e2e8f0;
-      --muted:#94a3b8;
-    }
-    html,body{height:100%}
-    body{
-      background:
-        radial-gradient(900px 600px at 85% -10%, rgba(99,102,241,.18), transparent),
-        radial-gradient(700px 500px at -10% 10%, rgba(14,165,233,.12), transparent),
-        linear-gradient(180deg, var(--bg), #0b1528 40%, var(--bg));
-      color:var(--text);
-    }
-    .glass{background:var(--card); backdrop-filter: blur(14px); border:1px solid var(--border)}
-    .ring-soft{box-shadow:0 0 0 1px rgba(255,255,255,.04), 0 8px 30px rgba(0,0,0,.25)}
-    .btn{position:relative; display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.2rem; border-radius:.9rem; font-weight:600}
-    .btn-primary{background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:white}
-    .btn-muted{background:rgba(148,163,184,.08); color:var(--text); border:1px solid var(--border)}
-    .btn:hover{transform:translateY(-1px)}
-    .fade-in{animation:fade .6s ease both}
-    @keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
-    .input{background:rgba(148,163,184,.06); border:1px solid var(--border); color:var(--text)}
-    .input:focus{outline:none; border-color:rgba(99,102,241,.5); box-shadow:0 0 0 4px rgba(99,102,241,.2)}
-    .tab-active{background:rgba(99,102,241,.12); border-color:rgba(99,102,241,.35); color:#c7d2fe}
-    .toast{position:fixed; right:1rem; bottom:1rem; display:flex; flex-direction:column; gap:.5rem; z-index:60}
-    .toast-item{background:rgba(2,6,23,.9); border:1px solid var(--border); color:var(--text); padding:.75rem 1rem; border-radius:.8rem; box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    .badge{background:rgba(148,163,184,.12); border:1px solid var(--border); padding:.2rem .55rem; border-radius:.6rem; font-size:.72rem; color:#cbd5e1}
-    .skeleton{background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.12), rgba(255,255,255,.05)); background-size:200% 100%; animation:sk 1.4s ease infinite}
-    @keyframes sk{to{background-position:-200% 0}}
+html {
+  scroll-behavior: smooth;
+  height: 100%;
+}
 
-    /* Ana Dashboard Cam Efekti */
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: var(--text);
+  /* Arka planı tek bir yerde topladık ve FIXED ekledik */
+  background: 
+    radial-gradient(900px 600px at 85% -10%, rgba(99,102,241,.18), transparent),
+    radial-gradient(700px 500px at -10% 10%, rgba(14,165,233,.12), transparent),
+    linear-gradient(180deg, var(--bg), #0b1528 40%, var(--bg)) !important;
+    
+  background-attachment: fixed !important; /* Çizgiyi yok eden kritik satır */
+  background-size: cover;
+}
+
+/* Bölümler arasındaki olası arka plan renklerini temizle */
+section, #view-home, #features, #about, #contact {
+  background: transparent !important;
+}
+
+:root{
+  --bg:#0b1220;
+  --bg2:#0f172a;
+  --card:rgba(15,23,42,.6);
+  --border:rgba(148,163,184,.15);
+  --accent:#6366f1;
+  --accent-2:#0ea5e9;
+  --text:#e2e8f0;
+  --muted:#94a3b8;
+}
+
+html,body{height:100%}
+body{
+  background:
+    radial-gradient(900px 600px at 85% -10%, rgba(99,102,241,.18), transparent),
+    radial-gradient(700px 500px at -10% 10%, rgba(14,165,233,.12), transparent),
+    linear-gradient(180deg, var(--bg), #0b1528 40%, var(--bg));
+  color:var(--text);
+}
+
+.glass{background:var(--card); backdrop-filter: blur(14px); border:1px solid var(--border)}
+.ring-soft{box-shadow:0 0 0 1px rgba(255,255,255,.04), 0 8px 30px rgba(0,0,0,.25)}
+.btn{position:relative; display:inline-flex; align-items:center; gap:.6rem; padding:.9rem 1.2rem; border-radius:.9rem; font-weight:600}
+.btn-primary{background:linear-gradient(135deg, var(--accent), var(--accent-2)); color:white}
+.btn-muted{background:rgba(148,163,184,.08); color:var(--text); border:1px solid var(--border)}
+.btn:hover{transform:translateY(-1px)}
+.fade-in{animation:fade .6s ease both}
+@keyframes fade{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:translateY(0)}}
+.input{background:rgba(148,163,184,.06); border:1px solid var(--border); color:var(--text)}
+.input:focus{outline:none; border-color:rgba(99,102,241,.5); box-shadow:0 0 0 4px rgba(99,102,241,.2)}
+.tab-active{background:rgba(99,102,241,.12); border-color:rgba(99,102,241,.35); color:#c7d2fe}
+.toast{position:fixed; right:1rem; bottom:1rem; display:flex; flex-direction:column; gap:.5rem; z-index:60}
+.toast-item{background:rgba(2,6,23,.9); border:1px solid var(--border); color:var(--text); padding:.75rem 1rem; border-radius:.8rem; box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.badge{background:rgba(148,163,184,.12); border:1px solid var(--border); padding:.2rem .55rem; border-radius:.6rem; font-size:.72rem; color:#cbd5e1}
+.skeleton{background:linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.12), rgba(255,255,255,.05)); background-size:200% 100%; animation:sk 1.4s ease infinite}
+@keyframes sk{to{background-position:-200% 0}}
+
+/* Ana Dashboard Cam Efekti */
 .dashboard-glass {
   background: rgba(13, 18, 30, 0.7); /* Çok koyu lacivert transparan */
   backdrop-filter: blur(20px);       /* Arka planı bulanıklaştır */
