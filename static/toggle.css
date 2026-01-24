@@ -1,0 +1,55 @@
+body.dark-mode {
+    --bg-body: #0f121d;
+    --bg-sidebar: #000000;
+    --text-white: #e0e0e0;
+    --text-dark: #ffffff;
+    --separator: #333333;
+    --link-hover-bg: #1a1a1a;
+}
+
+.mode-item {
+    margin-top: auto;
+}
+
+.mode-label {
+    display: flex;
+    align-items: center;
+    gap: 0 20px;
+    color: var(--text-white);
+    padding: 15px 10px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.mode-label:hover {
+    color: var(--text-dark);
+    background: var(--link-hover-bg);
+    border-radius: 4px;
+}
+
+.mode-text {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+}
+
+.sidebar:hover .mode-text {
+    opacity: 1;
+}
+
+.sun {
+    display: none;
+}
+
+.moon {
+    display: block;
+}
+
+body.dark-mode .sun {
+    display: block;
+}
+
+body.dark-mode .moon {
+    display: none;
+}
