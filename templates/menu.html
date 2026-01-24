@@ -21,10 +21,9 @@
     <div class="glass ring-soft">
       <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
         <a href="#/home" class="flex items-center gap-3">
-          <!-- <span><img src="images/logo.png" width="50" height="50"></span> -->
-          <div class="leading-tight">
-            <img src="../static/images/logo.png" alt="" style="position: absolute; left: 330px; width: 40px; height: 40px;">
-            <div class="font-semibold tracking-tight"">TechHub</div>
+          <span><img src="../static/images/logo.png" alt="" width="40px" height="40px"></span>
+          <div class="leading-tight">    
+            <div class="font-semibold tracking-tight">TechHub</div>
             <div class="text-xs text-slate-400">Technological Development</div>
           </div>
         </a>
@@ -35,7 +34,7 @@
               </svg>
             <span>Start</span>
           </button>
-          <button id="logoutBtn" class="btn btn-muted hidden">Çıkış</button>
+          <button id="logoutBtn" class="btn btn-muted hidden">Quit</button>
         </nav>
       </div>
     </div>
@@ -46,44 +45,107 @@
     <section id="view-home" class="py-16 md:py-24 fade-in">
       <div class="grid md:grid-cols-2 gap-10 items-center">
         <div>
-          <div class="inline-flex items-center gap-2 mb-5">
-            <span class="badge">Yeni</span>
-            <span class="text-slate-400 text-sm">Hızlı giriş ve modern profil şablonu</span>
-          </div>
           <h1 class="text-4xl md:text-5xl/tight font-extrabold tracking-tight">
-            Aradığını bul, <span
-              class="bg-gradient-to-br from-indigo-400 to-cyan-300 bg-clip-text text-transparent">modern</span> bir
-            deneyime başla
+            Find what you're looking for, start a <span
+              class="bg-gradient-to-br from-indigo-400 to-cyan-300 bg-clip-text text-transparent">modern</span> experience
           </h1>
-          <p class="mt-4 text-slate-400 max-w-prose">Ana menüden devam et. Kaydol ya da giriş yap, seni doğrudan kişisel
-            profiline götürelim. Bir daha geldiğinde, istersen otomatik bağlan.</p>
+          <p class="mt-4 text-slate-400 max-w-prose">Continue from the main menu. Register or Login, and we'll take you directly to your personal profile.</p>
           <div class="mt-7 flex flex-wrap gap-3">
             <a id="ctaStart" href="#/auth" class="btn btn-primary">
               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7-11-7z" />
               </svg>
-              Başla
+              Start
             </a>
-            <a href="#/auth" class="btn btn-muted">Giriş / Kayıt</a>
-          </div>
-          <div class="mt-6 flex items-center gap-3 text-slate-400 text-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-emerald-400" viewBox="0 0 24 24"
-              fill="currentColor">
-              <path d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z" />
-            </svg>
-            Oturumun hatırlanmasını istersen, "Beni hatırla"yı seç.
+            <a href="#/auth" class="btn btn-muted">Log in / Sign up</a>
           </div>
         </div>
-        <div class="glass ring-soft rounded-2xl p-6 md:p-7">
-          <div class="grid grid-cols-5 gap-3">
-            <div class="col-span-5 h-28 rounded-xl skeleton"></div>
-            <div class="col-span-3 h-16 rounded-xl skeleton"></div>
-            <div class="col-span-2 h-16 rounded-xl skeleton"></div>
-            <div class="col-span-2 h-24 rounded-xl skeleton"></div>
-            <div class="col-span-3 h-24 rounded-xl skeleton"></div>
-          </div>
-          <div class="mt-4 text-center text-slate-400 text-sm">Ön izleme • Minimal profil düzeni</div>
+
+
+
+
+        <div class="relative group w-full max-w-[500px] mx-auto lg:mx-0">
+  
+  <div class="absolute -inset-1 bg-gradient-to-r from-indigo-500/30 to-blue-600/30 rounded-2xl blur-2xl opacity-75 transition duration-1000 group-hover:opacity-100 group-hover:duration-200"></div>
+  
+  <div class="dashboard-glass relative rounded-2xl p-6 overflow-hidden ring-1 ring-white/10">
+    
+    <div class="flex items-center justify-between mb-6">
+      <div class="flex items-center gap-3">
+        <div class="relative flex h-3 w-3">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-indigo-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-3 w-3 bg-indigo-500"></span>
         </div>
+        <div>
+          <div class="text-sm font-bold text-slate-100 tracking-wide">TechHub Dashboard</div>
+          <div class="text-[10px] text-slate-400 font-medium">Realtime insights • Secure</div>
+        </div>
+      </div>
+      <div class="flex items-center gap-2 opacity-30">
+        <div class="h-2 w-12 bg-slate-400 rounded-full"></div>
+        <div class="h-2 w-2 bg-slate-400 rounded-full"></div>
+        <div class="h-2 w-2 bg-slate-400 rounded-full"></div>
+      </div>
+    </div>
+
+    <div class="flex gap-4 h-[280px]"> <div class="w-12 flex flex-col gap-3 shrink-0">
+        <div class="aspect-square w-full rounded-xl bg-indigo-500/20 border border-indigo-500/30 grid place-items-center">
+          <div class="w-5 h-5 bg-indigo-500/50 rounded-md"></div>
+        </div>
+        <div class="aspect-square w-full rounded-xl bg-white/5 border border-white/5"></div>
+        <div class="aspect-square w-full rounded-xl bg-white/5 border border-white/5"></div>
+        <div class="aspect-square w-full rounded-xl bg-white/5 border border-white/5"></div>
+        <div class="mt-auto aspect-square w-full rounded-full bg-white/5 border border-white/5"></div>
+      </div>
+
+      <div class="flex-1 flex flex-col gap-3">
+        
+        <div class="grid grid-cols-3 gap-3 h-20">
+          <div class="stat-card rounded-xl p-3 flex flex-col justify-between">
+            <div class="w-8 h-1.5 bg-emerald-400/50 rounded-full"></div>
+            <div class="w-12 h-2 bg-white/10 rounded-full"></div>
+          </div>
+          <div class="stat-card rounded-xl p-3 flex flex-col justify-between">
+             <div class="w-8 h-1.5 bg-indigo-400/50 rounded-full"></div>
+             <div class="w-12 h-2 bg-white/10 rounded-full"></div>
+          </div>
+          <div class="stat-card rounded-xl p-3 flex flex-col justify-between">
+             <div class="w-8 h-1.5 bg-cyan-400/50 rounded-full"></div>
+             <div class="w-12 h-2 bg-white/10 rounded-full"></div>
+          </div>
+        </div>
+
+        <div class="flex gap-3 flex-1">
+          <div class="flex-[2] stat-card rounded-xl relative overflow-hidden flex items-end">
+            <div class="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-indigo-500/30 to-transparent blur-md"></div>
+            <div class="w-full p-3 space-y-2 relative z-10">
+               <div class="w-1/2 h-2 bg-indigo-400/20 rounded-full"></div>
+            </div>
+          </div>
+          
+          <div class="flex-1 stat-card rounded-xl p-2 flex flex-col gap-2">
+            <div class="text-[9px] text-slate-500 mb-1 px-1">Recent activity</div>
+            <div class="h-4 bg-white/5 rounded w-full"></div>
+            <div class="h-4 bg-white/5 rounded w-3/4"></div>
+            <div class="h-4 bg-white/5 rounded w-full"></div>
+          </div>
+        </div>
+
+        <div class="h-10 stat-card rounded-xl flex flex-col justify-center gap-2 px-4">
+           <div class="w-full h-1.5 bg-white/5 rounded-full"></div>
+           <div class="w-2/3 h-1.5 bg-white/5 rounded-full"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+  
+  <div class="mt-4 text-center text-slate-500 text-xs tracking-wider">Review • Glass dashboard mockup</div>
+</div>
+
+
+
+
       </div>
     </section>
 
@@ -94,66 +156,58 @@
           <div class="flex items-center gap-2 mb-6">
             <span
               class="h-9 w-9 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 grid place-items-center text-white font-black">A</span>
-            <div class="font-semibold">Hesabın</div>
+            <div class="font-semibold">Access your account</div>
           </div>
           <div class="grid grid-cols-2 gap-2 mb-6">
-            <button id="tab-login" class="btn btn-muted w-full tab-active">Giriş Yap</button>
-            <button id="tab-register" class="btn btn-muted w-full">Kayıt Ol</button>
+            <button id="tab-login" class="btn btn-muted w-full tab-active">Log in</button>
+            <button id="tab-register" class="btn btn-muted w-full">Sign up</button>
           </div>
 
           <!-- Login Form -->
           <form id="form-login" class="space-y-4">
             <div>
-              <label class="block text-sm text-slate-300 mb-1">E-Posta</label>
-              <input type="email" id="loginEmail" class="input w-full rounded-xl px-4 py-3" placeholder="ornek@mail.com"
+              <label class="block text-sm text-slate-300 mb-1">E-Mail</label>
+              <input type="email" id="loginEmail" class="input w-full rounded-xl px-4 py-3" placeholder="example@mail.com"
                 required />
             </div>
             <div>
-              <label class="block text-sm text-slate-300 mb-1">Şifre</label>
+              <label class="block text-sm text-slate-300 mb-1">Password</label>
               <input type="password" id="loginPassword" class="input w-full rounded-xl px-4 py-3" placeholder="••••••••"
                 minlength="6" required />
             </div>
             <div class="flex items-center justify-between">
-              <label class="inline-flex items-center gap-2 text-sm text-slate-300">
-                <input id="loginRemember" type="checkbox" class="accent-indigo-500" />
-                Beni hatırla
-              </label>
-              <a class="text-slate-400 text-sm hover:text-slate-200" href="#/auth">Şifreyi mi unuttun?</a>
+              <a class="text-slate-400 text-sm hover:text-slate-200" href="#/auth">Forgot password ?</a>
             </div>
-            <button class="btn btn-primary w-full" type="submit">Giriş Yap</button>
+            <button class="btn btn-primary w-full" type="submit">Log in</button>
           </form>
 
           <!-- Register Form -->
           <form id="form-register" class="space-y-4 hidden">
             <div class="grid md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm text-slate-300 mb-1">Ad Soyad</label>
-                <input type="text" id="regName" class="input w-full rounded-xl px-4 py-3" placeholder="Adın Soyadın"
+                <label class="block text-sm text-slate-300 mb-1">Name</label>
+                <input type="text" id="regName" class="input w-full rounded-xl px-4 py-3" placeholder="Your Name"
                   required />
               </div>
               <div>
-                <label class="block text-sm text-slate-300 mb-1">E-Posta</label>
-                <input type="email" id="regEmail" class="input w-full rounded-xl px-4 py-3" placeholder="ornek@mail.com"
+                <label class="block text-sm text-slate-300 mb-1">E-Mail</label>
+                <input type="email" id="regEmail" class="input w-full rounded-xl px-4 py-3" placeholder="example@mail.com"
                   required />
               </div>
             </div>
             <div class="grid md:grid-cols-2 gap-4">
               <div>
-                <label class="block text-sm text-slate-300 mb-1">Şifre</label>
+                <label class="block text-sm text-slate-300 mb-1">Password</label>
                 <input type="password" id="regPassword" class="input w-full rounded-xl px-4 py-3"
-                  placeholder="En az 6 karakter" minlength="6" required />
+                  placeholder="6 charachter at least" minlength="6" required />
               </div>
               <div>
-                <label class="block text-sm text-slate-300 mb-1">Şifre (Tekrar)</label>
+                <label class="block text-sm text-slate-300 mb-1">Password (Again)</label>
                 <input type="password" id="regPassword2" class="input w-full rounded-xl px-4 py-3"
-                  placeholder="Tekrar şifre" minlength="6" required />
+                  placeholder="Password Again" minlength="6" required />
               </div>
             </div>
-            <label class="inline-flex items-center gap-2 text-sm text-slate-300">
-              <input id="regRemember" type="checkbox" class="accent-indigo-500" />
-              Beni hatırla
-            </label>
-            <button class="btn btn-primary w-full" type="submit">Kayıt Ol</button>
+            <button class="btn btn-primary w-full" type="submit">Sign up</button>
           </form>
         </div>
       </div>
