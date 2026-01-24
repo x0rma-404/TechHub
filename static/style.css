@@ -72,7 +72,7 @@ body {
 .sidebar-links {
   list-style: none;
   margin-top: 20px;
-  height: 80%;
+  height: 90%;
   overflow-y: auto;
   scrollbar-width: none;
 }
@@ -125,4 +125,51 @@ body {
 .sidebar:hover .user-account {
   background: #fff;
   border-radius: 4px;
+}
+/* 1. Değişken Tanımlamaları */
+:root {
+  --bg-body: #F0F4FF;
+  --bg-sidebar: #161a2d;
+  --text-white: #ffffff;
+  --text-dark: #161a2d;
+  --separator: #4f52ba;
+  --link-hover-bg: #ffffff;
+}
+
+/* 2. Gece Modu Renkleri (Bu sınıf eklendiğinde devreye girer) */
+body.dark-mode {
+  --bg-body: #0f121d;        /* Daha koyu arka plan */
+  --bg-sidebar: #000000;     /* Saf siyah veya çok koyu gri */
+  --text-white: #e0e0e0;
+  --text-dark: #ffffff;      /* Gece modunda hover metni beyaz olsun */
+  --separator: #333333;
+  --link-hover-bg: #1a1a1a;  /* Hover yapınca hafif gri olsun */
+}
+
+/* 3. Mevcut kodundaki renkleri değişkenlerle değiştir */
+body {
+  min-height: 100vh;
+  background: var(--bg-body); /* Değiştirildi */
+  transition: background 0.3s ease;
+}
+
+.sidebar {
+  /* ... diğer kodların ... */
+  background: var(--bg-sidebar); /* Değiştirildi */
+  transition: all 0.4s ease, background 0.3s ease;
+}
+
+.sidebar .sidebar-header h2, 
+.sidebar-links h4, 
+.sidebar-links li a {
+  color: var(--text-white); /* Değiştirildi */
+}
+
+.sidebar-links .menu-separator {
+  background: var(--separator); /* Değiştirildi */
+}
+
+.sidebar-links li a:hover {
+  color: var(--text-dark); /* Değiştirildi */
+  background: var(--link-hover-bg); /* Değiştirildi */
 }
