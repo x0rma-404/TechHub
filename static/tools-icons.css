@@ -1,0 +1,12 @@
+.si-linux {
+    margin: 100px;
+    font-size: 100px;
+    /* Varsayılan renk (Gündüz) */
+    color: aqua; 
+    transition: all 0.3s ease; /* Renk geçişini yumuşatır */
+}
+
+/* Gece modu aktif olduğunda rengi değiştir */
+body.dark-mode .si-linux {
+    color: aliceblue;
+}
