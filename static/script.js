@@ -1,17 +1,20 @@
-const toggleButton = document.getElementById('theme-toggle');
-const currentTheme = localStorage.getItem('theme');
+const themeToggle = document.getElementById('theme-toggle');
+const body = document.body;
 
-// Apply the saved theme (if any) on page load
-if (currentTheme) {
-  document.documentElement.setAttribute('data-theme', currentTheme);
+// 1. Sayfa yüklendiğinde hafızadaki modu kontrol et
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    body.classList.add('dark-mode');
 }
 
-// Toggle theme on button click
-toggleButton.addEventListener('click', () => {
-  const current = document.documentElement.getAttribute('data-theme');
-  const newTheme = current === 'dark' ? 'light' : 'dark';
-  document.documentElement.setAttribute('data-theme', newTheme);
-
-  // Save the new theme in localStorage
-  localStorage.setItem('theme', newTheme);
+// 2. Butona tıklandığında modu değiştir
+themeToggle.addEventListener('click', () => {
+    body.classList.toggle('dark-mode');
+    
+    // 3. Modu hafızaya kaydet
+    if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+    } else {
+        localStorage.setItem('theme', 'light');
+    }
 });

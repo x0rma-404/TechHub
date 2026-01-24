@@ -1,14 +1,17 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
 }
+
 body {
   min-height: 100vh;
   background: #F0F4FF;
 }
+
 .sidebar {
   position: fixed;
   top: 0;
@@ -22,17 +25,21 @@ body {
   padding: 25px 20px;
   transition: all 0.4s ease;
 }
+
 .sidebar:hover {
   width: 260px;
 }
+
 .sidebar .sidebar-header {
   display: flex;
   align-items: center;
 }
+
 .sidebar .sidebar-header img {
   width: 42px;
   border-radius: 50%;
 }
+
 .sidebar .sidebar-header h2 {
   color: #fff;
   font-size: 1.25rem;
@@ -40,6 +47,7 @@ body {
   white-space: nowrap;
   margin-left: 23px;
 }
+
 .sidebar-links h4 {
   color: #fff;
   font-weight: 500;
@@ -47,12 +55,15 @@ body {
   margin: 10px 0;
   position: relative;
 }
+
 .sidebar-links h4 span {
   opacity: 0;
 }
+
 .sidebar:hover .sidebar-links h4 span {
   opacity: 1;
 }
+
 .sidebar-links .menu-separator {
   position: absolute;
   left: 0;
@@ -65,10 +76,12 @@ body {
   transform-origin: right;
   transition-delay: 0.2s;
 }
+
 .sidebar:hover .sidebar-links .menu-separator {
   transition-delay: 0s;
   transform: scaleX(0);
 }
+
 .sidebar-links {
   list-style: none;
   margin-top: 20px;
@@ -76,9 +89,11 @@ body {
   overflow-y: auto;
   scrollbar-width: none;
 }
+
 .sidebar-links::-webkit-scrollbar {
   display: none;
 }
+
 .sidebar-links li a {
   display: flex;
   align-items: center;
@@ -90,42 +105,51 @@ body {
   text-decoration: none;
   transition: 0.2s ease;
 }
+
 .sidebar-links li a:hover {
   color: #161a2d;
   background: #fff;
   border-radius: 4px;
 }
+
 .user-account {
   margin-top: auto;
   padding: 12px 10px;
   margin-left: -10px;
 }
+
 .user-profile {
   display: flex;
   align-items: center;
   color: #161a2d;
 }
+
 .user-profile img {
   width: 42px;
   border-radius: 50%;
   border: 2px solid #fff;
 }
+
 .user-profile h3 {
   font-size: 1rem;
   font-weight: 600;
 }
+
 .user-profile span {
   font-size: 0.775rem;
   font-weight: 600;
 }
+
 .user-detail {
   margin-left: 23px;
   white-space: nowrap;
 }
+
 .sidebar:hover .user-account {
   background: #fff;
   border-radius: 4px;
 }
+
 /* 1. Değişken Tanımlamaları */
 :root {
   --bg-body: #F0F4FF;
@@ -136,40 +160,90 @@ body {
   --link-hover-bg: #ffffff;
 }
 
-/* 2. Gece Modu Renkleri (Bu sınıf eklendiğinde devreye girer) */
 body.dark-mode {
-  --bg-body: #0f121d;        /* Daha koyu arka plan */
-  --bg-sidebar: #000000;     /* Saf siyah veya çok koyu gri */
+  --bg-body: #0f121d;
+  --bg-sidebar: #000000;
   --text-white: #e0e0e0;
-  --text-dark: #ffffff;      /* Gece modunda hover metni beyaz olsun */
+  --text-dark: #ffffff;
   --separator: #333333;
-  --link-hover-bg: #1a1a1a;  /* Hover yapınca hafif gri olsun */
+  --link-hover-bg: #1a1a1a;
 }
 
-/* 3. Mevcut kodundaki renkleri değişkenlerle değiştir */
 body {
   min-height: 100vh;
-  background: var(--bg-body); /* Değiştirildi */
+  background: var(--bg-body);
   transition: background 0.3s ease;
 }
 
 .sidebar {
-  /* ... diğer kodların ... */
-  background: var(--bg-sidebar); /* Değiştirildi */
+  background: var(--bg-sidebar);
   transition: all 0.4s ease, background 0.3s ease;
 }
 
-.sidebar .sidebar-header h2, 
-.sidebar-links h4, 
+.sidebar .sidebar-header h2,
+.sidebar-links h4,
 .sidebar-links li a {
-  color: var(--text-white); /* Değiştirildi */
+  color: var(--text-white);
 }
 
 .sidebar-links .menu-separator {
-  background: var(--separator); /* Değiştirildi */
+  background: var(--separator);
 }
 
 .sidebar-links li a:hover {
-  color: var(--text-dark); /* Değiştirildi */
-  background: var(--link-hover-bg); /* Değiştirildi */
+  color: var(--text-dark);
+  background: var(--link-hover-bg);
+}
+
+.mode-item {
+  margin-top: auto;
+}
+
+.mode-label {
+  display: flex;
+  align-items: center;
+  gap: 0 20px;
+  color: var(--text-white);
+  padding: 15px 10px;
+  cursor: pointer;
+  transition: 0.2s ease;
+  white-space: nowrap;
+}
+
+.mode-label:hover {
+  color: var(--text-dark);
+  background: var(--link-hover-bg);
+  border-radius: 4px;
+}
+
+.mode-text {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.sidebar:hover .mode-text {
+  opacity: 1;
+}
+
+.sun {
+  display: none;
+}
+
+.moon {
+  display: block;
+}
+
+body.dark-mode .sun {
+  display: block;
+}
+
+body.dark-mode .moon {
+  display: none;
+}
+
+.layout-container {
+  min-height: 100vh;
+  background: var(--bg-body);
+  transition: background 0.3s ease;
 }

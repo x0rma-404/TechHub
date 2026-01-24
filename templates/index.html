@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="../images/logo.png">
   <meta charset="UTF-8" />
@@ -8,8 +9,9 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="../static/style.css">
-  <script src="../static/script.js"></script>
+
 </head>
+
 <body>
   <aside class="sidebar">
     <div class="sidebar-header">
@@ -62,13 +64,18 @@
       <li>
         <a href="#"><span class="material-symbols-outlined"> logout </span>Logout</a>
       </li>
-      <li>
-        <a href="#" id="theme-toggle"><span class="material-symbols-outlined"> light_mode </span>Mode</a>
+      <li class="mode-item" id="theme-toggle">
+        <div class="mode-label">
+          <span class="material-symbols-outlined sun">light_mode</span>
+          <span class="material-symbols-outlined moon">dark_mode</span>
+          <span class="mode-text">Gece Modu</span>
+        </div>
       </li>
     </ul>
   </aside>
-  
-<script src="../static/script.js"></script>
+
+  <script src="../static/script.js"></script>
 
 </body>
+
 </html>
