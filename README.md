@@ -34,4 +34,5 @@ Add analytics & trending projects 📊
 Make it mobile-friendly 📱
 
 📄 License
+
 No License — Do whatever you want 😎
