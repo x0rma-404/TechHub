@@ -9,6 +9,7 @@ if (savedTheme === 'dark') {
 
 // 2. Butona tıklandığında modu değiştir
 themeToggle.addEventListener('click', () => {
+
     body.classList.toggle('dark-mode');
     
     // 3. Modu hafızaya kaydet
@@ -16,5 +17,27 @@ themeToggle.addEventListener('click', () => {
         localStorage.setItem('theme', 'dark');
     } else {
         localStorage.setItem('theme', 'light');
+    }
+
+    
+});
+
+// --- LOGOUT (Minimal ekleme) ---
+document.addEventListener('DOMContentLoaded', () => {
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', (e) => {
+            e.preventDefault(); // linkin # davranışını engelle
+
+            // Session/localStorage temizle
+            localStorage.removeItem('auth');
+            sessionStorage.removeItem('auth');
+
+            // Bildirim
+            alert('Çıkış yapıldı!');
+
+            // Ana sayfaya yönlendir
+            window.location.href = 'main-menu.html';
+        });
     }
 });
