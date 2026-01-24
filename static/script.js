@@ -1,40 +1,33 @@
 const themeToggle = document.getElementById('theme-toggle');
-const body = document.body;
 
-// 1. Sayfa yüklendiğinde hafızadaki modu kontrol et
+// 1. Sayfa yüklendiğinde hafızadaki modu kontrol et (Tıklama öncesi durum)
 const savedTheme = localStorage.getItem('theme');
 if (savedTheme === 'dark') {
-    body.classList.add('dark-mode');
+    document.documentElement.classList.add('dark-mode');
 }
 
 // 2. Butona tıklandığında modu değiştir
 themeToggle.addEventListener('click', () => {
-
-    body.classList.toggle('dark-mode');
+    // Artik body değil, html etiketine (documentElement) ekleyip çıkarıyoruz
+    document.documentElement.classList.toggle('dark-mode');
 
     // 3. Modu hafızaya kaydet
-    if (body.classList.contains('dark-mode')) {
+    if (document.documentElement.classList.contains('dark-mode')) {
         localStorage.setItem('theme', 'dark');
     } else {
         localStorage.setItem('theme', 'light');
     }
-
-
 });
 
-// --- LOGOUT (Minimal ekleme) ---
+// LOGOUT KISMI (Aynı kalabilir)
 document.addEventListener('DOMContentLoaded', () => {
     const logoutBtn = document.getElementById('logoutBtn');
     if (logoutBtn) {
         logoutBtn.addEventListener('click', (e) => {
-            e.preventDefault(); // linkin # davranışını engelle
-
-            // Call backend logout
-            fetch('/logout')
-                .then(() => {
-                    // Ana sayfaya yönlendir
-                    window.location.href = '/';
-                });
+            e.preventDefault();
+            fetch('/logout').then(() => {
+                window.location.href = '/';
+            });
         });
     }
 });

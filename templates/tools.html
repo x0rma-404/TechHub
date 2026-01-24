@@ -2,7 +2,15 @@
 <html lang="en">
 
 <head>
-  <link rel="icon" type="image/png" href="../images/logo.png">
+      <script>
+        (function() {
+            const theme = localStorage.getItem('theme');
+            if (theme === 'dark') {
+                document.documentElement.classList.add('dark-mode');
+            }
+        })();
+        </script>
+  <link rel="icon" type="image/png" href="../static/images/logo.ico">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TechHub</title>
@@ -17,7 +25,7 @@
 <body>
   <aside class="sidebar">
     <div class="sidebar-header">
-      <a href="/index">
+      <a href="/">
         <img src="../static/images/logo.png" alt="logo" />
       </a>
       <h2>TechHub</h2>
