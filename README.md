@@ -34,4 +34,4 @@ Add analytics & trending projects 📊
 Make it mobile-friendly 📱
 
 📄 License
-MIT License — Do whatever you want 😎
+No License — Do whatever you want 😎
