@@ -68,3 +68,8 @@ body.dark-mode .tool-card:hover {
 .sidebar:hover ~ .main-content .tool-card {
     flex-basis: calc(33.33% - 20px);
 }
+.tools-ico{
+    display: contents; 
+    text-decoration: none; 
+    color: inherit;
+}

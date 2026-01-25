@@ -110,6 +110,17 @@ def tools():
         return redirect(url_for('home'))
     return render_template('tools.html')
 
+@app.route('/python-compiler')
+def python_comp():
+    if 'user' not in session:
+        return redirect(url_for('home'))
+    return render_template('py_comp.html')
+
+@app.route('/logic')
+def logic():
+    if 'user' not in session:
+        return redirect(url_for('home'))
+    return render_template('logic.html')
 
 
 if __name__ == '__main__':

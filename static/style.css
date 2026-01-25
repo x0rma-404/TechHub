@@ -9,7 +9,7 @@
 
 body {
   min-height: 100vh;
-  background: #F8F8FF;
+  background: #ffffff;
 }
 
 .sidebar {
@@ -152,7 +152,7 @@ body {
 
 /* 1. Değişken Tanımlamaları */
 :root {
-  --bg-body: #F0F4FF;
+  --bg-body: #ffffff;
   --bg-sidebar: #161a2d;
   --text-white: #ffffff;
   --text-dark: #161a2d;
