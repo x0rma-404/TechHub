@@ -1,5 +1,270 @@
 {% extends "bar.html" %}
 
-{%block content%}
+{% block content %}
+<div class="logic-container">
+    <div class="logic-header">
+        <h1>Məntiqi Qiymətləndirici</h1>
+        <p>Məntiqi ifadələrinizi daxil edin və həqiqət cədvəlini görün</p>
+    </div>
 
-{%endblock%}
+    <div class="logic-input-section card">
+        <div class="input-group">
+            <input type="text" id="logicExpression" placeholder="Məsələn: A*B + !C -> D" spellcheck="false">
+            <button id="evaluateBtn" class="btn btn-primary">Hesabla</button>
+        </div>
+
+        <div class="notation-guide">
+            <div class="guide-item"><span>*</span> AND</div>
+            <div class="guide-item"><span>+</span> OR</div>
+            <div class="guide-item"><span>!</span> NOT</div>
+            <div class="guide-item"><span>^</span> XOR</div>
+            <div class="guide-item"><span>-></span> Implication</div>
+            <div class="guide-item"><span>
+                    <=>
+                </span> Equivalence</div>
+        </div>
+    </div>
+
+    <div id="loading" class="loading-spinner" style="display: none;">
+        <div class="spinner"></div>
+        <p>Hesablanır...</p>
+    </div>
+
+    <div id="results" class="results-section" style="display: none;">
+        <div class="simplified-result card">
+            <h3>Sadələşdirilmiş İfadə:</h3>
+            <div id="simplifiedText" class="expression-display"></div>
+        </div>
+
+        <div class="table-container card">
+            <h3>Həqiqət Cədvəli</h3>
+            <div class="table-wrapper">
+                <table id="truthTable">
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorMessage" class="error-message card" style="display: none;"></div>
+</div>
+
+<style>
+    .logic-container {
+        max-width: 900px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        color: #fff;
+    }
+
+    .logic-header {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+
+    .logic-header h1 {
+        font-size: 2.5rem;
+        background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+    }
+
+    .card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    }
+
+    .input-group {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+
+    #logicExpression {
+        flex: 1;
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        padding: 0.8rem 1.2rem;
+        color: #fff;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.1rem;
+        transition: border-color 0.3s;
+    }
+
+    #logicExpression:focus {
+        outline: none;
+        border-color: #3a7bd5;
+    }
+
+    .btn {
+        padding: 0.8rem 2rem;
+        border-radius: 8px;
+        border: none;
+        cursor: pointer;
+        font-weight: 600;
+        transition: transform 0.2s, background 0.3s;
+    }
+
+    .btn-primary {
+        background: linear-gradient(45deg, #00d2ff, #3a7bd5);
+        color: white;
+    }
+
+    .btn:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.1);
+    }
+
+    .notation-guide {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        justify-content: center;
+        font-size: 0.9rem;
+        opacity: 0.8;
+    }
+
+    .guide-item span {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: monospace;
+        font-weight: bold;
+        color: #00d2ff;
+    }
+
+    .loading-spinner {
+        text-align: center;
+        margin: 2rem 0;
+    }
+
+    .spinner {
+        width: 40px;
+        height: 40px;
+        border: 4px solid rgba(255, 255, 255, 0.1);
+        border-top: 4px solid #3a7bd5;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    .expression-display {
+        background: rgba(0, 0, 0, 0.3);
+        padding: 1rem;
+        border-radius: 8px;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 1.4rem;
+        color: #00d2ff;
+        text-align: center;
+        margin-top: 0.5rem;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 1rem;
+    }
+
+    th,
+    td {
+        padding: 0.8rem;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    th {
+        background: rgba(255, 255, 255, 0.1);
+        color: #00d2ff;
+    }
+
+    tr:hover {
+        background: rgba(255, 255, 255, 0.05);
+    }
+
+    .error-message {
+        background: rgba(255, 71, 87, 0.15);
+        border-color: #ff4757;
+        color: #ff4757;
+        text-align: center;
+    }
+</style>
+
+<script>
+    document.getElementById('evaluateBtn').addEventListener('click', async () => {
+        const expression = document.getElementById('logicExpression').value;
+        if (!expression) return;
+
+        const resultsDiv = document.getElementById('results');
+        const errorDiv = document.getElementById('errorMessage');
+        const loadingDiv = document.getElementById('loading');
+
+        resultsDiv.style.display = 'none';
+        errorDiv.style.display = 'none';
+        loadingDiv.style.display = 'block';
+
+        try {
+            const response = await fetch('/api/logic/evaluate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ expression })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                document.getElementById('simplifiedText').textContent = data.simplified;
+
+                const tableHead = document.getElementById('tableHead');
+                const tableBody = document.getElementById('tableBody');
+
+                tableHead.innerHTML = '<tr>' + data.headers.map(h => `<th>${h}</th>`).join('') + '</tr>';
+                tableBody.innerHTML = data.rows.map(row =>
+                    `<tr>${row.map(val => `<td style="color: ${val ? '#2ecc71' : '#e74c3c'}">${val}</td>`).join('')}</tr>`
+                ).join('');
+
+                resultsDiv.style.display = 'block';
+            } else {
+                errorDiv.textContent = data.message;
+                errorDiv.style.display = 'block';
+            }
+        } catch (error) {
+            errorDiv.textContent = 'Server ilə əlaqə kəsildi.';
+            errorDiv.style.display = 'block';
+        } finally {
+            loadingDiv.style.display = 'none';
+        }
+    });
+
+    // Enter key support
+    document.getElementById('logicExpression').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            document.getElementById('evaluateBtn').click();
+        }
+    });
+</script>
+{% endblock %}

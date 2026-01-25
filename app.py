@@ -3,6 +3,9 @@ import json
 import os
 import time
 from werkzeug.utils import secure_filename
+from tools.logical_evaluator.algo import lex_and_consider_adjacents, create_ast
+from tools.logical_evaluator.truth_table import TruthTable, TooLongError
+from tools.logical_evaluator.register import reg_global
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -122,11 +125,58 @@ def python_comp():
         return redirect(url_for('home'))
     return render_template('py_comp.html')
 
-@app.route('/logic')
+@app.route('/tools/logic')
 def logic():
     if 'user' not in session:
         return redirect(url_for('home'))
     return render_template('logic.html')
+
+@app.route('/logic')
+def old_logic():
+    return redirect(url_for('logic'))
+
+@app.route('/api/logic/evaluate', methods=['POST'])
+def evaluate_logic():
+    if 'user' not in session:
+        return jsonify({'success': False, 'message': 'Daxil olmamısınız'}), 401
+        
+    data = request.get_json()
+    expression = data.get('expression', '')
+    
+    if not expression:
+        return jsonify({'success': False, 'message': 'İfadə daxil edilməyib'}), 400
+        
+    # Preprocess expression like in main.py
+    expression = expression.replace("->", "$")
+    expression = expression.replace("<=>", "#")
+    
+    try:
+        reg_global.reset()
+        tokens = lex_and_consider_adjacents(expression)
+        ast = create_ast(tokens)
+        
+        tt = TruthTable(reg_global.get_headers(), reg_global.objs, ast)
+        tt.generate()
+        tt.simplify()
+        
+        headers = tt.headers + ['X']
+        rows = []
+        for row in tt.rows:
+            row_data = [1 if val else 0 for val in row.ls]
+            row_data.append(1 if row.value else 0)
+            rows.append(row_data)
+            
+        return jsonify({
+            'success': True,
+            'headers': headers,
+            'rows': rows,
+            'simplified': tt.simplified_str
+        })
+        
+    except TooLongError:
+        return jsonify({'success': False, 'message': 'Çox sayda dəyişən! Limit 6-dır.'}), 400
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Xəta: {str(e)}'}), 400
 
 @app.route('/update_profile', methods=['POST'])
 def update_profile():
