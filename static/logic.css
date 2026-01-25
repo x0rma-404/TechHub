@@ -1,0 +1,188 @@
+:root {
+    --logic-text: #2d3436;
+    --logic-card-bg: #ffffff;
+    --logic-card-border: #dfe6e9;
+    --logic-input-bg: #f5f6fa;
+    --logic-input-border: #dcdde1;
+    --logic-input-text: #2d3436;
+    --logic-table-header-bg: #f5f6fa;
+    --logic-table-header-text: #3a7bd5;
+    --logic-table-border: #dfe6e9;
+    --logic-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    --logic-accent: #3a7bd5;
+    --logic-accent-gradient: linear-gradient(45deg, #00d2ff, #3a7bd5);
+}
+
+.dark-mode {
+    --logic-text: #fff;
+    --logic-card-bg: rgba(255, 255, 255, 0.05);
+    --logic-card-border: rgba(255, 255, 255, 0.1);
+    --logic-input-bg: rgba(0, 0, 0, 0.2);
+    --logic-input-border: rgba(255, 255, 255, 0.2);
+    --logic-input-text: #fff;
+    --logic-table-header-bg: rgba(255, 255, 255, 0.1);
+    --logic-table-header-text: #00d2ff;
+    --logic-table-border: rgba(255, 255, 255, 0.1);
+    --logic-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.logic-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    color: var(--logic-text);
+}
+
+.logic-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logic-header h1 {
+    font-size: 2.5rem;
+    background: var(--logic-accent-gradient);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.card {
+    background: var(--logic-card-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--logic-card-border);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--logic-shadow);
+}
+
+.input-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+#logicExpression {
+    flex: 1;
+    background: var(--logic-input-bg);
+    border: 1px solid var(--logic-input-border);
+    border-radius: 8px;
+    padding: 0.8rem 1.2rem;
+    color: var(--logic-input-text);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.1rem;
+    transition: border-color 0.3s;
+}
+
+#logicExpression:focus {
+    outline: none;
+    border-color: var(--logic-accent);
+}
+
+.btn {
+    padding: 0.8rem 2rem;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-weight: 600;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.btn-primary {
+    background: var(--logic-accent-gradient);
+    color: white;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+.notation-guide {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: center;
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+.guide-item span {
+    background: var(--logic-table-header-bg);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-family: monospace;
+    font-weight: bold;
+    color: var(--logic-table-header-text);
+}
+
+.loading-spinner {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid var(--logic-card-border);
+    border-top: 4px solid var(--logic-accent);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 1rem;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.expression-display {
+    background: var(--logic-input-bg);
+    padding: 1rem;
+    border-radius: 8px;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1.4rem;
+    color: var(--logic-table-header-text);
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th,
+td {
+    padding: 0.8rem;
+    text-align: center;
+    border: 1px solid var(--logic-table-border);
+}
+
+th {
+    background: var(--logic-table-header-bg);
+    color: var(--logic-table-header-text);
+}
+
+tr:hover {
+    background: var(--logic-card-bg);
+    filter: brightness(0.95);
+}
+
+.error-message {
+    background: rgba(255, 71, 87, 0.15);
+    border-color: #ff4757;
+    color: #ff4757;
+    text-align: center;
+}
