@@ -1,122 +1,123 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
 
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-
-body,
-html{
-  margin:0;
-  padding:0;
+/* Sidebar-a toxunmuruq, əsas sahəni düzəldirik */
+.main-content {
+    /* Sidebar genişliyi təxmini 88px və ya 250px olur, ona uyğun margin veririk */
+    margin-left: 90px; 
+    padding: 40px;
+    min-height: 100vh;
+    background-color: #f0f2f5; /* Göz yormayan açıq boz fon */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-family: 'Open Sans', sans-serif;
 }
 
-body {
-  min-height: 100vh;
-  min-width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative; /* pseudo-element üçün */
-  overflow: hidden;
-}
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: url('images/banm.jpg') center/cover no-repeat;
-  filter: blur(15px); /* sadəcə blur effekti */
-  z-index: -1; /* digər elementlərin arxasında qalır */
+/* Kart Dizaynı */
+.profile-wrapper {
+    width: 100%;
+    max-width: 700px;
 }
 
-
-
-#header{
-  width:50vw;
-  max-width:400px;
-  min-width:300px;
-  height:150px;
-  background:url(images/banm.jpg);
-  background-size:cover;
-  background-position: center center;
-  transition: all .08s linear;
+.profile-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    overflow: hidden;
+    animation: fadeIn 0.3s ease;
 }
 
-#profile{
-  width:50vw;
-  max-width:400px;
-  min-width:300px;
-  height:160px;
-  background:white;
-  position:relative;
-  box-sizing:border-box;
-  padding-top:40px;
-  padding-left:25px;
-  font-family: 'Open Sans', sans-serif;
-  .image{
-    position:absolute;
-    border:3px solid white;
-    top:-55px;
-    left: 20px;
-    height:80px;
-    width:80px;
-    border-radius:10px;
-    img{
-      width:inherit;
-      height:inherit;
-      border-radius:8px;
-    }
-  }
-  .name{
-    font-size:1.3rem;
-    font-weight:500;
-    color:#444;
-  }
-  .nickname{
-    color:#888;
-    font-size:0.9rem;
-    padding-bottom:7px;
-  }
-  .location{
-    color:#555;
-    font-size:0.9rem;
-    padding-left:0px;
-    position:relative;
-    left:-5px;
-    .material-icons{
-      position:relative;
-      top:3px;
-      font-size:1rem;
-    }
-  }
+/* Görünüş Modu */
+.banner-area {
+    height: 180px;
+    background-color: #ddd;
+}
+.banner-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.shadow{
-  box-shadow: 0px 0px 10px 1px rgba(black,0.5);
+.profile-body {
+    position: relative;
+    padding: 0 30px 30px;
+    text-align: center;
 }
 
-.overflow{
-  overflow:hidden;
+.avatar-area {
+    width: 130px;
+    height: 130px;
+    margin: -65px auto 15px; /* Şəkli yuxarı qaldırır */
+    border-radius: 50%;
+    border: 5px solid #fff;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.avatar-area img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.following,
-.followers{
-  font-family: 'Open Sans', sans-serif;
-  font-size:0.9rem;
-  color:#bbb;
-  font-weight:300;
-}
-.followers{
-  float:right;
-  padding-right:30px;
-}
-.bottom{
-  margin-top:10px;
-}
+.info-area h2 { margin: 0; color: #333; }
+.email-text { color: #777; font-size: 0.9rem; margin-bottom: 15px; }
 
-.count{
-  color:black;
-  font-family: 'Open Sans', sans-serif;
-  font-size:0.9rem;
-  font-weight:700;
+.meta-tags {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+    color: #555;
+    font-size: 0.9rem;
 }
+.meta-tags .tag { display: flex; align-items: center; gap: 5px; }
+.meta-tags i { font-size: 1.1rem; }
+
+/* Redaktə Modu */
+.card-header { padding: 20px 30px; border-bottom: 1px solid #eee; }
+.card-header h3 { margin: 0; font-size: 1.2rem; }
+
+form { padding: 30px; }
+
+.form-group { margin-bottom: 15px; text-align: left; }
+.form-row { display: flex; gap: 20px; }
+.form-row .form-group { flex: 1; }
+
+label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: #444; }
+input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    box-sizing: border-box; /* Daşmanın qarşısını alır */
+}
+input:focus { border-color: #695CFE; outline: none; }
+
+.divider { 
+    margin: 25px 0 15px; 
+    border-bottom: 1px solid #eee; 
+    text-align: center; 
+    line-height: 0.1em; 
+}
+.divider span { background:#fff; padding:0 10px; color:#888; font-size:0.8rem; }
+
+/* Düymələr */
+.btn-action, .btn-primary, .btn-secondary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+.btn-action { background: #695CFE; color: white; margin-top: 10px; }
+.btn-primary { background: #2ecc71; color: white; }
+.btn-secondary { background: #e0e0e0; color: #333; }
+.form-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
+
+.hidden { display: none; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }

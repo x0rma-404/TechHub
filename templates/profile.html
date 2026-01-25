@@ -3,33 +3,129 @@
 {%block content%}
  <link rel="stylesheet" href="../static/profile.css">
 
-<div class="shadow overflow">
-  <div id="header"></div>
-  <div id="profile">
-    <div class="image">
-        <img src="../static/images/default.png" alt="">
+  <main class="main-content">
+    <div class="profile-wrapper">
+      
+      <div id="viewMode" class="profile-card">
+        <div class="banner-area">
+          <img src="{{ user.banner if user.banner else '../static/images/banm.jpg' }}" alt="Banner Cover">
+        </div>
+        <div class="profile-body">
+          <div class="avatar-area">
+            <img src="{{ user.photo if user.photo else '../static/images/default.png' }}" alt="Avatar">
+          </div>
+          <div class="info-area">
+            <h2>{{ user.name }}</h2>
+            <p class="email-text">@{{ user.name }} • {{ user.email }}</p>
+            
+            <div class="meta-tags">
+              <span class="tag"><i class="material-icons">place</i> {{ user.location if user.location else 'Location unset' }}</span>
+              <span class="tag"><i class="material-icons">calendar_today</i> Joined <span id="joinDateDisplay"></span></span>
+            </div>
+
+            <button id="toEditBtn" class="btn-action">
+              <span class="material-symbols-outlined">edit</span> Profili Redaktə Et
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="editMode" class="profile-card hidden">
+        <div class="card-header">
+          <h3>Profil Məlumatlarını Yenilə</h3>
+        </div>
+        
+        <form id="profileForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Profil Şəkli</label>
+              <input type="file" name="profile_photo" accept="image/*">
+            </div>
+            <div class="form-group">
+              <label>Banner Şəkli</label>
+              <input type="file" name="banner_photo" accept="image/*">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Lokasiya</label>
+            <input type="text" name="location" value="{{ user.location if user.location else '' }}" placeholder="Məs: Bakı, Azərbaycan">
+          </div>
+
+          <div class="divider"><span>Təhlükəsizlik (Şifrə dəyişimi)</span></div>
+
+          <div class="form-group">
+            <label>Köhnə Şifrə (Dəyişiklik üçün mütləqdir)</label>
+            <input type="password" name="old_password" placeholder="Cari şifrəniz">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label>Yeni Şifrə</label>
+              <input type="password" name="new_password" placeholder="Yeni şifrə">
+            </div>
+            <div class="form-group">
+              <label>Yeni Şifrəni Təsdiqlə</label>
+              <input type="password" name="confirm_password" placeholder="Təkrar daxil et">
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="cancelEditBtn" class="btn-secondary">Ləğv Et</button>
+            <button type="submit" class="btn-primary">Yadda Saxla</button>
+          </div>
+        </form>
+      </div>
+
     </div>
-    <div class="name">
-        {{ user.name }}
-    </div>
-    <div class="nickname">
-      @{{ user.name }}
-    </div>
-    <div class="location">
-    <i class="material-icons">place</i>Europe
-    </div>
-    <div class="bottom">
-    </div>
-  </div>
-</div>
+  </main>
 
   <script src="../static/script.js"></script>
   <script>
-    const profileCreatedAt = "{{ user.createdAt }}";
-    if (profileCreatedAt) {
-      const date = new Date(profileCreatedAt);
-      document.getElementById("joinDate").innerText =
-        date.toLocaleDateString();
+    // Tarixi formatlamaq
+    const rawDate = "{{ user.createdAt }}";
+    if (rawDate) {
+      document.getElementById("joinDateDisplay").innerText = new Date(parseInt(rawDate)).toLocaleDateString();
     }
+
+    // Toggle Məntiqi
+    const viewMode = document.getElementById('viewMode');
+    const editMode = document.getElementById('editMode');
+    const form = document.getElementById('profileForm');
+
+    document.getElementById('toEditBtn').addEventListener('click', () => {
+      viewMode.classList.add('hidden');
+      editMode.classList.remove('hidden');
+    });
+
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+      editMode.classList.add('hidden');
+      viewMode.classList.remove('hidden');
+      form.reset();
+    });
+
+    // AJAX ilə məlumatı göndərmək (Backend-ə)
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch('/update_profile', {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+        
+        if (result.success) {
+          alert('Məlumatlar yadda saxlanıldı!');
+          window.location.reload();
+        } else {
+          alert('Xəta: ' + result.message);
+        }
+      } catch (err) {
+        alert('Sistem xətası baş verdi.');
+      }
+    });
   </script>
+
 {%endblock%}

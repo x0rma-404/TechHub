@@ -2,11 +2,17 @@ from flask import Flask, render_template, request, jsonify, session, redirect, u
 import json
 import os
 import time
-
+from werkzeug.utils import secure_filename
 
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'your_secret_key_here'  # Change this to a random secret key
+
+# Şəkillər üçün qovluq yolu
+UPLOAD_FOLDER = os.path.join('static', 'images', 'uploads')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
 
 DB_FILE = os.path.join('static', 'techhub_users_db.json')
 
@@ -122,6 +128,65 @@ def logic():
         return redirect(url_for('home'))
     return render_template('logic.html')
 
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    if 'user' not in session:
+        return jsonify({'success': False, 'message': 'Daxil olmamısınız'}), 401
+
+    users = load_users()
+    current_email = session['user']['email']
+    user_data = users.get(current_email)
+
+    if not user_data:
+        return jsonify({'success': False, 'message': 'İstifadəçi tapılmadı'}), 404
+
+    # 1. Lokasiya Yenilənməsi
+    location = request.form.get('location')
+    if location:
+        user_data['location'] = location
+
+    # 2. Şifrə Yenilənməsi
+    old_password = request.form.get('old_password')
+    new_password = request.form.get('new_password')
+    confirm_password = request.form.get('confirm_password')
+
+    # Əgər şifrə sahələri doludursa, yoxla
+    if new_password:
+        if not old_password:
+             return jsonify({'success': False, 'message': 'Şifrəni dəyişmək üçün köhnə şifrəni yazmalısınız'}), 400
+        if user_data['password'] != old_password:
+            return jsonify({'success': False, 'message': 'Köhnə şifrə yanlışdır'}), 400
+        if new_password != confirm_password:
+            return jsonify({'success': False, 'message': 'Yeni şifrələr uyğun gəlmir'}), 400
+        user_data['password'] = new_password
+
+    # 3. Fayl Yüklənməsi (Foto və Banner)
+    safe_name = secure_filename(user_data['name']) # İstifadəçi adını fayl adı üçün təmizləyir
+
+    # Profil Fotosu
+    if 'profile_photo' in request.files:
+        file = request.files['profile_photo']
+        if file and file.filename != '':
+            ext = os.path.splitext(file.filename)[1]
+            filename = f"{safe_name}_profile{ext}"
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            user_data['photo'] = f"../static/images/uploads/{filename}"
+
+    # Banner Fotosu
+    if 'banner_photo' in request.files:
+        file = request.files['banner_photo']
+        if file and file.filename != '':
+            ext = os.path.splitext(file.filename)[1]
+            filename = f"{safe_name}_banner{ext}"
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            user_data['banner'] = f"../static/images/uploads/{filename}"
+
+    # Məlumatları Yaz və Sessiyanı Yenilə
+    users[current_email] = user_data
+    save_users(users)
+    session['user'] = user_data
+
+    return jsonify({'success': True})
 
 if __name__ == '__main__':
     app.run(debug=True)
