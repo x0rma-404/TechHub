@@ -2,11 +2,9 @@
 
 /* Sidebar-a toxunmuruq, əsas sahəni düzəldirik */
 .main-content {
-    /* Sidebar genişliyi təxmini 88px və ya 250px olur, ona uyğun margin veririk */
     margin-left: 90px; 
     padding: 40px;
     min-height: 100vh;
-    background-color: #f0f2f5; /* Göz yormayan açıq boz fon */
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -20,17 +18,36 @@
 }
 
 .profile-card {
-    background: #fff;
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+    /* MİNİMUM ÖLÇÜLER - Kart bundan daha küçük olmaz */
+    min-width: 550px;   
+    min-height: 400px;  
+
+    /* ESNEKLİK - İçerik artarsa kart büyür */
+    width: auto;
+    height: auto;
+
+    /* MAKSİMUM ÖLÇÜLER - Ekrandan taşmasını önler */
+    max-width: 90%; 
+    max-height: 85vh; /* Ekran yüksekliğinin %85'ini geçmez */
+
     border-radius: 12px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    overflow: hidden;
-    animation: fadeIn 0.3s ease;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    background-color: white;
+    
+    /* İçerik max-height'ı geçerse kartın içinde kaydırma çubuğu çıkar */
+    overflow-y: auto; 
+    overflow-x: hidden;
 }
 
-/* Görünüş Modu */
+/* Görünüş modunda banner alanının sabit kalması iyidir */
 .banner-area {
-    height: 180px;
-    background-color: #ddd;
+    height: 180px; 
+    flex-shrink: 0; /* Kart büyüse bile banner yüksekliği değişmez */
 }
 .banner-area img {
     width: 100%;

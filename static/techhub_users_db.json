@@ -20,10 +20,13 @@
   },
   "hemidd@gmail.com": {
     "name": "Hemid",
-    "email": "hemid@gmail.com",
+    "email": "hemidd@gmail.com",
     "password": "Salam123",
     "createdAt": 1769274151876,
     "about": "",
-    "lastLogin": 1769336367348
+    "lastLogin": 1769341168716,
+    "location": "Baki",
+    "photo": "../static/images/uploads/Hemid_profile.ico",
+    "banner": "../static/images/uploads/Hemid_banner.jpg"
   }
 }

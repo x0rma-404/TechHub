@@ -2,6 +2,32 @@
 
 {%block content%}
  <link rel="stylesheet" href="../static/profile.css">
+<style>
+  body {
+    background-image: url("{{ user.banner or url_for('static', filename='images/banm.jpg') }}");
+
+    background-repeat: no-repeat;
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-attachment: fixed;
+
+    margin: 0;
+    min-height: 100vh;
+    
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    backdrop-filter: blur(8px); /* Bulanıklık şiddeti */
+    -webkit-backdrop-filter: blur(8px); /* Safari desteği */
+    z-index: -1; /* İçeriğin arkasında kalması için */
+  }
+</style>
 
   <main class="main-content">
     <div class="profile-wrapper">
@@ -19,8 +45,8 @@
             <p class="email-text">@{{ user.name }} • {{ user.email }}</p>
             
             <div class="meta-tags">
-              <span class="tag"><i class="material-icons">place</i> {{ user.location if user.location else 'Location unset' }}</span>
-              <span class="tag"><i class="material-icons">calendar_today</i> Joined <span id="joinDateDisplay"></span></span>
+              <span class="material-symbols-outlined">home</span></i> {{ user.location if user.location else 'Location unset' }}
+              <span class="material-symbols-outlined">calendar_today</span><span id="joinDateDisplay"></span>
             </div>
 
             <button id="toEditBtn" class="btn-action">
@@ -80,9 +106,8 @@
     </div>
   </main>
 
-  <script src="../static/script.js"></script>
   <script>
-    // Tarixi formatlamaq
+
     const rawDate = "{{ user.createdAt }}";
     if (rawDate) {
       document.getElementById("joinDateDisplay").innerText = new Date(parseInt(rawDate)).toLocaleDateString();
@@ -127,5 +152,7 @@
       }
     });
   </script>
+    <script src="../static/script.js"></script>
+
 
 {%endblock%}
