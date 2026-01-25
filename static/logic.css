@@ -11,6 +11,8 @@
     --logic-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
     --logic-accent: #3a7bd5;
     --logic-accent-gradient: linear-gradient(45deg, #00d2ff, #3a7bd5);
+    --transition-speed: 0.4s;
+    --curve: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .dark-mode {
@@ -27,13 +29,41 @@
 }
 
 .logic-container {
-    /* Değişen kısım burası: Sabit genişlik yerine esnek yapı */
-    width: 100%;
-    max-width: 1200px; /* Opsiyonel: Çok geniş ekranlarda dağılmaması için üst sınır */
-    margin: 2rem auto;
-    padding: 0 1rem;
-    box-sizing: border-box; /* Padding'in genişliğe dahil olması için */
+    margin-top: 75px;
+    margin-left: 85px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 10vh 2rem 2rem;
     color: var(--logic-text);
+    transition: margin-left var(--transition-speed) var(--curve);
+    box-sizing: border-box;
+}
+
+.sidebar:hover~.logic-container {
+    margin-left: 260px;
+}
+
+.logic-header,
+.logic-input-section,
+.results-section,
+#errorMessage,
+#loading {
+    width: 100%;
+    max-width: 800px;
+}
+
+@media (max-width: 1200px) {
+    .logic-container {
+        margin-left: 85px;
+        padding: 1rem;
+    }
+
+    .sidebar:hover~.logic-container {
+        margin-left: 260px;
+    }
 }
 
 .logic-header {
@@ -76,6 +106,7 @@
     font-family: 'Courier New', Courier, monospace;
     font-size: 1.1rem;
     transition: border-color 0.3s;
+    width: 100%;
 }
 
 #logicExpression:focus {
@@ -188,4 +219,30 @@ tr:hover {
     border-color: #ff4757;
     color: #ff4757;
     text-align: center;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 600px) {
+    .input-group {
+        flex-direction: column;
+    }
+
+    .btn {
+        width: 100%;
+    }
+
+    .logic-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .logic-container {
+        margin-left: 0;
+        padding-left: calc(85px + 0.5rem);
+        transition: padding-left var(--transition-speed) var(--curve);
+    }
+
+    .sidebar:hover~.logic-container {
+        margin-left: 0;
+        padding-left: calc(260px + 0.5rem);
+    }
 }
