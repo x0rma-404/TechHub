@@ -7,7 +7,7 @@ from tools.logical_evaluator.algo import lex_and_consider_adjacents, create_ast
 from tools.logical_evaluator.truth_table import TruthTable, TooLongError
 from tools.logical_evaluator.register import reg_global
 from tools.LinuxSimulator.linux_simulator import LinuxTerminal
-
+# Initialize Flask app
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'your_secret_key_here'
 
