@@ -133,28 +133,30 @@ body.dark-mode .tool-card:hover {
 
 @media (max-width: 480px) {
     .main-content {
-        padding: 40px 10px;
+        padding: 40px 2px;
+        /* Minimal side gap */
     }
 
     .tools-grid {
-        gap: 12px;
+        gap: 8px;
+        /* Tighter vertical gap */
     }
 
     .tool-card {
         flex: 1 1 100%;
-        height: 150px;
-        /* Increased from 130px */
-        border-radius: 20px;
+        height: 120px;
+        /* Shorter cards look "wider" */
+        border-radius: 15px;
     }
 
     .si,
     .material-symbols-outlined {
-        font-size: 44px;
-        /* Increased from 28px for much larger icons */
+        font-size: 32px;
+        /* Reverted to balanced size */
     }
 
     .tool-card span:not(.material-symbols-outlined) {
-        font-size: 14px;
-        margin-top: 8px;
+        font-size: 13px;
+        margin-top: 5px;
     }
 }
