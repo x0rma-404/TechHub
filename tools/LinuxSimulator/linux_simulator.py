@@ -2,8 +2,14 @@ import datetime
 
 class LinuxTerminal:
     def __init__(self):
-        self.files = ["README.md", "app.py", "BHOS.txt"]
-        self.current_path = r"/home/user"
+        self.files = [
+            "/home/user/README.md", 
+            "/home/user/app.py", 
+            "/home/user/BHOS.txt",
+            "/home/user/docs/",
+            "/home/user/docs/notes.txt"
+        ]
+        self.current_path = "/home/user"
         self.history = []
         self.change_dict = {
             "last_command": None,
@@ -16,7 +22,6 @@ class LinuxTerminal:
         if not raw_input:
             return ""
 
-        # Tarixçəni və son komandanı qeyd et
         self.history.append(raw_input)
         self.change_dict["last_command"] = raw_input
 
@@ -28,28 +33,74 @@ class LinuxTerminal:
             return "\n".join([f"{i+1} {cmd}" for i, cmd in enumerate(self.history)])
 
         elif command == "ls":
-            return " ".join(sorted(self.files))
+            path_prefix = self.current_path if self.current_path.endswith("/") else self.current_path + "/"
+            
+            results = []
+            for f in self.files:
+                if f.startswith(path_prefix) and f != path_prefix:
+                    relative = f[len(path_prefix):]
+                    if "/" not in relative or (relative.count("/") == 1 and relative.endswith("/")):
+                        results.append(relative)
+            
+            return " ".join(sorted(results))
 
         elif command == "pwd":
             return self.current_path
 
+        elif command == "cd":
+            if not arguments or arguments[0] == "/" or arguments[0] == "~":
+                self.current_path = "/home/user"
+                return ""
+            
+            target = arguments[0]
+            
+            if target == "..":
+                if self.current_path != "/":
+                    parts = self.current_path.strip("/").split("/")
+                    if len(parts) > 1:
+                        self.current_path = "/" + "/".join(parts[:-1])
+                    else:
+                        self.current_path = "/"
+                return ""
+            
+            if target == ".":
+                return ""
+
+            new_path = self.current_path if self.current_path.endswith("/") else self.current_path + "/"
+            new_path += target
+            
+            folder_path = new_path if new_path.endswith("/") else new_path + "/"
+            if folder_path in self.files or folder_path == "/home/user/":
+                self.current_path = folder_path.rstrip("/")
+                return ""
+            else:
+                return f"cd: {target}: No such file or directory"
+
         elif command == "touch":
             if not arguments:
                 return "Error: couldn't find the file name"
-            new_file = arguments[0]
-            if new_file in self.files:
-                return "File already exists"
-            self.files.append(new_file)
+            filename = arguments[0]
+            path_prefix = self.current_path if self.current_path.endswith("/") else self.current_path + "/"
+            full_path = path_prefix + filename
+            
+            if full_path in self.files or (full_path + "/") in self.files:
+                return "File or folder already exists"
+            
+            self.files.append(full_path)
             self.change_dict["modified"] = True
-            return f"Added {new_file}"
+            return f"Added {filename}"
 
         elif command == "mkdir":
             if not arguments:
                 return "Error: folder name not provided."
-            folder = arguments[0] + "/"
-            if folder in self.files:
-                return f"Error: '{arguments[0]}' already exists."
-            self.files.append(folder)
+            dirname = arguments[0]
+            path_prefix = self.current_path if self.current_path.endswith("/") else self.current_path + "/"
+            full_path = path_prefix + dirname + "/"
+            
+            if full_path in self.files:
+                return f"Error: '{dirname}' already exists."
+            
+            self.files.append(full_path)
             self.change_dict["modified"] = True
             return ""
 
@@ -57,14 +108,20 @@ class LinuxTerminal:
             if not arguments:
                 return "Error: file name not provided."
             target = arguments[0]
-            if target in self.files:
-                self.files.remove(target)
+            path_prefix = self.current_path if self.current_path.endswith("/") else self.current_path + "/"
+            
+            full_path = path_prefix + target
+            if full_path in self.files:
+                self.files.remove(full_path)
                 self.change_dict["modified"] = True
                 return f"'{target}' deleted."
-            if target + "/" in self.files:
-                self.files.remove(target + "/")
+            
+            full_path_dir = full_path if full_path.endswith("/") else full_path + "/"
+            if full_path_dir in self.files:
+                self.files = [f for f in self.files if not f.startswith(full_path_dir)]
                 self.change_dict["modified"] = True
                 return f"'{target}' deleted."
+                
             return f"Error: '{target}' not found."
 
         elif command == "echo":

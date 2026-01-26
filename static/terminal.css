@@ -1,0 +1,135 @@
+:root {
+    --term-bg: #1e1e1e;
+    --term-text: #d4d4d4;
+    --term-prompt: #4cc38a;
+    --term-path: #3a96dd;
+    --term-cursor: #ffffff;
+    --term-border: #333333;
+}
+
+.dark-mode {
+    --term-bg: #0b1220;
+    --term-text: #e2e8f0;
+    --term-prompt: #818cf8;
+    --term-path: #22d3ee;
+    --term-cursor: #ffffff;
+    --term-border: rgba(255, 255, 255, 0.1);
+}
+
+.terminal-container {
+    background: var(--term-bg);
+    color: var(--term-text);
+    font-family: 'Courier New', Courier, monospace;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid var(--term-border);
+    max-width: 900px;
+    margin: 40px auto;
+    height: calc(100vh - 250px);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.terminal-header {
+    background: #333;
+    padding: 5px 10px;
+    border-radius: 8px 8px 0 0;
+    margin: -20px -20px 10px -20px;
+    display: flex;
+    gap: 8px;
+}
+
+.header-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.dot-red {
+    background: #ff5f56;
+}
+
+.dot-yellow {
+    background: #ffbd2e;
+}
+
+.dot-green {
+    background: #27c93f;
+}
+
+.terminal-body {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    scrollbar-width: thin;
+    scrollbar-color: #444 transparent;
+}
+
+.terminal-body::-webkit-scrollbar {
+    width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+    background-color: #444;
+    border-radius: 4px;
+}
+
+.terminal-output {
+    white-space: pre-wrap;
+    line-height: 1.5;
+    margin-bottom: 10px;
+}
+
+.terminal-input-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.prompt-symbol {
+    color: var(--term-prompt);
+    font-weight: bold;
+}
+
+.prompt-path {
+    color: var(--term-path);
+}
+
+#terminalInput {
+    background: transparent;
+    border: none;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+    flex: 1;
+    outline: none;
+}
+
+.command-line {
+    margin-bottom: 5px;
+}
+
+.output-line {
+    margin-bottom: 10px;
+    color: var(--term-text);
+}
+
+.dir-link {
+    color: var(--term-path);
+    font-weight: bold;
+}
+
+.file-link {
+    color: var(--term-text);
+}
+
+.error-text {
+    color: #ff5f56 !important;
+}
+
+.highlight-cmd {
+    color: var(--term-prompt);
+}

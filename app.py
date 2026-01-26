@@ -17,7 +17,7 @@ if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 DB_FILE = os.path.join('static', 'techhub_users_db.json')
-terminal = LinuxTerminal()
+linux_simulator = LinuxTerminal()
 
 def load_users():
     if not os.path.exists(DB_FILE):
@@ -54,10 +54,13 @@ def get_user():
 def linux_sim():
     data = request.get_json()
     command = data.get("command", "")
-    output = terminal.run_command(command)
+    output = linux_simulator.run_command(command)
     if output == "__exit__":
         return jsonify({"output": "Closing the terminal... Goodbye!"})
-    return jsonify({"output": output})
+    return jsonify({
+        "output": output,
+        "path": linux_simulator.current_path
+    })
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
