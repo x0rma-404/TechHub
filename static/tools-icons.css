@@ -133,8 +133,8 @@ body.dark-mode .tool-card:hover {
 
 @media (max-width: 480px) {
     .main-content {
-        padding: 40px 0;
-        /* Zero side gap */
+        padding: 40px 8px;
+        /* Re-added small side gap */
     }
 
     .tools-grid {
