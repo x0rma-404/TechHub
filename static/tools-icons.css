@@ -1,75 +1,87 @@
-.si{
+.si {
     color: aliceblue;
-    font-size: 20px;
-
+    font-size: 32px;
+    margin-bottom: 10px;
 }
+
 body.dark-mode .si {
     color: aliceblue;
 }
-:root {
-    --transition-speed: 0.4s; 
-    --curve: cubic-bezier(0.4, 0, 0.2, 1); 
-}
 
-.app-container {
-    display: flex;
+:root {
+    --transition-speed: 0.4s;
+    --curve: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .main-content {
     flex: 1;
-    margin-left: 85px;
-    padding: 30px;
-    transition: margin-left var(--transition-speed) var(--curve);
-}
-
-.sidebar:hover ~ .main-content {
-    margin-left: 260px;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+    min-height: 80vh;
 }
 
 .tools-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 20px;
-    justify-content: flex-start;
+    gap: 24px;
+    justify-content: center;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .tool-card {
     background: var(--bg-sidebar);
     color: var(--text-white);
-    height: 180px;
-    border-radius: 15px;
+    height: 160px;
+    border-radius: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-
-    flex: 1 1 calc(25% - 20px); 
-    max-width: calc(25% - 15px); 
-    
-    transition: 
-        flex-basis var(--transition-speed) var(--curve),
-        max-width var(--transition-speed) var(--curve),
+    flex: 1 1 200px;
+    max-width: 280px;
+    transition:
         background 0.3s ease,
-        transform 0.3s ease;
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+    text-decoration: none;
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* --- GÜNDÜZ MODU (Varsayılan) --- */
+.tool-card span {
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 5px;
+}
+
+/* --- HOVER EFFECTS --- */
 .tool-card:hover {
-    transform: translateY(-8px) scale(1.05);
-    background-color: #2d2c5d; /* Gündüz hover rengi */
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transform: translateY(-8px);
+    background-color: #2d2c5d;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
 }
 
 body.dark-mode .tool-card:hover {
-    background-color: #31313b; 
+    background-color: #31313b;
 }
 
-.sidebar:hover ~ .main-content .tool-card {
-    flex-basis: calc(33.33% - 20px);
-}
-.tools-ico{
-    display: contents; 
-    text-decoration: none; 
+.tools-ico {
+    display: contents;
+    text-decoration: none;
     color: inherit;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .tool-card {
+        flex: 1 1 140px;
+        height: 140px;
+    }
+
+    .si {
+        font-size: 24px;
+    }
 }
