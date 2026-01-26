@@ -1,7 +1,8 @@
 .si {
     color: aliceblue;
-    font-size: 32px;
-    margin-bottom: 10px;
+    font-size: 40px;
+    /* Increased for PC */
+    margin-bottom: 15px;
 }
 
 body.dark-mode .si {
@@ -15,7 +16,7 @@ body.dark-mode .si {
 
 .main-content {
     flex: 1;
-    padding: 40px 20px;
+    padding: 60px 20px;
     display: flex;
     justify-content: center;
     min-height: 80vh;
@@ -24,9 +25,9 @@ body.dark-mode .si {
 .tools-grid {
     display: flex;
     flex-wrap: wrap;
-    gap: 24px;
+    gap: 30px;
     justify-content: center;
-    max-width: 1200px;
+    max-width: 1400px;
     width: 100%;
     margin: 0 auto;
 }
@@ -34,15 +35,16 @@ body.dark-mode .si {
 .tool-card {
     background: var(--bg-sidebar);
     color: var(--text-white);
-    height: 160px;
-    border-radius: 20px;
+    height: 200px;
+    /* Larger for PC */
+    border-radius: 24px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    flex: 1 1 200px;
-    max-width: 280px;
+    flex: 1 1 250px;
+    max-width: 320px;
     transition:
         background 0.3s ease,
         transform 0.3s ease,
@@ -52,16 +54,17 @@ body.dark-mode .si {
 }
 
 .tool-card span {
-    font-size: 14px;
-    font-weight: 500;
-    margin-top: 5px;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 10px;
+    text-transform: capitalize;
 }
 
 /* --- HOVER EFFECTS --- */
 .tool-card:hover {
-    transform: translateY(-8px);
+    transform: translateY(-12px) scale(1.02);
     background-color: #2d2c5d;
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
 }
 
 body.dark-mode .tool-card:hover {
@@ -75,36 +78,39 @@ body.dark-mode .tool-card:hover {
 }
 
 /* Responsive adjustments */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .tool-card {
-        flex: 1 1 calc(50% - 24px);
-        max-width: none;
+        flex: 1 1 calc(33.33% - 30px);
     }
 }
 
-@media (max-width: 600px) {
-    .main-content {
-        padding: 20px 10px;
-    }
-
+@media (max-width: 768px) {
     .tool-card {
-        flex: 1 1 140px;
-        height: 140px;
-        border-radius: 15px;
+        flex: 1 1 calc(50% - 30px);
+        height: 180px;
     }
 
     .si {
-        font-size: 24px;
+        font-size: 32px;
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
+    .main-content {
+        padding: 40px 15px;
+    }
+
     .tools-grid {
-        gap: 12px;
+        gap: 15px;
     }
 
     .tool-card {
         flex: 1 1 100%;
-        height: 120px;
+        height: 140px;
+        border-radius: 18px;
+    }
+
+    .si {
+        font-size: 28px;
     }
 }
