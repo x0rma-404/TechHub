@@ -116,6 +116,12 @@ def tools():
         return redirect(url_for('home'))
     return render_template('tools.html')
 
+@app.route('/Q&A')
+def Q_and_A():
+    if 'user' not in session:
+        return redirect(url_for('home'))
+    return render_template('Q&A.html')
+
 @app.route('/python-compiler')
 def python_comp():
     if 'user' not in session:
