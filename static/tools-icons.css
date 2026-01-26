@@ -75,13 +75,36 @@ body.dark-mode .tool-card:hover {
 }
 
 /* Responsive adjustments */
+@media (max-width: 900px) {
+    .tool-card {
+        flex: 1 1 calc(50% - 24px);
+        max-width: none;
+    }
+}
+
 @media (max-width: 600px) {
+    .main-content {
+        padding: 20px 10px;
+    }
+
     .tool-card {
         flex: 1 1 140px;
         height: 140px;
+        border-radius: 15px;
     }
 
     .si {
         font-size: 24px;
+    }
+}
+
+@media (max-width: 400px) {
+    .tools-grid {
+        gap: 12px;
+    }
+
+    .tool-card {
+        flex: 1 1 100%;
+        height: 120px;
     }
 }

@@ -120,3 +120,49 @@ html.dark-mode .sun {
         transform: scale(1.1);
     }
 }
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    nav {
+        bottom: 10px;
+        padding: 5px 15px;
+        min-width: 280px;
+        border-radius: 30px;
+    }
+
+    .nav-content {
+        height: 60px;
+        gap: 5px;
+    }
+
+    .link-item {
+        height: 60px;
+        width: 55px;
+    }
+
+    .link-icon {
+        font-size: 26px;
+    }
+
+    .link-text {
+        font-size: 9px;
+    }
+
+    .link-item.active {
+        transform: translateY(-3px);
+    }
+}
+
+@media (max-width: 380px) {
+    .link-text {
+        display: none;
+    }
+
+    .link-item {
+        width: 45px;
+    }
+
+    .link-icon {
+        font-size: 24px;
+    }
+}

@@ -177,10 +177,12 @@
 
 .table-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
 }
 
 table {
     width: 100%;
+    min-width: 500px;
     border-collapse: collapse;
     margin-top: 1rem;
 }
@@ -211,6 +213,10 @@ tr:hover {
 
 /* Responsive Adjustments */
 @media (max-width: 600px) {
+    .logic-container {
+        padding: 1rem 0.5rem;
+    }
+
     .input-group {
         flex-direction: column;
     }
@@ -223,14 +229,8 @@ tr:hover {
         font-size: 1.8rem;
     }
 
-    .logic-container {
-        margin-left: 0;
-        padding-left: calc(85px + 0.5rem);
-        transition: padding-left var(--transition-speed) var(--curve);
-    }
-
-    .sidebar:hover~.logic-container {
-        margin-left: 0;
-        padding-left: calc(260px + 0.5rem);
+    .card {
+        padding: 1rem;
+        border-radius: 10px;
     }
 }

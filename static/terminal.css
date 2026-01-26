@@ -133,3 +133,21 @@
 .highlight-cmd {
     color: var(--term-prompt);
 }
+
+/* Mobile Adjustments */
+@media (max-width: 600px) {
+    .terminal-container {
+        margin: 10px;
+        height: calc(100vh - 120px);
+        padding: 10px;
+        font-size: 13px;
+    }
+
+    .terminal-header {
+        margin: -10px -10px 10px -10px;
+    }
+
+    .prompt-symbol {
+        display: none;
+    }
+}
