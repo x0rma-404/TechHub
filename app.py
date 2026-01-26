@@ -145,6 +145,13 @@ def new_query_route():
         return redirect(url_for('home'))
     return render_template('Q&A.html') # Placeholder for now
 
+# Bunu mövcud Q&A python marşrutunun altına əlavə et
+@app.route('/Q&A/sual-detali')
+def Q_and_A_detail():
+    if 'user' not in session:
+        return redirect(url_for('home'))
+    return render_template('Q&A_detail.html')
+
 @app.route('/python-compiler')
 def python_comp():
     if 'user' not in session:

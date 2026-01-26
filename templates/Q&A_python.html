@@ -2,11 +2,45 @@
 
 {% block content %}
 <link rel="stylesheet" href="../static/Q&A.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 <div class="wrapper">
     <main class="content-area">
-        <h1>Python Sorğuları</h1>
-        <p>Bura Python ilə bağlı sual-cavab bölməsidir.</p>
-        <!-- Add content here -->
+        <div class="header-section">
+            <h1 class="page-title">Python Sorğuları</h1>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Sual siyahısında axtar..." onkeyup="filterTopics()">
+            </div>
+        </div>
+
+        <div class="questions-list">
+            <div class="q-list-item" onclick="location.href='/Q&A/sual-detali'">
+                <div class="q-main-info">
+                    <h3>How to use pandas Dataframe?</h3>
+                    <div class="q-user-meta">
+                        <img src="https://ui-avatars.com/api/?name=A&background=random" alt="avatar">
+                        <span>aitahwaman • 18 hours ago</span>
+                    </div>
+                    <div class="q-tags">
+                        <span class="tag">Python</span>
+                        <span class="tag">Data</span>
+                    </div>
+                </div>
+                <div class="q-side-stats">
+                    <div class="q-score positive">+15</div>
+                    <div class="q-replies">4 <span>sorğu</span></div>
+                </div>
+            </div>
+            </div>
     </main>
+
+    <aside class="right-sidebar">
+        <h3>Son Aktivliklər</h3>
+        <div class="activity-feed">
+            </div>
+    </aside>
 </div>
+
+<script src="../static/Q&A.js"></script>
 {% endblock %}

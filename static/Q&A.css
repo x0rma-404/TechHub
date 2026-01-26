@@ -191,3 +191,144 @@ body {
 .bottom-nav i.active {
     color: var(--accent);
 }
+
+/* Siyahı Görünüşü Üçün Əlavələr */
+.page-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text-main);
+}
+
+.questions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.q-list-item {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.q-list-item:hover {
+    transform: translateY(-2px);
+    background: #fcfcfc;
+}
+
+.q-main-info h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    color: var(--text-main);
+}
+
+.q-user-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.q-user-meta img {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+}
+
+.q-user-meta span {
+    font-size: 13px;
+    color: var(--text-sub);
+}
+
+.q-tags {
+    display: flex;
+    gap: 8px;
+}
+
+.tag {
+    background: var(--input-bg);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    color: var(--text-sub);
+    font-weight: 500;
+}
+
+.q-side-stats {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+.q-score {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    min-width: 40px;
+    text-align: center;
+}
+
+.q-score.positive { background: #ecfdf5; color: #10b981; }
+.q-score.negative { background: #fef2f2; color: #ef4444; }
+.q-score.neutral { background: #f3f4f6; color: #6b7280; }
+
+.q-replies {
+    text-align: center;
+    font-weight: 600;
+    font-size: 18px;
+    color: var(--text-main);
+}
+
+.q-replies span {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-sub);
+}
+
+/* Siyahı və Detal üçün Ümumi Əlavələr */
+.page-title { font-size: 26px; margin-bottom: 20px; color: var(--text-main); }
+
+/* Siyahı Sətirləri */
+.q-list-item {
+    background: var(--card-bg); border-radius: 12px; padding: 20px;
+    display: flex; justify-content: space-between; margin-bottom: 15px;
+    box-shadow: var(--shadow); cursor: pointer; transition: 0.2s;
+}
+.q-list-item:hover { background: #fdfdfd; transform: scale(1.01); }
+
+/* Sual Detalı Hissəsi */
+.detail-header { margin-bottom: 15px; }
+.back-link { background: none; border: none; color: var(--accent); cursor: pointer; font-weight: 600; }
+
+.main-post-card, .comment-card {
+    background: var(--card-bg); border-radius: 16px; padding: 25px;
+    margin-bottom: 20px; box-shadow: var(--shadow);
+}
+
+.post-user, .comment-user { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
+.post-user img, .comment-user img { width: 32px; height: 32px; border-radius: 50%; }
+
+/* Kod Bloku - Light Mode-da belə tünd fon daha peşəkar görünür */
+.code-block {
+    background: #1e1e1e; color: #dcdcdc; padding: 15px; border-radius: 8px;
+    font-family: 'Consolas', monospace; font-size: 14px; margin: 15px 0; overflow-x: auto;
+}
+
+/* Səsvermə və Reply */
+.comment-actions { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid var(--input-bg); padding-top: 15px; }
+.vote-system { display: flex; gap: 12px; color: var(--text-sub); }
+.vote-system i { cursor: pointer; }
+
+/* Reply Input */
+.reply-input-box { background: var(--card-bg); padding: 20px; border-radius: 16px; box-shadow: var(--shadow); }
+.reply-input-box textarea { width: 100%; height: 80px; border: 1px solid var(--input-bg); border-radius: 8px; padding: 10px; outline: none; resize: none; }
+.send-btn { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; float: right; margin-top: 10px; }

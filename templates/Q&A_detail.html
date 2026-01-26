@@ -1,0 +1,60 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../static/Q&A.css">
+
+<div class="wrapper">
+    <main class="content-area">
+        <div class="detail-header">
+            <button class="back-link" onclick="history.back()"><i class="fas fa-arrow-left"></i> Geri qayıt</button>
+        </div>
+
+        <div class="main-post-card">
+            <h2>How to use pandas Dataframe?</h2>
+            <div class="post-user">
+                <img src="https://ui-avatars.com/api/?name=A&background=random" alt="user">
+                <div class="user-info">
+                    <strong>aitahwaman</strong>
+                    <span>18 hours ago</span>
+                </div>
+            </div>
+            <div class="post-content">
+                <p>I'm new to pandas. Can someone explain how to create a dataframe from a dictionary?</p>
+                <div class="code-block">
+                    <pre><code>import pandas as pd
+df = pd.DataFrame(data)</code></pre>
+                </div>
+            </div>
+        </div>
+
+        <div class="answers-container">
+            <h3>Cavablar (3)</h3>
+            <div class="comment-card">
+                <div class="comment-user">
+                    <img src="https://ui-avatars.com/api/?name=N&background=random" alt="user">
+                    <div class="user-info"><strong>nev.anngomon</strong><span>8 hours ago</span></div>
+                </div>
+                <div class="comment-content">
+                    <p>You can do it like this:</p>
+                    <div class="code-block">
+                        <pre><code>data = {'col1': [1, 2], 'col2': [3, 4]}
+df = pd.DataFrame(data)</code></pre>
+                    </div>
+                </div>
+                <div class="comment-actions">
+                    <div class="vote-system"><i class="fas fa-chevron-up"></i><i class="fas fa-chevron-down"></i></div>
+                    <button class="reply-btn"><i class="fas fa-reply"></i> Cavabla</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="reply-input-box">
+            <textarea placeholder="Cavab yaz..." id="replyText"></textarea>
+            <div class="input-footer">
+                <button class="send-btn" id="sendReply">Göndər <i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </main>
+</div>
+<script src="../static/Q&A.js"></script>
+{% endblock %}
