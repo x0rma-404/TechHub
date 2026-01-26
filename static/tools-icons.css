@@ -133,34 +133,32 @@ body.dark-mode .tool-card:hover {
 
 @media (max-width: 480px) {
     .main-content {
-        padding: 40px 8px;
-        /* Re-added small side gap */
+        padding: 40px 25px;
+        /* Increased side gap */
     }
 
     .tools-grid {
-        gap: 10px;
-        /* Vertical gap between rows */
+        gap: 15px;
         padding: 0;
     }
 
     .tool-card {
         flex: 1 1 100%;
         max-width: 100%;
-        /* Ensure it takes full width */
-        height: 120px;
-        /* Shorter cards look "wider" */
-        border-radius: 0;
-        /* Square edges for edge-to-edge look if desired, or keep small radius */
+        height: 140px;
+        /* Slightly taller for balance */
+        border-radius: 20px;
+        /* Restored rounding */
     }
 
     .si,
     .material-symbols-outlined {
-        font-size: 32px;
-        /* Reverted to balanced size */
+        font-size: 38px;
+        /* Same as PC */
     }
 
     .tool-card span:not(.material-symbols-outlined) {
-        font-size: 13px;
-        margin-top: 5px;
+        font-size: 14px;
+        margin-top: 8px;
     }
 }
