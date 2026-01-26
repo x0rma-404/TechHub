@@ -6,62 +6,62 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <div class="wrapper">
-        <main class="content-area">
-            <div class="header-section">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="searchInput" placeholder="Sorğu axtar...">
-                </div>
-                <div class="category-list">
-                    <button class="cat-btn active" onclick="navigate('yeni')">Yeni</button>
-                    <button class="cat-btn" onclick="navigate('populyar')">Populyar</button>
-                    <button class="cat-btn" onclick="navigate('cavabsiz')">Cavabsız</button>
-                    <button class="cat-btn" onclick="navigate('yeni-sorgu')">Yeni sorğu</button>
+    <main class="content-area">
+        <div class="header-section">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="Sorğu axtar...">
+            </div>
+            <div class="category-list">
+                <button class="cat-btn active" onclick="navigate('yeni')">Yeni</button>
+                <button class="cat-btn" onclick="navigate('populyar')">Populyar</button>
+                <button class="cat-btn" onclick="navigate('cavabsiz')">Cavabsız</button>
+                <button class="cat-btn" onclick="navigate('yeni-sorgu')">Yeni sorğu</button>
+            </div>
+        </div>
+
+        <div class="grid-container">
+            <div class="topic-card" onclick="location.href='/Q&A/python'">
+                <i class="fab fa-python python-icon"></i>
+                <h3>Python Sorğuları</h3>
+                <p>Python sorğuları üçün nəzərdə tutulub.</p>
+                <span class="stats">50+ sorğu</span>
+            </div>
+            <div class="topic-card" onclick="location.href='/Q&A/linux'">
+                <i class="fab fa-linux linux-icon"></i>
+                <h3>Linux Məsələləri</h3>
+                <p>Linux sistemi ilə bağlı müzakirələr.</p>
+                <span class="stats">10+ sorğu</span>
+            </div>
+            <div class="topic-card" onclick="location.href='/Q&A/web'">
+                <i class="fab fa-html5 web-icon"></i>
+                <h3>Web Development</h3>
+                <p>Frontend və Backend mövzuları.</p>
+                <span class="stats">20+ sorğu</span>
+            </div>
+        </div>
+    </main>
+
+    <aside class="right-sidebar">
+        <h3>Son Aktivliklər</h3>
+        <div class="activity-feed">
+            <div class="feed-item">
+                <img src="https://ui-avatars.com/api/?name=User+1&background=random" alt="user">
+                <div class="feed-text">
+                    <p>What is smine for Python Sorğuları?</p>
+                    <small>18 hours ago</small>
                 </div>
             </div>
-
-            <div class="grid-container">
-                <div class="topic-card" onclick="location.href='Q-Python.html'">
-                    <i class="fab fa-python python-icon"></i>
-                    <h3>Python Sorğuları</h3>
-                    <p>Python sorğuları üçün nəzərdə tutulub.</p>
-                    <span class="stats">50+ sorğu</span>
-                </div>
-                <div class="topic-card" onclick="location.href='linux.html'">
-                    <i class="fab fa-linux linux-icon"></i>
-                    <h3>Linux Məsələləri</h3>
-                    <p>Linux sistemi ilə bağlı müzakirələr.</p>
-                    <span class="stats">10+ sorğu</span>
-                </div>
-                <div class="topic-card" onclick="location.href='web.html'">
-                    <i class="fab fa-html5 web-icon"></i>
-                    <h3>Web Development</h3>
-                    <p>Frontend və Backend mövzuları.</p>
-                    <span class="stats">20+ sorğu</span>
-                </div>
-                </div>
-        </main>
-
-        <aside class="right-sidebar">
-            <h3>Son Aktivliklər</h3>
-            <div class="activity-feed">
-                <div class="feed-item">
-                    <img src="https://ui-avatars.com/api/?name=User+1&background=random" alt="user">
-                    <div class="feed-text">
-                        <p>What is smine for Python Sorğuları?</p>
-                        <small>18 hours ago</small>
-                    </div>
-                </div>
-                <div class="feed-item">
-                    <img src="https://ui-avatars.com/api/?name=User+2&background=random" alt="user">
-                    <div class="feed-text">
-                        <p>Linux terminal xətası haqqında</p>
-                        <small>7 hours ago</small>
-                    </div>
+            <div class="feed-item">
+                <img src="https://ui-avatars.com/api/?name=User+2&background=random" alt="user">
+                <div class="feed-text">
+                    <p>Linux terminal xətası haqqında</p>
+                    <small>7 hours ago</small>
                 </div>
             </div>
-        </aside>
-    </div>
+        </div>
+    </aside>
+</div>
 
 <script src="../static/Q&A.js"></script>
 

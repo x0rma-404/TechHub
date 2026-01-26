@@ -121,6 +121,29 @@ def Q_and_A():
     if 'user' not in session:
         return redirect(url_for('home'))
     return render_template('Q&A.html')
+@app.route('/Q&A/linux')
+def Q_and_A_linux():
+    if 'user' not in session:
+        return redirect(url_for('home'))
+    return render_template('Q&A_linux.html')
+
+@app.route('/Q&A/python')
+def Q_and_A_python():
+    if 'user' not in session:
+        return redirect(url_for('home'))
+    return render_template('Q&A_python.html')
+
+@app.route('/Q&A/web')
+def Q_and_A_web():
+    if 'user' not in session:
+        return redirect(url_for('home'))
+    return render_template('Q&A_web.html')
+
+@app.route('/Q&A/yeni-sorgu')
+def new_query_route():
+    if 'user' not in session:
+        return redirect(url_for('home'))
+    return render_template('Q&A.html') # Placeholder for now
 
 @app.route('/python-compiler')
 def python_comp():

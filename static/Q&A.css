@@ -5,7 +5,17 @@
     --text-sub: #65676b;
     --accent: #1877f2;
     --input-bg: #e4e6eb;
-    --shadow: 0 2px 4px rgba(0,0,0,0.1);
+    --shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode {
+    --body-bg: #0f121d;
+    --card-bg: #1a1e2e;
+    --text-main: #e0e0e0;
+    --text-sub: #a0a0a0;
+    --accent: #4f52ba;
+    --input-bg: #2a2e3e;
+    --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 body {
@@ -31,7 +41,8 @@ body {
 
 .header-section {
     display: flex;
-    flex-direction: column; /* Üst-üstə yığmaq üçün */
+    flex-direction: column;
+    /* Üst-üstə yığmaq üçün */
     gap: 15px;
     margin-bottom: 25px;
 }
@@ -90,14 +101,39 @@ body {
     cursor: pointer;
 }
 
-.topic-card i { font-size: 35px; margin-bottom: 15px; }
-.python-icon { color: #3776ab; }
-.linux-icon { color: #333; }
-.web-icon { color: #e34f26; }
+.topic-card i {
+    font-size: 35px;
+    margin-bottom: 15px;
+}
 
-.topic-card h3 { margin: 5px 0; }
-.topic-card p { color: var(--text-sub); font-size: 14px; }
-.stats { color: var(--accent); font-weight: bold; font-size: 12px; margin-top: 10px; display: block; }
+.python-icon {
+    color: #3776ab;
+}
+
+.linux-icon {
+    color: #333;
+}
+
+.web-icon {
+    color: #e34f26;
+}
+
+.topic-card h3 {
+    margin: 5px 0;
+}
+
+.topic-card p {
+    color: var(--text-sub);
+    font-size: 14px;
+}
+
+.stats {
+    color: var(--accent);
+    font-weight: bold;
+    font-size: 12px;
+    margin-top: 10px;
+    display: block;
+}
 
 /* Sağ Sidebar */
 .right-sidebar {
@@ -116,9 +152,21 @@ body {
     align-items: center;
 }
 
-.feed-item img { width: 40px; height: 40px; border-radius: 50%; }
-.feed-text p { margin: 0; font-size: 14px; font-weight: 500; }
-.feed-text small { color: var(--text-sub); }
+.feed-item img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.feed-text p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.feed-text small {
+    color: var(--text-sub);
+}
 
 /* Alt Menyü */
 .bottom-nav {
@@ -126,13 +174,20 @@ body {
     bottom: 25px;
     left: 50%;
     transform: translateX(-50%);
-    background: #fff;
+    background: var(--card-bg);
     padding: 12px 35px;
     border-radius: 40px;
     display: flex;
     gap: 30px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
 }
 
-.bottom-nav i { font-size: 20px; color: var(--text-sub); cursor: pointer; }
-.bottom-nav i.active { color: var(--accent); }
+.bottom-nav i {
+    font-size: 20px;
+    color: var(--text-sub);
+    cursor: pointer;
+}
+
+.bottom-nav i.active {
+    color: var(--accent);
+}
