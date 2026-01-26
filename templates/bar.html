@@ -3,93 +3,71 @@
 
 <head>
   <script>
-        (function() {
-            const theme = localStorage.getItem('theme');
-            if (theme === 'dark') {
-                document.documentElement.classList.add('dark-mode');
-            }
-        })();
-    </script>
+    (function () {
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark') {
+        document.documentElement.classList.add('dark-mode');
+      }
+    })();
+  </script>
   <link rel="icon" type="image/png" href="../static/images/logo.ico">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TechHub</title>
-  <link rel="stylesheet"href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons-font@v15/font/simple-icons.min.css">
   <link rel="stylesheet" href="../static/style.css">
   <link rel="stylesheet" href="../static/toggle.css">
   <link rel="stylesheet" href="../static/tools-icons.css">
-
-
+  <link rel="stylesheet" href="../static/newbar.css">
+  <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
-  <aside class="sidebar">
-    <div class="sidebar-header">
-        <a href="/">
-        <img src="../static/images/logo.png" alt="logo" />
+  <nav class="nav">
+    <ul class="nav-content">
+      <li class="nav-list">
+        <a href="/" class="link-item active">
+          <i class='bx bxs-home link-icon'></i>
+          <span class="link-text">Home</span>
         </a>
-      <h2>TechHub</h2>
-    </div>
-    <ul class="sidebar-links">
-      <h4>
-        <span>Main Menu</span>
-        <div class="menu-separator"></div>
-      </h4>
-      <li>
-        <a href="#"><span class="material-symbols-outlined"> route </span>Courses</a>
       </li>
-      <li>
-        <a href="#"><span class="material-symbols-outlined"> question_exchange </span>Q&A</a>
+      <li class="nav-list">
+        <a href="/tools" class="link-item">
+          <i class='bx bxs-terminal link-icon'></i>
+          <span class="link-text">Tools</span>
+        </a>
       </li>
-      <li>
-        <a href="/tools"><span class="material-symbols-outlined"> terminal </span>Tools</a>
+      <li class="nav-list">
+        <a href="/profile" class="link-item">
+          <i class='bx bxs-user link-icon'></i>
+          <span class="link-text">Profile</span>
+        </a>
       </li>
-      <h4>
-        <span>Team Work</span>
-        <div class="menu-separator"></div>
-      </h4>
-      <li>
-        <a href="#"><span class="material-symbols-outlined"> folder </span>Projects</a>
+      <li class="nav-list" id="logoutBtn">
+        <a href="#" class="link-item">
+          <i class='bx bxs-log-out link-icon'></i>
+          <span class="link-text">Logout</span>
+        </a>
       </li>
-      <li>
-        <a href="#"><span class="material-symbols-outlined"> groups </span>Groups</a>
-      </li>
-
-      <li>
-        <a href="#"><span class="material-symbols-outlined"> flag </span>All Reports</a>
-      </li>
-      <h4>
-        <span>Account</span>
-        <div class="menu-separator"></div>
-      </h4>
-      <li>
-        <a href="#"><span class="material-symbols-outlined"> notifications_active </span>Notifications</a>
-      </li>
-
-      <li>
-        <a href="/profile"><span class="material-symbols-outlined"> account_circle </span>Profile</a>
-      </li>
-      <li>
-        <a href="#"><span class="material-symbols-outlined"> settings </span>Settings</a>
-      </li>
-      <li>
-        <a href="#" id="logoutBtn"><span class="material-symbols-outlined"> logout </span>Logout</a>
-      </li>
-      <li class="mode-item" id="theme-toggle">
-        <div class="mode-label">
-          <span class="material-symbols-outlined sun">light_mode</span>
-          <span class="material-symbols-outlined moon">dark_mode</span>
-          <span class="mode-text">Night Mode</span>
-        </div>
+      <li class="nav-list" id="theme-toggle">
+        <a href="#" class="link-item">
+          <i class='bx bxs-moon link-icon moon'></i>
+          <i class='bx bxs-sun link-icon sun'></i>
+          <span class="link-text">Theme</span>
+        </a>
       </li>
     </ul>
-  </aside>
-  {% block content %}
+  </nav>
 
-  {% endblock %}
+  <div class="main-container">
+    {% block content %}
+
+    {% endblock %}
+  </div>
+  <script src="../static/newbar.js"></script>
   <script src="../static/script.js"></script>
-
 </body>
 
 </html>

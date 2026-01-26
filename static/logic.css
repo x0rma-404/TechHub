@@ -29,21 +29,14 @@
 }
 
 .logic-container {
-    margin-top: 75px;
-    margin-left: 85px;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    padding: 10vh 2rem 2rem;
+    padding: 2rem;
     color: var(--logic-text);
-    transition: margin-left var(--transition-speed) var(--curve);
     box-sizing: border-box;
-}
-
-.sidebar:hover~.logic-container {
-    margin-left: 260px;
 }
 
 .logic-header,
@@ -57,12 +50,7 @@
 
 @media (max-width: 1200px) {
     .logic-container {
-        margin-left: 85px;
         padding: 1rem;
-    }
-
-    .sidebar:hover~.logic-container {
-        margin-left: 260px;
     }
 }
 

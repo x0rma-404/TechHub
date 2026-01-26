@@ -1,0 +1,122 @@
+:root {
+    --nav-bg: rgba(255, 255, 255, 0.85);
+    --nav-indicator-border: #4070F4;
+    --nav-indicator-bg: #FFF;
+    --nav-icon-color: #666;
+    --nav-active-color: #4070F4;
+    --nav-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    --transition-timing: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.dark-mode {
+    --nav-bg: rgba(22, 26, 45, 0.85);
+    --nav-indicator-border: #4f52ba;
+    --nav-indicator-bg: #161a2d;
+    --nav-icon-color: #a0a0a0;
+    --nav-active-color: #7d81ff;
+    --nav-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+nav {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    min-width: 320px;
+    background: var(--nav-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 10px 25px;
+    box-shadow: var(--nav-shadow);
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nav-content {
+    display: flex;
+    height: 70px;
+    align-items: center;
+    list-style: none;
+    position: relative;
+    width: 100%;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.link-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 70px;
+    width: 70px;
+    text-decoration: none;
+    transition: all 0.4s var(--transition-timing);
+    position: relative;
+}
+
+.link-item.active {
+    transform: translateY(-5px);
+}
+
+.link-icon {
+    font-size: 34px;
+    color: var(--nav-icon-color);
+    transition: all 0.4s var(--transition-timing);
+}
+
+.link-item.active .link-icon {
+    color: var(--nav-active-color);
+    filter: drop-shadow(0 0 8px var(--nav-active-color));
+}
+
+.link-text {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--nav-active-color);
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s var(--transition-timing);
+    pointer-events: none;
+}
+
+.link-item.active .link-text {
+    opacity: 1;
+    transform: translateY(2px);
+}
+
+/* Theme Icon Visibility */
+.moon,
+.sun {
+    display: none !important;
+}
+
+/* Light mode: show moon */
+html:not(.dark-mode) .moon {
+    display: block !important;
+}
+
+/* Dark mode: show sun */
+html.dark-mode .sun {
+    display: block !important;
+}
+
+/* Hover effects */
+@media (hover: hover) {
+    .link-item:hover .link-icon {
+        color: var(--nav-active-color);
+        transform: scale(1.1);
+    }
+}

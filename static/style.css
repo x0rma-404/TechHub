@@ -165,26 +165,7 @@ body {
   min-height: 100vh;
   background: var(--bg-body);
   transition: background 0.3s ease;
-}
-
-.sidebar {
-  background: var(--bg-sidebar);
-  transition: all 0.4s ease, background 0.3s ease;
-}
-
-.sidebar .sidebar-header h2,
-.sidebar-links h4,
-.sidebar-links li a {
-  color: var(--text-white);
-}
-
-.sidebar-links .menu-separator {
-  background: var(--separator);
-}
-
-.sidebar-links li a:hover {
-  color: var(--text-dark);
-  background: var(--link-hover-bg);
+  padding-bottom: 120px;
 }
 
 
