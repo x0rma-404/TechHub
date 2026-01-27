@@ -1,60 +1,94 @@
 {% extends "bar.html" %}
 
 {% block content %}
-<link rel="stylesheet" href="../static/Q&A.css">
+<link rel="stylesheet" href="/static/Q&A.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
 <div class="wrapper">
     <main class="content-area">
-        <div class="detail-header">
-            <button class="back-link" onclick="history.back()"><i class="fas fa-arrow-left"></i> Geri qayıt</button>
+        <div class="header-section">
+            <h1 class="page-title">Sualın Təfərrüatı</h1>
+            <button onclick="history.back()" class="cat-btn" style="margin-bottom:10px; width: fit-content;">
+                <i class="fas fa-arrow-left"></i> Geriyə qayıt
+            </button>
         </div>
 
         <div class="main-post-card">
-            <h2>How to use pandas Dataframe?</h2>
-            <div class="post-user">
-                <img src="https://ui-avatars.com/api/?name=A&background=random" alt="user">
-                <div class="user-info">
-                    <strong>aitahwaman</strong>
-                    <span>18 hours ago</span>
-                </div>
+            <div class="q-user-meta">
+                <img src="{{ question.author_photo or 'https://ui-avatars.com/api/?name=' + question.author_name }}" alt="avatar">
+                <span><strong>{{ question.author_name }}</strong> • {{ question.timestamp | format_time }}</span>
             </div>
-            <div class="post-content">
-                <p>I'm new to pandas. Can someone explain how to create a dataframe from a dictionary?</p>
-                <div class="code-block">
-                    <pre><code>import pandas as pd
-df = pd.DataFrame(data)</code></pre>
-                </div>
+            
+            <h2 style="margin: 15px 0; color: var(--text-main);">{{ question.title }}</h2>
+            
+            <div class="post-body" style="color: var(--text-main); line-height: 1.6; margin-bottom: 20px;">
+                {{ question.content }}
+            </div>
+
+            <div class="q-tags">
+                <span class="tag">{{ question.category|upper }}</span>
+                {% for tag in question.tags %}
+                    <span class="tag">{{ tag }}</span>
+                {% endfor %}
             </div>
         </div>
 
-        <div class="answers-container">
-            <h3>Cavablar (3)</h3>
+        <div class="header-section" style="margin-top: 30px; border-bottom: 1px solid var(--input-bg); padding-bottom: 10px;">
+            <h3 style="margin: 0;">Cavablar ({{ question.answers|length }})</h3>
+        </div>
+
+        <div class="questions-list">
+            {% if question.answers|length == 0 %}
+                <p style="text-align:center; color: var(--text-sub); margin-top: 20px;">Hələ ki cavab yazılmayıb. İlk cavabı sən yaz!</p>
+            {% endif %}
+
+            {% for ans in question.answers %}
             <div class="comment-card">
-                <div class="comment-user">
-                    <img src="https://ui-avatars.com/api/?name=N&background=random" alt="user">
-                    <div class="user-info"><strong>nev.anngomon</strong><span>8 hours ago</span></div>
+                <div class="q-user-meta">
+                    <img src="{{ ans.author_photo or 'https://ui-avatars.com/api/?name=' + ans.author_name }}" alt="u">
+                    <span>
+                        <strong>{{ ans.author_name }}</strong> 
+                        <span class="tag" style="background: var(--accent); color: white; border:none; margin-left: 5px; font-size: 10px;">{{ ans.role }}</span>
+                        • <small>{{ ans.timestamp | format_time }}</small>
+                    </span>
                 </div>
-                <div class="comment-content">
-                    <p>You can do it like this:</p>
-                    <div class="code-block">
-                        <pre><code>data = {'col1': [1, 2], 'col2': [3, 4]}
-df = pd.DataFrame(data)</code></pre>
-                    </div>
-                </div>
-                <div class="comment-actions">
-                    <div class="vote-system"><i class="fas fa-chevron-up"></i><i class="fas fa-chevron-down"></i></div>
-                    <button class="reply-btn"><i class="fas fa-reply"></i> Cavabla</button>
+                <div class="comment-content" style="margin-top: 10px; color: var(--text-main);">
+                    {{ ans.text }}
                 </div>
             </div>
+            {% endfor %}
         </div>
 
-        <div class="reply-input-box">
-            <textarea placeholder="Cavab yaz..." id="replyText"></textarea>
-            <div class="input-footer">
-                <button class="send-btn" id="sendReply">Göndər <i class="fas fa-paper-plane"></i></button>
-            </div>
+        <div class="reply-input-box" style="margin-top: 30px;">
+            <h3 style="margin-top: 0; font-size: 18px;">Öz fikrini bildir</h3>
+            <textarea id="replyText" placeholder="Cavabınızı bura yazın..." style="width: 100%; min-height: 100px;"></textarea>
+            <button class="send-btn" onclick="postAnswer('{{ question.id }}')">
+                <i class="fas fa-paper-plane"></i> Göndər
+            </button>
+            <div style="clear: both;"></div>
         </div>
     </main>
 </div>
-<script src="../static/Q&A.js"></script>
+
+<script>
+    function postAnswer(qId) {
+        const text = document.getElementById('replyText').value;
+        if(!text.trim()) return alert("Boş cavab göndərmək olmaz!");
+
+        fetch('/api/add_answer', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ question_id: qId, text: text })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                if(data.role_changed) alert("Təbrik edirik! Yeni rolunuz: " + data.new_role);
+                location.reload();
+            }
+        });
+    }
+</script>
+
+<script src="{{ url_for('static', filename='Q&A.js') }}"></script>
 {% endblock %}

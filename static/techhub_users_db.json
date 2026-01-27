@@ -13,10 +13,12 @@
     "password": "123123",
     "createdAt": 1769274151876,
     "about": "",
-    "lastLogin": 1769457078935,
+    "lastLogin": 1769498678281,
     "location": "Azerbaycan London",
     "photo": "../static/images/uploads/11_profile.png",
-    "banner": "../static/images/uploads/11_banner.png"
+    "banner": "../static/images/uploads/11_banner.png",
+    "answerCount": 3,
+    "role": "Yeni"
   },
   "hemidd@gmail.com": {
     "name": "Hemid",

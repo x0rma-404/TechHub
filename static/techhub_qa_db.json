@@ -1,0 +1,59 @@
+[
+  {
+    "id": "263c34d3-d703-4411-96d8-9fd2d49b692d",
+    "title": "asdasd",
+    "content": "asdasd",
+    "category": "python",
+    "tags": [],
+    "author_email": "1@1",
+    "author_name": "1@1",
+    "author_photo": "../static/images/uploads/11_profile.png",
+    "timestamp": 1769502308790,
+    "views": 0,
+    "answers": []
+  },
+  {
+    "id": "fd08aa41-69a5-4423-967d-a5813eb6306d",
+    "title": "asdasd",
+    "content": "asdasd",
+    "category": "python",
+    "tags": [],
+    "author_email": "1@1",
+    "author_name": "1@1",
+    "author_photo": "../static/images/uploads/11_profile.png",
+    "timestamp": 1769502297606,
+    "views": 0,
+    "answers": [
+      {
+        "id": "29d04539-8c03-415d-b67e-413fa85c6cfa",
+        "text": "asdasd",
+        "author_email": "1@1",
+        "author_name": "1@1",
+        "author_photo": "../static/images/uploads/11_profile.png",
+        "role": "Yeni",
+        "timestamp": 1769502319365,
+        "votes": 0
+      },
+      {
+        "id": "060be240-46df-4f56-a913-7c84616b60f7",
+        "text": "yaxsi gorek\n",
+        "author_email": "1@1",
+        "author_name": "1@1",
+        "author_photo": "../static/images/uploads/11_profile.png",
+        "role": "Yeni",
+        "timestamp": 1769502648086,
+        "votes": 0
+      },
+      {
+        "id": "8502c81d-7460-4b47-944d-a5cfc33f78a0",
+        "text": "salam necesen\n",
+        "author_email": "1@1",
+        "author_name": "1@1",
+        "author_photo": "../static/images/uploads/11_profile.png",
+        "role": "Yeni",
+        "timestamp": 1769503259537,
+        "votes": 0
+      }
+    ]
+  }
+]

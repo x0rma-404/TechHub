@@ -8,38 +8,49 @@
     <main class="content-area">
         <div class="header-section">
             <h1 class="page-title">Python Sorğuları</h1>
+            <button onclick="openQuestionModal()" class="cat-btn active" style="margin-bottom:10px;">+ Yeni Sual Ver</button>
+            
             <div class="search-box">
                 <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Sual siyahısında axtar..." onkeyup="filterTopics()">
+                <input type="text" id="searchInput" placeholder="Sual axtar..." onkeyup="filterTopics()">
             </div>
         </div>
 
         <div class="questions-list">
-            <div class="q-list-item" onclick="location.href='/Q&A/sual-detali'">
+            {% if questions|length == 0 %}
+                <p style="text-align:center; color:#666;">Hələ ki, heç bir sual yoxdur. İlk sualı sən ver!</p>
+            {% endif %}
+
+            {% for q in questions %}
+            <div class="q-list-item" onclick="location.href='/Q&A/view/{{ q.id }}'">
                 <div class="q-main-info">
-                    <h3>How to use pandas Dataframe?</h3>
+                    <h3>{{ q.title }}</h3>
                     <div class="q-user-meta">
-                        <img src="https://ui-avatars.com/api/?name=A&background=random" alt="avatar">
-                        <span>aitahwaman • 18 hours ago</span>
+                        <img src="{{ q.author_photo or 'https://ui-avatars.com/api/?name=' + q.author_name }}" alt="avatar">
+                        <span>{{ q.author_name }} • {{ q.timestamp | format_time }}</span>
                     </div>
                     <div class="q-tags">
-                        <span class="tag">Python</span>
-                        <span class="tag">Data</span>
+                        <span class="tag">{{ q.category|upper }}</span>
+                        {% for tag in q.tags %}
+                           <span class="tag">{{ tag }}</span>
+                        {% endfor %}
                     </div>
                 </div>
                 <div class="q-side-stats">
-                    <div class="q-score positive">+15</div>
-                    <div class="q-replies">4 <span>sorğu</span></div>
+                    <div class="q-replies">{{ q.answers|length }} <span>cavab</span></div>
                 </div>
             </div>
-            </div>
+            {% endfor %}
+        </div>
     </main>
+</div>
 
-    <aside class="right-sidebar">
-        <h3>Son Aktivliklər</h3>
-        <div class="activity-feed">
-            </div>
-    </aside>
+<div id="questionModal" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:white; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); border-radius:10px; z-index:1000; width:500px;">
+    <h2>Yeni Python Sualı</h2>
+    <input type="text" id="newTitle" placeholder="Başlıq (Qısa və aydın)" style="width:100%; padding:10px; margin-bottom:10px;">
+    <textarea id="newContent" placeholder="Sualınızı ətraflı yazın..." style="width:100%; height:100px; padding:10px; margin-bottom:10px;"></textarea>
+    <button onclick="submitQuestion('python')" class="cat-btn active">Göndər</button>
+    <button onclick="closeQuestionModal()" class="cat-btn">Ləğv et</button>
 </div>
 
 <script src="../static/Q&A.js"></script>
