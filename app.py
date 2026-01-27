@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for,Response
 import json
 import os
 import time
@@ -6,6 +6,8 @@ import uuid
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from flask_login import login_required
+from tools.CsvJson_Converter import CsvJsonConverter
+
 
 # --- TOOL IMPORTLARI ---
 # Bu faylların tools/ qovluğunda olduğundan əmin ol
@@ -386,6 +388,44 @@ def update_profile():
     save_users(users)
     session['user'] = user_data
     return jsonify({'success': True})
+
+@app.route("/convert", methods=["POST"])
+def convert_file():
+    f = request.files.get("file")
+    if not f or not f.filename:
+        return jsonify({"error": "File is required (form-data field name: file)."}), 400
+
+    ext = os.path.splitext(f.filename)[1].lower()
+
+    delimiter = request.form.get("delimiter")
+    if delimiter in ("", None):
+        delimiter = None
+    elif delimiter not in (",", ";", "\t", "|"):
+        return jsonify({"error": "Invalid delimiter. Use one of: , ; tab |"}), 400
+
+    conv = CsvJsonConverter()
+
+    try:
+        if ext == ".csv":
+            result = conv.csv_to_json(f.stream, delimiter=delimiter)
+            return Response(
+                result,
+                mimetype="application/json",
+                headers={"Content-Disposition": "attachment; filename=converted.json"},
+            )
+
+        if ext == ".json":
+            result = conv.json_to_csv(f.stream)
+            return Response(
+                result,
+                mimetype="text/csv",
+                headers={"Content-Disposition": "attachment; filename=converted.csv"},
+            )
+
+        return jsonify({"error": "Only .csv and .json are supported."}), 400
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 400
 
 if __name__ == '__main__':
     app.run(debug=True)
