@@ -335,16 +335,16 @@ def evaluate_logic():
 """
     DEPRECATED - Yeni func asagida(init_interpreter)
 """
-# @app.route('/python-compiler')
-# def python_comp():
-#     if 'user' not in session: return redirect(url_for('home'))
-#     return render_template('py_comp.html')
+@app.route('/python-compiler')
+def python_comp():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('py_comp.html')
 
 @app.route('/tools/python3')
 #@login_required 
 def init_interpreter(): 
     if 'user' not in session: return redirect(url_for('home'))
-    return render_template('PyInterpreter.html')
+    return render_template('py_comp.html')
 
 
 @app.route('/tools/logic')
