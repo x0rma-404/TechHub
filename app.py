@@ -7,32 +7,27 @@ from datetime import datetime
 from werkzeug.utils import secure_filename
 
 # --- TOOL IMPORTLARI ---
-try:
-    from tools.logical_evaluator.algo import lex_and_consider_adjacents, create_ast
-    from tools.logical_evaluator.truth_table import TruthTable, TooLongError
-    from tools.logical_evaluator.register import reg_global
-    from tools.LinuxSimulator.linux_simulator import LinuxTerminal
-except ImportError as e:
-    print(f"Xəbərdarlıq: Bəzi modullar tapılmadı: {e}")
+# Bu faylların tools/ qovluğunda olduğundan əmin ol
+from tools.logical_evaluator.algo import lex_and_consider_adjacents, create_ast
+from tools.logical_evaluator.truth_table import TruthTable, TooLongError
+from tools.logical_evaluator.register import reg_global
+from tools.LinuxSimulator.linux_simulator import LinuxTerminal
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'your_secret_key_here'
 
-# Qovluqlar
+# Qovluq Ayarları
 UPLOAD_FOLDER = os.path.join('static', 'images', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
-# Fayl yolları
+# Fayl Bazaları
 USER_DB_FILE = os.path.join('static', 'techhub_users_db.json')
 QA_DB_FILE = os.path.join('static', 'techhub_qa_db.json')
 
 # Linux Simulator Initialization
-try:
-    linux_simulator = LinuxTerminal()
-except:
-    linux_simulator = None
+linux_simulator = LinuxTerminal()
 
 # --- DATABASE FUNKSİYALARI ---
 def load_json(file_path):
@@ -49,10 +44,14 @@ def save_json(file_path, data):
     with open(file_path, 'w', encoding='utf-8') as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-def load_users(): return load_json(USER_DB_FILE)
-def save_users(users): save_json(USER_DB_FILE, users)
+def load_users():
+    return load_json(USER_DB_FILE)
 
-def get_timestamp(): return int(time.time() * 1000)
+def save_users(users):
+    save_json(USER_DB_FILE, users)
+
+def get_timestamp():
+    return int(time.time() * 1000)
 
 def format_time(timestamp):
     dt = datetime.fromtimestamp(timestamp / 1000)
@@ -60,7 +59,7 @@ def format_time(timestamp):
 
 app.jinja_env.filters['format_time'] = format_time
 
-# --- ROL MƏNTİQİ ---
+# --- ROL SİSTEMİ MƏNTİQİ ---
 def update_role_logic(user_data):
     current_role = user_data.get('role', 'Yeni')
     if current_role in ["Staff", "Moderator", "Administrator"]:
@@ -69,9 +68,9 @@ def update_role_logic(user_data):
     if count >= 700: return "Professional"
     elif count >= 300: return "Çoxbilmiş"
     elif count >= 50: return "Üzv"
-    return "Yeni"
+    else: return "Yeni"
 
-# --- CORE ROUTES ---
+# --- ƏSAS SƏHİFƏLƏR ---
 @app.route('/')
 def home():
     if 'user' in session: return redirect(url_for('dashboard'))
@@ -84,41 +83,51 @@ def dashboard():
 
 @app.route('/api/user')
 def get_user():
-    return jsonify(session.get('user'))
+    if 'user' in session: return jsonify(session['user'])
+    return jsonify(None)
 
-# --- AUTH SYSTEM ---
-@app.route('/login', methods=['POST'])
+@app.route('/profile')
+def profile():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('profile.html', user=session['user'])
+
+@app.route('/tools')
+def tools():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('tools.html')
+
+# --- AUTH SİSTEMİ ---
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    try:
-        data = request.get_json()
-        email, password = data.get('email'), data.get('password')
-        users = load_users()
+    if request.method == 'GET': return redirect(url_for('home'))
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    users = load_users()
 
-        if email in users and users[email]['password'] == password:
-            user = users[email]
-            user.setdefault('role', 'Yeni')
-            user.setdefault('answerCount', 0)
-            user['lastLogin'] = get_timestamp()
-            session['user'] = user
-            save_users(users)
-            return jsonify({'success': True, 'user': user})
-        return jsonify({'success': False, 'message': 'Email və ya şifrə yanlışdır'}), 401
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 500
+    if email in users and users[email]['password'] == password:
+        user = users[email]
+        user.setdefault('role', 'Yeni')
+        user.setdefault('answerCount', 0)
+        user['lastLogin'] = get_timestamp()
+        session['user'] = user
+        save_users(users)
+        return jsonify({'success': True, 'user': user})
+    return jsonify({'success': False, 'message': 'Email və ya şifrə yanlışdır'}), 401
 
-@app.route('/register', methods=['POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
+    if request.method == 'GET': return redirect(url_for('home'))
     data = request.get_json()
     email = data.get('email')
     users = load_users()
     if email in users:
-        return jsonify({'success': False, 'message': 'Email artıq mövcuddur'}), 400
-    
+        return jsonify({'success': False, 'message': 'Email already registered'}), 400
     new_user = {
         "name": data.get('name'), "email": email, "password": data.get('password'),
-        "createdAt": get_timestamp(), "lastLogin": get_timestamp(),
-        "role": "Yeni", "queryCount": 0, "answerCount": 0, "about": "",
-        "location": "", "photo": "../static/images/profile-placeholder.png", "banner": ""
+        "createdAt": get_timestamp(), "about": "", "lastLogin": get_timestamp(),
+        "role": "Yeni", "queryCount": 0, "answerCount": 0, "location": "",
+        "photo": "../static/images/profile-placeholder.png", "banner": ""
     }
     users[email] = new_user
     save_users(users)
@@ -130,59 +139,60 @@ def logout():
     session.pop('user', None)
     return jsonify({'success': True})
 
-# --- PROFILE & TOOLS ---
-@app.route('/profile')
-def profile():
-    if 'user' not in session: return redirect(url_for('home'))
-    return render_template('profile.html', user=session['user'])
-
-@app.route('/update_profile', methods=['POST'])
-def update_profile():
-    if 'user' not in session: return jsonify({'success': False}), 401
-    users = load_users()
-    u_email = session['user']['email']
-    user_data = users.get(u_email)
-
-    if not user_data: return jsonify({'success': False}), 404
-
-    # Məlumat yeniləmə
-    user_data['location'] = request.form.get('location', user_data.get('location'))
-    
-    # Şifrə dəyişmə
-    old_p = request.form.get('old_password')
-    new_p = request.form.get('new_password')
-    if new_p and user_data['password'] == old_p:
-        user_data['password'] = new_p
-
-    # Şəkil yükləmə
-    safe_name = secure_filename(user_data['name'])
-    for key in ['profile_photo', 'banner_photo']:
-        if key in request.files:
-            file = request.files[key]
-            if file and file.filename != '':
-                ext = os.path.splitext(file.filename)[1]
-                suffix = 'profile' if 'profile' in key else 'banner'
-                fname = f"{safe_name}_{suffix}{ext}"
-                file.save(os.path.join(app.config['UPLOAD_FOLDER'], fname))
-                user_data['photo' if suffix == 'profile' else 'banner'] = f"../static/images/uploads/{fname}"
-
-    users[u_email] = user_data
-    save_users(users)
-    session['user'] = user_data
-    return jsonify({'success': True})
-
-# --- Q&A SYSTEM ---
+# --- Q&A BÖLMƏSİ (Kateqoriyalar və Detallar) ---
 @app.route('/Q&A')
 def Q_and_A():
     if 'user' not in session: return redirect(url_for('home'))
     return render_template('Q&A.html', user=session['user'])
 
-@app.route('/Q&A/<category>')
-def Q_and_A_cat(category):
+@app.route('/Q&A/python')
+def Q_and_A_python():
     if 'user' not in session: return redirect(url_for('home'))
-    all_q = load_json(QA_DB_FILE)
-    filtered = [q for q in all_q if q.get('category') == category]
-    return render_template(f'Q&A_{category}.html', questions=filtered, user=session['user'])
+    all_questions = load_json(QA_DB_FILE)
+    py_questions = [q for q in all_questions if q.get('category') == 'python']
+    return render_template('Q&A_python.html', questions=py_questions, user=session['user'])
+
+@app.route('/Q&A/linux')
+def Q_and_A_linux():
+    if 'user' not in session: return redirect(url_for('home'))
+    all_questions = load_json(QA_DB_FILE)
+    linux_questions = [q for q in all_questions if q.get('category') == 'linux']
+    return render_template('Q&A_linux.html', questions=linux_questions, user=session['user'])
+
+@app.route('/Q&A/web')
+def Q_and_A_web():
+    if 'user' not in session: return redirect(url_for('home'))
+    all_questions = load_json(QA_DB_FILE)
+    web_questions = [q for q in all_questions if q.get('category') == 'web']
+    return render_template('Q&A_web.html', questions=web_questions, user=session['user'])
+
+@app.route('/Q&A/view/<question_id>')
+def view_question(question_id):
+    if 'user' not in session: return redirect(url_for('home'))
+    all_questions = load_json(QA_DB_FILE)
+    question = next((q for q in all_questions if q['id'] == question_id), None)
+    if not question: return "Sual tapılmadı", 404
+    return render_template('Q&A_detail.html', question=question, user=session['user'])
+
+# --- API ENDPOINTS (New Question/Answer) ---
+@app.route('/api/new_question', methods=['POST'])
+def new_question():
+    if 'user' not in session: return jsonify({'success': False}), 401
+    try:
+        data = request.get_json()
+        questions = load_json(QA_DB_FILE)
+        new_q = {
+            "id": str(uuid.uuid4()), "title": data.get('title'), "content": data.get('content'),
+            "category": data.get('category'), "tags": data.get('tags', []),
+            "author_email": session['user']['email'], "author_name": session['user'].get('name', 'Adsız'),
+            "author_photo": session['user'].get('photo', ''), "timestamp": get_timestamp(),
+            "views": 0, "answers": []
+        }
+        questions.insert(0, new_q)
+        save_json(QA_DB_FILE, questions)
+        return jsonify({'success': True, 'id': new_q['id']})
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)}), 500
 
 @app.route('/api/add_answer', methods=['POST'])
 def add_answer():
@@ -190,53 +200,97 @@ def add_answer():
     data = request.get_json()
     questions = load_json(QA_DB_FILE)
     users = load_users()
-    u_email = session['user']['email']
+    user_email = session['user']['email']
 
     for q in questions:
         if q['id'] == data.get('question_id'):
-            ans = {
-                "id": str(uuid.uuid4()), "text": data.get('text'),
-                "author_email": u_email, "author_name": session['user']['name'],
-                "timestamp": get_timestamp(), "votes": 0
+            new_ans = {
+                "id": str(uuid.uuid4()), "text": data.get('text'), "author_email": user_email,
+                "author_name": session['user']['name'], "author_photo": session['user'].get('photo', ''),
+                "role": users[user_email].get('role', 'Yeni'), "timestamp": get_timestamp(), "votes": 0
             }
-            q['answers'].append(ans)
+            q['answers'].append(new_ans)
             break
-    
-    save_json(QA_DB_FILE, questions)
-    
-    # Rol yeniləmə
-    users[u_email]['answerCount'] = users[u_email].get('answerCount', 0) + 1
-    users[u_email]['role'] = update_role_logic(users[u_email])
-    save_users(users)
-    session['user'] = users[u_email]
-    
-    return jsonify({'success': True, 'new_role': users[u_email]['role']})
+    else: return jsonify({'success': False, 'message': 'Sual tapılmadı'}), 404
 
-# --- LOGIC EVALUATOR API ---
+    save_json(QA_DB_FILE, questions)
+    user = users[user_email]
+    user['answerCount'] = user.get('answerCount', 0) + 1
+    user['role'] = update_role_logic(user)
+    save_users(users)
+    session['user'] = user
+    return jsonify({'success': True, 'new_role': user['role']})
+
+# --- TOOLS API (Logic & Linux) ---
+@app.route('/linux-sim', methods=["POST"])
+def linux_sim():
+    data = request.get_json()
+    output = linux_simulator.run_command(data.get("command", ""))
+    if output == "__exit__": return jsonify({"output": "Closing terminal..."})
+    return jsonify({"output": output, "path": linux_simulator.current_path})
+
 @app.route('/api/logic/evaluate', methods=['POST'])
 def evaluate_logic():
     if 'user' not in session: return jsonify({'success': False}), 401
+    data = request.get_json()
+    expression = data.get('expression', '').replace("->", "$").replace("<=>", "#")
     try:
-        data = request.get_json()
-        expr = data.get('expression', '').replace("->", "$").replace("<=>", "#")
         reg_global.reset()
-        tokens = lex_and_consider_adjacents(expr)
+        tokens = lex_and_consider_adjacents(expression)
         ast = create_ast(tokens)
         tt = TruthTable(reg_global.get_headers(), reg_global.objs, ast)
         tt.generate()
         tt.simplify()
-        
-        rows = [[1 if v else 0 for v in r.ls] + [1 if r.value else 0] for r in tt.rows]
-        return jsonify({'success': True, 'headers': tt.headers + ['X'], 'rows': rows, 'simplified': tt.simplified_str})
-    except Exception as e:
-        return jsonify({'success': False, 'message': str(e)}), 400
+        headers = tt.headers + ['X']
+        rows = [[(1 if val else 0) for val in row.ls] + [1 if row.value else 0] for row in tt.rows]
+        return jsonify({'success': True, 'headers': headers, 'rows': rows, 'simplified': tt.simplified_str})
+    except TooLongError: return jsonify({'success': False, 'message': 'Limit 6 dəyişəndir.'}), 400
+    except Exception as e: return jsonify({'success': False, 'message': str(e)}), 400
 
-@app.route('/linux-sim', methods=['POST'])
-def linux_sim_cmd():
-    if not linux_simulator: return jsonify({"output": "Error"})
-    data = request.get_json()
-    output = linux_simulator.run_command(data.get("command", ""))
-    return jsonify({"output": output, "path": linux_simulator.current_path})
+@app.route('/python-compiler')
+def python_comp():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('py_comp.html')
+
+@app.route('/tools/logic')
+def logic():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('logic.html')
+
+@app.route('/tools/terminal')
+def terminal():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('terminal.html')
+
+@app.route('/logic')
+def old_logic(): return redirect(url_for('logic'))
+
+# --- PROFILE UPDATE ---
+@app.route('/update_profile', methods=['POST'])
+def update_profile():
+    if 'user' not in session: return jsonify({'success': False}), 401
+    users = load_users()
+    user_data = users.get(session['user']['email'])
+    
+    if location := request.form.get('location'): user_data['location'] = location
+    
+    old_p, new_p, conf_p = request.form.get('old_password'), request.form.get('new_password'), request.form.get('confirm_password')
+    if new_p:
+        if user_data['password'] == old_p and new_p == conf_p: user_data['password'] = new_p
+        else: return jsonify({'success': False, 'message': 'Şifrə xətası'}), 400
+
+    safe_name = secure_filename(user_data['name'])
+    if 'profile_photo' in request.files:
+        file = request.files['profile_photo']
+        if file.filename:
+            path = f"{safe_name}_profile{os.path.splitext(file.filename)[1]}"
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], path))
+            user_data['photo'] = f"../static/images/uploads/{path}"
+            
+    users[user_data['email']] = user_data
+    save_users(users)
+    session['user'] = user_data
+    return jsonify({'success': True})
 
 if __name__ == '__main__':
     app.run(debug=True)
