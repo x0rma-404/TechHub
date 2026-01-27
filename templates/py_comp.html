@@ -136,6 +136,42 @@
         box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
     }
 
+    @media (max-width: 600px) {
+        .py-comp-container {
+            padding: 10px;
+            height: calc(100vh - 100px);
+            gap: 10px;
+        }
+
+        .toolbar {
+            flex-direction: column;
+            gap: 15px;
+            padding: 15px;
+            align-items: flex-start;
+        }
+
+        .tool-title {
+            font-size: 1.1rem;
+        }
+
+        .tool-title i {
+            font-size: 1.4rem;
+        }
+
+        .action-buttons {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px;
+            justify-content: center;
+            font-size: 0.85rem;
+        }
+    }
+
     .section-header {
         padding: 10px 20px;
         background: rgba(0, 0, 0, 0.2);
@@ -245,6 +281,7 @@
             </div>
             <textarea id="code-editor"># TechHub Python Playground
 # Daxil edin və Run düyməsini sıxın
+#Yalnız default lib lər istifadə edə bilərsiniz
 
 def salamla(ad):
     return f"Salam, {ad}! TechHub-a xoş gəlmisiniz."

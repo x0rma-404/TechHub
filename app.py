@@ -359,6 +359,11 @@ def terminal():
     if 'user' not in session: return redirect(url_for('home'))
     return render_template('terminal.html')
 
+@app.route('/tools/converter')
+def converter():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('converter.html')
+
 @app.route('/logic')
 def old_logic(): return redirect(url_for('logic'))
 
