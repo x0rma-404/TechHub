@@ -1,6 +1,7 @@
 {% extends "bar.html" %}
 
 {% block content %}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <link rel="stylesheet" href="../static/Q&A.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
@@ -8,7 +9,12 @@
     <main class="content-area">
         <div class="header-section">
             <h1 class="page-title">Python Sorğuları</h1>
-            <button onclick="openQuestionModal()" class="cat-btn active" style="margin-bottom:10px;">+ Yeni Sual Ver</button>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <button onclick="history.back()" class="cat-btn">
+                    <i class="fas fa-arrow-left"></i> Geriyə
+                </button>
+                <button onclick="openQuestionModal()" class="cat-btn active">+ Yeni Sual Ver</button>
+            </div>
             
             <div class="search-box">
                 <i class="fas fa-search"></i>
@@ -18,17 +24,19 @@
 
         <div class="questions-list">
             {% if questions|length == 0 %}
-                <p style="text-align:center; color:#666;">Hələ ki, heç bir sual yoxdur. İlk sualı sən ver!</p>
+                <p style="text-align:center; color:#666; margin-top:20px;">Hələ ki, heç bir sual yoxdur. İlk sualı sən ver!</p>
             {% endif %}
 
             {% for q in questions %}
-            <div class="q-list-item" onclick="location.href='/Q&A/view/{{ q.id }}'">
-                <div class="q-main-info">
-                    <h3>{{ q.title }}</h3>
+            <div class="q-list-item" id="q-{{ q.id }}">
+                <div class="q-main-info" onclick="location.href='/Q&A/view/{{ q.id }}'" style="cursor:pointer; flex:1;">
                     <div class="q-user-meta">
-                        <img src="{{ q.author_photo or 'https://ui-avatars.com/api/?name=' + q.author_name }}" alt="avatar">
-                        <span>{{ q.author_name }} • {{ q.timestamp | format_time }}</span>
-                    </div>
+    <img src="{{ q.author_photo.replace('../', '/') if q.author_photo else 'https://ui-avatars.com/api/?name=' + (q.author_name | urlencode) }}" 
+         onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ q.author_name | urlencode }}';" 
+         alt="avatar">
+    <span>{{ q.author_name }} • {{ q.timestamp | format_time }}</span>
+</div>
+                    <h3>{{ q.title }}</h3>
                     <div class="q-tags">
                         <span class="tag">{{ q.category|upper }}</span>
                         {% for tag in q.tags %}
@@ -36,8 +44,15 @@
                         {% endfor %}
                     </div>
                 </div>
+                
                 <div class="q-side-stats">
                     <div class="q-replies">{{ q.answers|length }} <span>cavab</span></div>
+                    
+                    {% if user.email == q.author_email or user.role in ['Administrator', 'Moderator', 'Staff'] %}
+                    <button class="delete-btn" onclick="deleteQuestion(event, '{{ q.id }}')">
+                        <i class="fas fa-trash"></i> Sil
+                    </button>
+                    {% endif %}
                 </div>
             </div>
             {% endfor %}
@@ -45,13 +60,154 @@
     </main>
 </div>
 
-<div id="questionModal" style="display:none; position:fixed; top:20%; left:50%; transform:translate(-50%, 0); background:white; padding:20px; box-shadow:0 0 10px rgba(0,0,0,0.5); border-radius:10px; z-index:1000; width:500px;">
-    <h2>Yeni Python Sualı</h2>
-    <input type="text" id="newTitle" placeholder="Başlıq (Qısa və aydın)" style="width:100%; padding:10px; margin-bottom:10px;">
-    <textarea id="newContent" placeholder="Sualınızı ətraflı yazın..." style="width:100%; height:100px; padding:10px; margin-bottom:10px;"></textarea>
-    <button onclick="submitQuestion('python')" class="cat-btn active">Göndər</button>
-    <button onclick="closeQuestionModal()" class="cat-btn">Ləğv et</button>
+<div id="questionModal" style="display:none; position:fixed; z-index:1000; background:white; padding:20px; box-shadow:0 0 20px rgba(0,0,0,0.5); border-radius:10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h2 style="margin:0;">Yeni Python Sualı</h2>
+        <button onclick="closeQuestionModal()" style="background:none; border:none; font-size:20px; cursor:pointer;">&times;</button>
+    </div>
+    
+    <label>Başlıq (Maks 255 simvol)</label>
+    <input type="text" id="newTitle" maxlength="255" placeholder="Sualınızı qısa və aydın ifadə edin" 
+           style="width:100%; padding:10px; margin-bottom:15px; border:1px solid #ccc; border-radius:5px; font-family:inherit;">
+
+    <label>Sualın Mətni</label>
+    <div id="editor-container" style="height: 200px; margin-bottom: 50px;"></div>
+    
+    <div style="text-align:right; margin-top:20px;">
+        <button onclick="closeQuestionModal()" class="cat-btn" style="background:#ccc;">Ləğv et</button>
+        <button onclick="submitQuestion('python')" class="cat-btn active">Göndər</button>
+    </div>
 </div>
 
-<script src="../static/Q&A.js"></script>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>
+    // Quill Editorun Yaradılması (Şəkil və Fayl dəstəyi ilə)
+    var quill;
+    
+    function initQuill() {
+        if(quill) return; // Artıq yaranıbsa yaratma
+        
+        var toolbarOptions = [
+            ['bold', 'italic', 'underline'],        // Point 4b: Qalın, İtalik
+            [{ 'size': ['small', false, 'large', 'huge'] }],  // Point 4b: Şrift ölçüsü
+            [{ 'list': 'ordered'}, { 'list': 'bullet' }],     // Point 4b: Siyahı
+            [{ 'background': [] }],                           // Point 4b: Highlighter
+            ['link', 'image']                                 // Point 4b: Şəkil/Fayl
+        ];
+
+        quill = new Quill('#editor-container', {
+            modules: { toolbar: toolbarOptions },
+            theme: 'snow',
+            placeholder: 'Sualınızı ətraflı yazın...'
+        });
+        
+        // Şəkil yükləməni idarə etmək (Base64 yox, serverə yükləmək üçün)
+        quill.getModule('toolbar').addHandler('image', function() {
+            selectLocalImage();
+        });
+    }
+
+    function selectLocalImage() {
+        const input = document.createElement('input');
+        input.setAttribute('type', 'file');
+        input.setAttribute('accept', 'image/*');
+        input.click();
+
+        input.onchange = () => {
+            const file = input.files[0];
+            if (/^image\//.test(file.type)) {
+                saveToServer(file);
+            } else {
+                alert('Yalnız şəkil seçə bilərsiniz.');
+            }
+        };
+    }
+
+    function saveToServer(file) {
+        const fd = new FormData();
+        fd.append('image', file);
+
+        fetch('/api/upload_image', {
+            method: 'POST',
+            body: fd
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                const range = quill.getSelection();
+                quill.insertEmbed(range.index, 'image', result.url);
+            } else {
+                alert('Şəkil yüklənə bilmədi');
+            }
+        })
+        .catch(error => {
+            console.error('Xəta:', error);
+        });
+    }
+
+    function openQuestionModal() {
+        document.getElementById('questionModal').style.display = 'block';
+        initQuill(); // Modalı açanda editoru başlat
+    }
+
+    function closeQuestionModal() {
+        document.getElementById('questionModal').style.display = 'none';
+    }
+
+    function submitQuestion(category) {
+        const title = document.getElementById('newTitle').value;
+        const content = quill.root.innerHTML; // Rich Text HTML-i alırıq
+        const plainText = quill.getText().trim();
+
+        if(!title || !plainText) return alert("Başlıq və mətn boş ola bilməz!");
+
+        fetch('/api/new_question', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                title: title,
+                content: content, // HTML formatında göndəririk
+                category: category,
+                tags: [] 
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                location.reload();
+            } else {
+                alert("Xəta: " + data.message);
+            }
+        });
+    }
+
+    // Sorğu silmə funksiyası (Javascript hissəsi)
+    function deleteQuestion(event, id) {
+        event.stopPropagation(); // Karta basanda detala getməsinin qarşısını al
+        if(!confirm('Bu sualı silmək istədiyinizə əminsiniz?')) return;
+
+        fetch('/api/delete_question', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ id: id })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if(data.success) {
+                document.getElementById('q-' + id).remove();
+            } else {
+                alert(data.message);
+            }
+        });
+    }
+
+    function filterTopics() {
+        const term = document.getElementById('searchInput').value.toLowerCase();
+        const items = document.querySelectorAll('.q-list-item');
+        items.forEach(item => {
+            const title = item.querySelector('h3').textContent.toLowerCase();
+            item.style.display = title.includes(term) ? 'flex' : 'none';
+        });
+    }
+</script>
 {% endblock %}

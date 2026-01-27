@@ -202,12 +202,22 @@ def add_answer():
     users = load_users()
     user_email = session['user']['email']
 
+    # Cavabın mətni (HTML formatında gələcək)
+    content = data.get('text')
+    reply_info = data.get('reply_to', None) # Kimə cavab verilir?
+
     for q in questions:
         if q['id'] == data.get('question_id'):
             new_ans = {
-                "id": str(uuid.uuid4()), "text": data.get('text'), "author_email": user_email,
-                "author_name": session['user']['name'], "author_photo": session['user'].get('photo', ''),
-                "role": users[user_email].get('role', 'Yeni'), "timestamp": get_timestamp(), "votes": 0
+                "id": str(uuid.uuid4()),
+                "text": content, # Artıq HTML olacaq
+                "reply_to": reply_info, # Yeni hissə: {name: 'Ali', id: '...'}
+                "author_email": user_email,
+                "author_name": session['user']['name'],
+                "author_photo": session['user'].get('photo', ''),
+                "role": users[user_email].get('role', 'Yeni'),
+                "timestamp": get_timestamp(),
+                "votes": 0
             }
             q['answers'].append(new_ans)
             break
@@ -220,6 +230,80 @@ def add_answer():
     save_users(users)
     session['user'] = user
     return jsonify({'success': True, 'new_role': user['role']})
+
+
+# --- main.py FAYLINA ƏLAVƏ EDİLƏCƏKLƏR ---
+
+# Editor üçün şəkil yükləmə API-si
+@app.route('/api/upload_image', methods=['POST'])
+def upload_image():
+    if 'user' not in session: return jsonify({'success': False}), 401
+    if 'image' not in request.files: return jsonify({'success': False}), 400
+
+    file = request.files['image']
+    if file.filename == '': return jsonify({'success': False}), 400
+
+    if file:
+        filename = secure_filename(str(uuid.uuid4()) + "_" + file.filename)
+        # Yükləmə qovluğunu yoxlayaq
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(save_path)
+        # Frontend-ə şəklin URL-ni qaytarırıq
+        return jsonify({'success': True, 'url': f'../static/images/uploads/{filename}'})
+
+
+# Sorğunu silmək (Point 2)
+@app.route('/api/delete_question', methods=['POST'])
+def delete_question():
+    if 'user' not in session: return jsonify({'success': False, 'message': 'Giriş edilməyib'}), 401
+    data = request.get_json()
+    q_id = data.get('id')
+
+    questions = load_json(QA_DB_FILE)
+    users = load_users()
+    current_user = session['user']
+    user_role = users.get(current_user['email'], {}).get('role', 'Yeni')
+
+    # Silinəcək sualı tapırıq
+    q_to_delete = next((q for q in questions if q['id'] == q_id), None)
+    if not q_to_delete: return jsonify({'success': False, 'message': 'Sual tapılmadı'}), 404
+
+    # İcazə yoxlanışı: Sahibi, Moderator və ya Administrator
+    if current_user['email'] == q_to_delete['author_email'] or user_role in ['Moderator', 'Administrator', 'Staff']:
+        questions = [q for q in questions if q['id'] != q_id]
+        save_json(QA_DB_FILE, questions)
+        return jsonify({'success': True})
+    else:
+        return jsonify({'success': False, 'message': 'İcazəniz yoxdur'}), 403
+
+
+# Cavabı silmək (Point 3)
+@app.route('/api/delete_answer', methods=['POST'])
+def delete_answer():
+    if 'user' not in session: return jsonify({'success': False}), 401
+    data = request.get_json()
+    q_id = data.get('question_id')
+    ans_id = data.get('answer_id')
+
+    questions = load_json(QA_DB_FILE)
+    users = load_users()
+    current_user = session['user']
+    user_role = users.get(current_user['email'], {}).get('role', 'Yeni')
+
+    question = next((q for q in questions if q['id'] == q_id), None)
+    if not question: return jsonify({'success': False}), 404
+
+    # Cavabı tapırıq
+    answer = next((a for a in question['answers'] if a['id'] == ans_id), None)
+    if not answer: return jsonify({'success': False}), 404
+
+    # İcazə yoxlanışı
+    if current_user['email'] == answer['author_email'] or user_role in ['Moderator', 'Administrator', 'Staff']:
+        question['answers'] = [a for a in question['answers'] if a['id'] != ans_id]
+        save_json(QA_DB_FILE, questions)
+        return jsonify({'success': True})
+
+    return jsonify({'success': False, 'message': 'İcazəniz yoxdur'}), 403
 
 # --- TOOLS API (Logic & Linux) ---
 @app.route('/linux-sim', methods=["POST"])

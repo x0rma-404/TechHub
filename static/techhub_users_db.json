@@ -17,7 +17,7 @@
     "location": "Azerbaycan London",
     "photo": "../static/images/uploads/11_profile.png",
     "banner": "../static/images/uploads/11_banner.png",
-    "answerCount": 3,
+    "answerCount": 11,
     "role": "Yeni"
   },
   "hemidd@gmail.com": {
@@ -26,9 +26,24 @@
     "password": "Salam123",
     "createdAt": 1769274151876,
     "about": "",
-    "lastLogin": 1769432123921,
+    "lastLogin": 1769513072950,
     "location": "Baki",
     "photo": "../static/images/uploads/Hemid_profile.ico",
-    "banner": "../static/images/uploads/Hemid_banner.jpg"
+    "banner": "../static/images/uploads/Hemid_banner.jpg",
+    "answerCount": 57,
+    "role": "Üzv"
+  },
+  "admin@admin": {
+    "name": "Admin",
+    "email": "admin@admin",
+    "password": "admin123",
+    "createdAt": 1769274151876,
+    "about": "",
+    "lastLogin": 1769513564343,
+    "location": "Baki",
+    "photo": "../static/images/uploads/Hemid_profile.ico",
+    "banner": "../static/images/uploads/Hemid_banner.jpg",
+    "answerCount": 1000003,
+    "role": "Administrator"
   }
 }
