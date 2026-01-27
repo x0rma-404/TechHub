@@ -10,17 +10,17 @@
       }
     })();
   </script>
-  <link rel="icon" type="image/png" href="../static/images/logo.ico">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.ico') }}">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TechHub</title>
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons-font@v15/font/simple-icons.min.css">
-  <link rel="stylesheet" href="../static/style.css">
-  <link rel="stylesheet" href="../static/toggle.css">
-  <link rel="stylesheet" href="../static/tools-icons.css">
-  <link rel="stylesheet" href="../static/newbar.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='toggle.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='tools-icons.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='newbar.css') }}">
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
@@ -72,8 +72,8 @@
 
     {% endblock %}
   </div>
-  <script src="../static/newbar.js"></script>
-  <script src="../static/script.js"></script>
+  <script src="{{ url_for('static', filename='newbar.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>
