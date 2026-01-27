@@ -568,3 +568,11 @@ body {
     object-fit: cover;
     border: 1px solid #ddd;
 }
+
+/* --- Rol Rəngləri --- */
+.role-yeni { color: gray; font-weight: bold; }
+.role-uzv { color: lightgreen; font-weight: bold; } /* Açıq yaşıl */
+.role-coxbilmis { color: lightblue; font-weight: bold; } /* Açıq göy */
+.role-staff { color: orange; font-weight: bold; }
+.role-moderator { color: purple; font-weight: bold; }
+.role-administrator { color: red; font-weight: bold; }
