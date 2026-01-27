@@ -13,26 +13,27 @@
             </button>
         </div>
 
-        <div class="main-post-card" style="background: var(--card-bg); padding: 25px; border-radius: 10px; box-shadow: var(--shadow); margin-bottom: 30px;">
+        <div class="main-post-card"
+            style="background: var(--card-bg); padding: 25px; border-radius: 10px; box-shadow: var(--shadow); margin-bottom: 30px;">
             <div class="q-user-meta" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                <img class="comment-avatar" 
-     src="{{ question.author_photo.replace('../', '/') if question.author_photo else 'https://ui-avatars.com/api/?background=random&color=fff&name=' + (question.author_name | urlencode) }}" 
-     alt="avatar"
-     onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ question.author_name | urlencode }}';"
-     style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
+                <img class="comment-avatar"
+                    src="{{ question.author_photo.replace('../', '/') if question.author_photo else 'https://ui-avatars.com/api/?background=random&color=fff&name=' + (question.author_name | urlencode) }}"
+                    alt="avatar"
+                    onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ question.author_name | urlencode }}';"
+                    style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
                 <div>
                     <strong style="font-size: 1.1em;">{{ question.author_name }}</strong>
                     <div style="font-size: 0.85em; color: var(--text-sub);">{{ question.timestamp | format_time }}</div>
                 </div>
-                
-                <button class="cat-btn" style="margin-left: auto; font-size: 0.8rem; padding: 5px 15px;" 
-                        onclick="setReply(null, '{{ question.author_name }}', 'main')">
+
+                <button class="cat-btn" style="margin-left: auto; font-size: 0.8rem; padding: 5px 15px;"
+                    onclick="setReply(null, '{{ question.author_name }}', 'main')">
                     <i class="fas fa-reply"></i> Cavabla
                 </button>
             </div>
-            
+
             <h1 style="margin: 10px 0; font-size: 1.8rem; color: var(--text-main);">{{ question.title }}</h1>
-            
+
             <div class="post-body ql-editor" style="padding: 0; min-height: auto;">
                 {{ question.content | safe }}
             </div>
@@ -40,7 +41,7 @@
             <div class="q-tags" style="margin-top: 20px;">
                 <span class="tag">{{ question.category|upper }}</span>
                 {% for tag in question.tags %}
-                    <span class="tag">{{ tag }}</span>
+                <span class="tag">{{ tag }}</span>
                 {% endfor %}
             </div>
         </div>
@@ -48,15 +49,16 @@
         <h3 style="margin-bottom: 20px;">{{ question.answers|length }} Cavab</h3>
         <div class="answers-list">
             {% for ans in question.answers %}
-            <div class="comment-card" id="ans-{{ ans.id }}" style="background: #fff; padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent); position: relative;">
-                
+            <div class="comment-card" id="ans-{{ ans.id }}"
+                style="padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent); position: relative;">
+
                 <div style="display: flex; justify-content: space-between; align-items: start;">
                     <div style="display: flex; gap: 10px;">
-                        <img class="comment-avatar" 
-     src="{{ ans.author_photo.replace('../', '/') if ans.author_photo else 'https://ui-avatars.com/api/?background=random&color=fff&name=' + (ans.author_name | urlencode) }}" 
-     alt="avatar"
-     onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ ans.author_name | urlencode }}';"
-     style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
+                        <img class="comment-avatar"
+                            src="{{ ans.author_photo.replace('../', '/') if ans.author_photo else 'https://ui-avatars.com/api/?background=random&color=fff&name=' + (ans.author_name | urlencode) }}"
+                            alt="avatar"
+                            onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ ans.author_name | urlencode }}';"
+                            style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
                         <div>
                             <strong>{{ ans.author_name }}</strong>
                             <span class="user-role-badge">{{ ans.role }}</span>
@@ -65,8 +67,9 @@
                     </div>
 
                     <div style="display: flex; align-items: center;">
-                        <button style="border:none; background:none; color:var(--accent); cursor:pointer; margin-right: 10px;" 
-                                onclick="setReply('{{ ans.id }}', '{{ ans.author_name }}', 'sub')">
+                        <button
+                            style="border:none; background:none; color:var(--accent); cursor:pointer; margin-right: 10px;"
+                            onclick="setReply('{{ ans.id }}', '{{ ans.author_name }}', 'sub')">
                             <i class="fas fa-reply"></i>
                         </button>
 
@@ -79,7 +82,8 @@
                 </div>
 
                 {% if ans.reply_to %}
-                <div class="reply-indicator" style="margin-top: 10px; font-size: 0.9em; background: #f0f2f5; padding: 5px 10px; border-radius: 5px;">
+                <div class="reply-indicator"
+                    style="margin-top: 10px; font-size: 0.9em; background: var(--input-bg); padding: 5px 10px; border-radius: 5px;">
                     <i class="fas fa-share" style="margin-right: 5px;"></i>
                     Cavab verilir: <strong>{{ ans.reply_to.name }}</strong>
                 </div>
@@ -92,9 +96,9 @@
             {% endfor %}
         </div>
 
-        <div class="reply-section" style="margin-top: 40px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 -2px 10px rgba(0,0,0,0.05);">
+        <div class="reply-section" style="margin-top: 40px; padding: 20px; border-radius: 10px;">
             <h3>Cavab yaz</h3>
-            
+
             <div id="reply-tag-area" style="display: none; margin-bottom: 10px;">
                 <span class="reply-badge">
                     <span id="reply-target-name">Sualın özünə cavab</span>
@@ -103,7 +107,7 @@
             </div>
 
             <div id="editor-container" style="height: 150px; margin-bottom: 50px;"></div>
-            
+
             <div style="text-align: right; margin-top: 10px;">
                 <button class="cat-btn active" onclick="submitAnswer('{{ question.id }}')">
                     <i class="fas fa-paper-plane"></i> Göndər
@@ -117,14 +121,14 @@
 <script>
     var quill;
     // Default olaraq əsas suala cavab veririk
-    let replyContext = { id: null, name: '{{ question.author_name }}' }; 
+    let replyContext = { id: null, name: '{{ question.author_name }}' };
 
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         // Point 4: Şrift ölçüsü (size) əlavə olundu
         var toolbarOptions = [
             [{ 'size': ['small', false, 'large', 'huge'] }], // Şrift ölçüləri
-            ['bold', 'italic', 'underline', 'strike'], 
-            [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ 'list': 'ordered' }, { 'list': 'bullet' }],
             [{ 'color': [] }, { 'background': [] }],
             ['link', 'image', 'code-block']
         ];
@@ -136,7 +140,7 @@
         });
 
         // Point 3: Səhifə açılan kimi default "Suala cavab verilir" göstər
-        updateReplyBadge(); 
+        updateReplyBadge();
 
         // Şəkil yükləmə handler
         quill.getModule('toolbar').addHandler('image', selectLocalImage);
@@ -146,14 +150,14 @@
     function updateReplyBadge() {
         const tagArea = document.getElementById('reply-tag-area');
         const nameSpan = document.getElementById('reply-target-name');
-        
+
         tagArea.style.display = 'block'; // Həmişə görünür
-        
+
         if (replyContext.id === null) {
             // Əsas sual
             nameSpan.innerHTML = `Sualın özünə cavab verilir: <strong>${replyContext.name}</strong>`;
             // Ləğv et düyməsini gizlədə bilərik, çünki bu default haldır
-             document.querySelector('.fa-times').style.display = 'none';
+            document.querySelector('.fa-times').style.display = 'none';
         } else {
             // Konkret şəxs
             nameSpan.innerHTML = `Cavab verilir: <strong>${replyContext.name}</strong>`;
@@ -193,18 +197,18 @@
 
         fetch('/api/add_answer', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 question_id: questionId,
                 text: content,
                 reply_to: replyContext.id ? replyContext : null // Backend məntiqinə uyğun
             })
         })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success) location.reload();
-            else alert("Xəta baş verdi.");
-        });
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) location.reload();
+                else alert("Xəta baş verdi.");
+            });
     }
 
     // Şəkil funksiyaları olduğu kimi qalır...
@@ -223,27 +227,27 @@
         const fd = new FormData();
         fd.append('image', file);
         fetch('/api/upload_image', { method: 'POST', body: fd })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success) {
-                const range = quill.getSelection();
-                quill.insertEmbed(range.index, 'image', data.url);
-            }
-        });
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    const range = quill.getSelection();
+                    quill.insertEmbed(range.index, 'image', data.url);
+                }
+            });
     }
-    
+
     // Silmə funksiyası (olduğu kimi)
     function deleteAnswer(qId, ansId) {
-        if(!confirm("Silmək istəyirsiniz?")) return;
+        if (!confirm("Silmək istəyirsiniz?")) return;
         fetch('/api/delete_answer', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ question_id: qId, answer_id: ansId })
         })
-        .then(res => res.json())
-        .then(data => {
-            if(data.success) document.getElementById('ans-' + ansId).remove();
-        });
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) document.getElementById('ans-' + ansId).remove();
+            });
     }
 </script>
 
