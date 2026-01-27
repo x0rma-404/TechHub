@@ -5,6 +5,7 @@ import time
 import uuid
 from datetime import datetime
 from werkzeug.utils import secure_filename
+from flask_login import login_required
 
 # --- TOOL IMPORTLARI ---
 # Bu faylların tools/ qovluğunda olduğundan əmin ol
@@ -331,10 +332,20 @@ def evaluate_logic():
     except TooLongError: return jsonify({'success': False, 'message': 'Limit 6 dəyişəndir.'}), 400
     except Exception as e: return jsonify({'success': False, 'message': str(e)}), 400
 
-@app.route('/python-compiler')
-def python_comp():
+"""
+    DEPRECATED - Yeni func asagida(init_interpreter)
+"""
+# @app.route('/python-compiler')
+# def python_comp():
+#     if 'user' not in session: return redirect(url_for('home'))
+#     return render_template('py_comp.html')
+
+@app.route('/tools/python3')
+#@login_required 
+def init_interpreter(): 
     if 'user' not in session: return redirect(url_for('home'))
-    return render_template('py_comp.html')
+    return render_template('PyInterpreter.html')
+
 
 @app.route('/tools/logic')
 def logic():
