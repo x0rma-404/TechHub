@@ -19,7 +19,7 @@ from tools.CsvJson_Converter import CsvJsonConverter
 load_dotenv()
 
 app = Flask(__name__, static_url_path='/static')
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "your_secret_key_here")
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 # --- 🛠️ KRİTİK AYARLAR ---
 TUNNEL_URL = os.getenv("TUNNEL_URL").rstrip('/')
