@@ -1,5 +1,18 @@
 [
   {
+    "id": "9e3e0ebc-f9c2-411a-a487-dde2bcbb9b24",
+    "title": "asdasdasd",
+    "content": "<p>asadasdas</p>",
+    "category": "python",
+    "tags": [],
+    "author_email": "1@1",
+    "author_name": "1@1",
+    "author_photo": "../static/images/uploads/11_profile.png",
+    "timestamp": 1769541786858,
+    "views": 0,
+    "answers": []
+  },
+  {
     "id": "9a439395-01dd-4716-b15d-ca3742ef163e",
     "title": "Bu isə mənim sorğumdur !",
     "content": "<p>Salam<strong class=\"ql-size-large\"><em><u>mALAS</u></em></strong></p>",
@@ -19,8 +32,7 @@
         "author_name": "Hemid",
         "author_photo": "../static/images/uploads/Hemid_profile.ico",
         "role": "Üzv",
-        "timestamp": 1769513152201,
-        "votes": 0
+        "timestamp": 1769513152201
       },
       {
         "id": "533e8f05-acfe-4664-b6dd-c4df3b7f7a40",
@@ -30,8 +42,7 @@
         "author_name": "Admin",
         "author_photo": "../static/images/uploads/Hemid_profile.ico",
         "role": "Administrator",
-        "timestamp": 1769513598428,
-        "votes": 0
+        "timestamp": 1769513598428
       }
     ]
   },
@@ -55,8 +66,7 @@
         "author_name": "1@1",
         "author_photo": "../static/images/uploads/11_profile.png",
         "role": "Yeni",
-        "timestamp": 1769512944926,
-        "votes": 0
+        "timestamp": 1769512944926
       },
       {
         "id": "7dcd9520-6144-4f79-9e6b-e40fb0deb333",
@@ -66,8 +76,7 @@
         "author_name": "Hemid",
         "author_photo": "../static/images/uploads/Hemid_profile.ico",
         "role": "Yeni",
-        "timestamp": 1769513103292,
-        "votes": 0
+        "timestamp": 1769513103292
       },
       {
         "id": "21c761de-d348-4de8-abe4-b14b6491ca83",
@@ -77,8 +86,7 @@
         "author_name": "Hemid",
         "author_photo": "../static/images/uploads/Hemid_profile.ico",
         "role": "Üzv",
-        "timestamp": 1769513113777,
-        "votes": 0
+        "timestamp": 1769513113777
       }
     ]
   }

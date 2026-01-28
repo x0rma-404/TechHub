@@ -48,53 +48,60 @@
 
         <h3 style="margin-bottom: 20px;">{{ question.answers|length }} Cavab</h3>
         <div class="answers-list">
-            {% for ans in question.answers %}
-            <div class="comment-card" id="ans-{{ ans.id }}"
-                style="padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent); position: relative;">
+    {% for ans in question.answers %}
+    <div class="comment-card" id="ans-{{ ans.id }}"
+        style="padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent); position: relative;">
 
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                    <div style="display: flex; gap: 10px;">
-                        <img class="comment-avatar"
-                            src="{{ ans.author_photo.replace('../', '/') if ans.author_photo else 'https://ui-avatars.com/api/?background=random&color=fff&name=' + (ans.author_name | urlencode) }}"
-                            alt="avatar"
-                            onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ ans.author_name | urlencode }}';"
-                            style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
-                        <div>
-                            <strong>{{ ans.author_name }}</strong>
-                            <span class="user-role-badge">{{ ans.role }}</span>
-                            <div style="font-size: 0.8rem; color: #888;">{{ ans.timestamp | format_time }}</div>
-                        </div>
-                    </div>
-
-                    <div style="display: flex; align-items: center;">
-                        <button
-                            style="border:none; background:none; color:var(--accent); cursor:pointer; margin-right: 10px;"
-                            onclick="setReply('{{ ans.id }}', '{{ ans.author_name }}', 'sub')">
-                            <i class="fas fa-reply"></i>
-                        </button>
-
-                        {% if user.email == ans.author_email or user.role in ['Administrator', 'Moderator', 'Staff'] %}
-                        <button class="delete-btn" onclick="deleteAnswer('{{ question.id }}', '{{ ans.id }}')">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        {% endif %}
-                    </div>
-                </div>
-
-                {% if ans.reply_to %}
-                <div class="reply-indicator"
-                    style="margin-top: 10px; font-size: 0.9em; background: var(--input-bg); padding: 5px 10px; border-radius: 5px;">
-                    <i class="fas fa-share" style="margin-right: 5px;"></i>
-                    Cavab verilir: <strong>{{ ans.reply_to.name }}</strong>
-                </div>
-                {% endif %}
-
-                <div class="comment-content ql-editor" style="padding: 10px 0; min-height: auto;">
-                    {{ ans.text | safe }}
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+            <div style="display: flex; gap: 10px;">
+                <img class="comment-avatar"
+                    src="{{ ans.author_photo.replace('../', '/') if ans.author_photo else 'https://ui-avatars.com/api/?background=random&color=fff&name=' + (ans.author_name | urlencode) }}"
+                    alt="avatar"
+                    onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ ans.author_name | urlencode }}';"
+                    style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
+                
+                <div>
+                    <strong>{{ ans.author_name }}</strong>
+                    
+                    <span class="user-role-badge role-{{ ans.role | lower | replace('ə', 'e') | replace('ç', 'c') | replace('ş', 's') | replace('ü', 'u') | replace('ö', 'o') | replace('ı', 'i') }}">
+                        {{ ans.role }}
+                    </span>
+                    
+                    <div style="font-size: 0.8rem; color: #888;">{{ ans.timestamp | format_time }}</div>
                 </div>
             </div>
-            {% endfor %}
+
+            <div style="display: flex; align-items: center;">
+                <button
+                    style="border:none; background:none; color:var(--accent); cursor:pointer; margin-right: 10px;"
+                    onclick="setReply('{{ ans.id }}', '{{ ans.author_name }}', 'sub')">
+                    <i class="fas fa-reply"></i>
+                </button>
+
+                {% if user.email == ans.author_email or user.role in ['Administrator', 'Moderator', 'Staff'] %}
+                <button class="delete-btn" onclick="deleteAnswer('{{ question.id }}', '{{ ans.id }}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+                {% endif %}
+            </div>
         </div>
+
+        {% if ans.reply_to %}
+        <div class="reply-indicator"
+            style="margin-top: 10px; font-size: 0.9em; background: var(--input-bg); padding: 5px 10px; border-radius: 5px;">
+            <i class="fas fa-share" style="margin-right: 5px;"></i>
+            Cavab verilir: <strong>{{ ans.reply_to.name }}</strong>
+        </div>
+        {% endif %}
+
+        <div class="comment-content ql-editor" style="padding: 10px 0; min-height: auto;">
+            {{ ans.text | safe }}
+        </div>
+
+
+    </div>
+    {% endfor %}
+</div>
 
         <div class="reply-section" style="margin-top: 40px; padding: 20px; border-radius: 10px;">
             <h3>Cavab yaz</h3>

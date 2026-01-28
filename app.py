@@ -4,6 +4,7 @@ import os
 import time
 import uuid
 from datetime import datetime
+from datetime import datetime, timedelta # timedelta lazımdır
 from werkzeug.utils import secure_filename
 from flask_login import login_required
 from tools.CsvJson_Converter import CsvJsonConverter
@@ -146,7 +147,15 @@ def logout():
 @app.route('/Q&A')
 def Q_and_A():
     if 'user' not in session: return redirect(url_for('home'))
-    return render_template('Q&A.html', user=session['user'])
+
+    all_questions = load_json(QA_DB_FILE)
+
+    # 1. Son Aktivliklər (Silinməmiş, ən son yaradılan 10 sorğu)
+    # Sort edirik: ən yenidən köhnəyə
+    sorted_questions = sorted(all_questions, key=lambda x: x['timestamp'], reverse=True)
+    recent_activity = sorted_questions[:10]
+
+    return render_template('Q&A.html', user=session['user'], recent_activity=recent_activity)
 
 @app.route('/Q&A/python')
 def Q_and_A_python():
@@ -431,6 +440,46 @@ def convert_file():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 400
+
+
+# --- YENİ FUNKSİONALLIQLAR ÜÇÜN API-LƏR ---
+
+# 1. TƏKMİLLƏŞDİRİLMİŞ FİLTRLƏMƏ API-Sİ (5-ci bənd üçün)
+# Səhifələmə və Filtrləmə API-si
+@app.route('/api/get_filtered_questions', methods=['POST'])
+def get_filtered_questions():
+    data = request.get_json()
+    filter_type = data.get('filter', 'categories')
+    page = int(data.get('page', 1))
+
+    limit = 10
+    skip = (page - 1) * limit
+
+    all_questions = load_json(QA_DB_FILE)
+    filtered_data = []
+
+    if filter_type == 'populyar':
+        # Votes sayına görə çoxdan aza
+        filtered_data = sorted(all_questions, key=lambda x: x.get('votes', 0), reverse=True)
+
+    elif filter_type == 'cavabsiz':
+        # Cavabı 0 olanlar, yeni tarixdən köhnəyə
+        filtered_data = [q for q in all_questions if len(q.get('answers', [])) == 0]
+        filtered_data.sort(key=lambda x: x['timestamp'], reverse=True)
+
+    elif filter_type == 'yeni-sorgu':
+        # Son 24 saat (86400000 ms)
+        now_ms = int(time.time() * 1000)
+        filtered_data = [q for q in all_questions if (now_ms - q['timestamp']) < 86400000]
+        filtered_data.sort(key=lambda x: x['timestamp'], reverse=True)
+
+    # Pagination
+    total = len(filtered_data)
+    paginated = filtered_data[skip: skip + limit]
+    has_more = (skip + limit) < total
+
+    return jsonify({'success': True, 'data': paginated, 'has_more': has_more})
+
 
 if __name__ == '__main__':
     app.run(debug=True)
