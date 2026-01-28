@@ -22,8 +22,8 @@ app = Flask(__name__, static_url_path='/static')
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "your_secret_key_here")
 
 # --- 🛠️ KRİTİK AYARLAR ---
-TUNNEL_URL = os.getenv("TUNNEL_URL", "https://solution-large-investigate-completely.trycloudflare.com").rstrip('/')
-SECRET_KEY = os.getenv("DATA_SECRET_KEY", "x0rma")
+TUNNEL_URL = os.getenv("TUNNEL_URL").rstrip('/')
+SECRET_KEY = os.getenv("DATA_SECRET_KEY")
 
 UPLOAD_FOLDER = os.path.join('static', 'images', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER

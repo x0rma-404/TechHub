@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+ENV/
+.env
+
+# Flask
+instance/
+.webassets-cache
+
+# Database/Storage
+static/images/uploads/
+*.json
+!static/tools-icons.json
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
