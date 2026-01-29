@@ -1,12 +1,102 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
 
-.main-content {
-    padding: 40px 20px;
-    min-height: calc(100vh - 100px);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Open Sans', sans-serif;
+/* Removed .main-content styles to prevent conflicts with bar.html */
+
+/* ---------- Animations — smooth easing ---------- */
+:root {
+  --ease-out-smooth: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@keyframes profileCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes profileBannerIn {
+  from {
+    opacity: 0;
+    transform: scale(1.015);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes profileContentIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes profileEditIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes profileAvatarIn {
+  from {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes profileAboutIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Profile page: main card entrance */
+#viewMode {
+  animation: profileCardIn 0.6s var(--ease-out-smooth) both;
+}
+
+#viewMode > div:first-child {
+  animation: profileBannerIn 0.55s var(--ease-out-smooth) 0.08s both;
+}
+
+#viewMode > div:last-child > div:first-child {
+  animation: profileContentIn 0.52s var(--ease-out-smooth) 0.12s both;
+}
+
+#viewMode img[alt="Avatar"] {
+  animation: profileAvatarIn 0.5s var(--ease-out-smooth) 0.18s both;
+}
+
+#viewMode > div:last-child > div.glass.rounded-xl {
+  animation: profileAboutIn 0.5s var(--ease-out-smooth) 0.3s both;
+}
+
+/* Edit form entrance */
+#editMode.profile-animate-in {
+  animation: profileEditIn 0.45s var(--ease-out-smooth) both;
 }
 
 .profile-wrapper {
@@ -30,6 +120,23 @@
     transition: background 0.3s ease;
 }
 
+#viewMode {
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+#viewMode:hover {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, .06), 0 12px 40px rgba(0, 0, 0, .3);
+}
+
+#viewMode .badge {
+  animation: profileContentIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
+  transition: transform 0.2s ease;
+}
+
+#viewMode .badge:hover {
+  transform: scale(1.05);
+}
+
 .banner-area {
     height: 160px;
     overflow: hidden;
@@ -39,6 +146,11 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+#viewMode > div:first-child img:hover {
+  transform: scale(1.03);
 }
 
 .profile-body {
@@ -127,6 +239,19 @@ input[type="file"] {
     border-radius: 10px;
     color: var(--logic-input-text, #333);
     box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+#editMode input[type="text"]:focus,
+#editMode input[type="password"]:focus,
+#editMode textarea:focus {
+    outline: none;
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+#editMode textarea {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .divider {
@@ -154,7 +279,19 @@ input[type="file"] {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: 0.3s;
+    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.28s ease, background 0.28s ease;
+}
+
+.btn-action:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+    transform: translateY(-2px);
+}
+
+.btn-action:active,
+.btn-primary:active,
+.btn-secondary:active {
+    transform: translateY(0);
 }
 
 .form-actions {
@@ -179,18 +316,14 @@ input[type="file"] {
     color: #333;
 }
 
-.hidden {
+/* Only hide .hidden inside profile content, not in the bar (bar uses Tailwind hidden md:flex) */
+#viewMode .hidden,
+#editMode .hidden {
     display: none;
 }
 
 /* Mobile Adjustments */
 @media (max-width: 600px) {
-    .main-content {
-        padding: 20px 10px 120px;
-        /* Bottom padding for floating bar */
-        align-items: flex-start;
-    }
-
     .profile-card {
         max-width: 100%;
         border-radius: 15px;

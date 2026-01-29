@@ -11,7 +11,7 @@ from tools.logical_evaluator.algo import lex_and_consider_adjacents, create_ast
 from tools.logical_evaluator.truth_table import TruthTable, TooLongError
 from tools.logical_evaluator.register import reg_global
 from tools.LinuxSimulator.linux_simulator import LinuxTerminal
-from tools.CsvJson_Converter import CsvJsonConverter
+from tools.CsvJson_Converter.csv_json_converter import CsvJsonConverter
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'your_secret_key_here'
@@ -107,12 +107,20 @@ def home():
 @app.route('/dashboard')
 def dashboard():
     if 'user' not in session: return redirect(url_for('home'))
-    return render_template('index.html')
+    all_questions = load_json("qa")
+    sorted_questions = sorted(all_questions, key=lambda x: x['timestamp'], reverse=True)
+    recent_activity = sorted_questions[:3]  # Get 3 most recent
+    return render_template('index.html', recent_activity=recent_activity)
 
 @app.route('/api/user')
 def get_user():
     if 'user' in session: return jsonify(session['user'])
     return jsonify(None)
+
+@app.route('/api/qa-count')
+def get_qa_count():
+    all_questions = load_json("qa")
+    return jsonify({'count': len(all_questions)})
 
 @app.route('/profile')
 def profile():
@@ -145,7 +153,7 @@ def register():
     new_user = {
         "name": data.get('name'), "email": email, "password": data.get('password'),
         "createdAt": get_timestamp(), "role": "Yeni", "answerCount": 0, "queryCount": 0,
-        "photo": "../static/images/profile-placeholder.png", "about": "", "location": ""
+        "photo": "", "about": "", "location": ""
     }
     users[email] = new_user
     save_users(users)
@@ -378,8 +386,15 @@ def update_profile():
         if file.filename:
             filename = secure_filename(f"{user_data['name']}_profile_{str(uuid.uuid4())[:8]}{os.path.splitext(file.filename)[1]}")
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            user_data['photo'] = f"../static/images/uploads/{filename}"
-            
+            user_data['photo'] = f"/static/images/uploads/{filename}"
+
+    if 'banner_photo' in request.files:
+        file = request.files['banner_photo']
+        if file.filename:
+            filename = secure_filename(f"{user_data['name']}_banner_{str(uuid.uuid4())[:8]}{os.path.splitext(file.filename)[1]}")
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            user_data['banner'] = f"/static/images/uploads/{filename}"
+
     users[user_data['email']] = user_data
     save_users(users)
     session['user'] = user_data

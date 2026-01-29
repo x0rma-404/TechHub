@@ -6,8 +6,9 @@ if (savedTheme === 'dark') {
     document.documentElement.classList.add('dark-mode');
 }
 
-// 2. Butona tıklandığında modu değiştir
-themeToggle.addEventListener('click', () => {
+// 2. Butona tıklandığında modu değiştir (bar sayfalarında theme-toggle olmayabilir)
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
     // Artik body değil, html etiketine (documentElement) ekleyip çıkarıyoruz
     document.documentElement.classList.toggle('dark-mode');
 
@@ -17,7 +18,8 @@ themeToggle.addEventListener('click', () => {
     } else {
         localStorage.setItem('theme', 'light');
     }
-});
+  });
+}
 
 // LOGOUT KISMI (Aynı kalabilir)
 document.addEventListener('DOMContentLoaded', () => {

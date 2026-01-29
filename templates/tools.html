@@ -2,59 +2,101 @@
 
 {%block content%}
 
-<main class="main-content">
-  <div class="tools-grid">
-    <a href="/tools/terminal" class="tools-ico">
-      <div class="tool-card"><i class="si si-linux"></i> <span>Terminal</span></div>
-    </a>
-    <a href="/tools/python3" class="tools-ico">
-      <div class=" tool-card"><i class="si si-python"></i><span>Python</span></div>
-    </a>
-    <a href="/tools/c++" class="tools-ico">
-      <div class=" tool-card"><i class="si si-cplusplus"></i><span>C++</span></div>
-    </a>
-    <a href="/tools/go" class="tools-ico">
-      <div class=" tool-card"><i class="si si-go"></i><span>Go</span></div>
-    </a>
-    <a href="/tools/rust" class="tools-ico">
-      <div class=" tool-card"><i class="si si-rust"></i><span>Rust</span></div>
-    </a>
-    <a href="/tools/ruby" class="tools-ico">
-      <div class=" tool-card"><i class="si si-ruby"></i><span>Ruby</span></div>
-    </a>
-    <a href="/tools/javascript" class="tools-ico">
-      <div class=" tool-card"><i class="si si-javascript"></i><span>JavaScript</span></div>
-    </a>
-    <a href="/tools/typescript" class="tools-ico">
-      <div class=" tool-card"><i class="si si-typescript"></i><span>TypeScript</span></div>
-    </a>
-    <a href="/tools/php" class="tools-ico">
-      <div class=" tool-card"><i class="si si-php"></i><span>PHP</span></div>
-    </a>
-    <a href="/tools/mysql" class="tools-ico">
-      <div class=" tool-card"><i class="si si-mysql"></i><span>MySQL</span></div>
-    </a>
-    <a href="/tools/mongodb" class="tools-ico">
-      <div class=" tool-card"><i class="si si-mongodb"></i><span>MongoDB</span></div>
-    </a>
-    <a href="/tools/docker" class="tools-ico">
-      <div class=" tool-card"><i class="si si-docker"></i><span>Docker</span></div>
-    </a>
-    <a href="/tools/git" class="tools-ico">
-      <div class=" tool-card"><i class="si si-git"></i><span>Git</span></div>
-    </a>
-    <a href="/tools/bash" class="tools-ico">
-      <div class=" tool-card"><i class="si si-gnubash"></i><span>Bash</span></div>
-    </a>
-    <a href="/tools/logic" class="tools-ico">
-      <div class="tool-card"><span class="material-symbols-outlined">schema</span><span>Logic</span></div>
-    </a>
-    <a href="/tools/converter" class="tools-ico">
-      <div class="tool-card"><i class='bx bx-transfer-alt'
-          style="font-size: 38px; color: aliceblue; margin-bottom: 8px;"></i><span>Converter</span></div>
-    </a>
+<div class="max-w-6xl mx-auto px-4 py-8">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold mb-2">Development Tools</h1>
+    <p class="text-slate-400">Choose your programming language or tool to get started</p>
   </div>
-</main>
 
+  <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-stagger">
+    <a href="/tools/terminal" class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class="si si-linux text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors"></i>
+        <span class="font-medium">Terminal</span>
+      </div>
+    </a>
+
+    <a href="/tools/python3" class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class="si si-python text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors"></i>
+        <span class="font-medium">Python</span>
+      </div>
+    </a>
+
+    <a href="/tools/logic" class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
+      <div class="flex flex-col items-center text-center gap-3">
+        <span
+          class="material-symbols-outlined text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors">schema</span>
+        <span class="font-medium">Logic</span>
+      </div>
+    </a>
+
+    <a href="/tools/converter" class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class='bx bx-transfer-alt text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors'></i>
+        <span class="font-medium">Converter</span>
+      </div>
+    </a>
+<a href="/tools/floating-point" class="glass ring-soft rounded-2xl p-6 hover:border-amber-500/50 transition-all group relative overflow-hidden">
+      <div class="flex flex-col items-center text-center gap-4">
+        <i class='bx bx-chip text-4xl text-slate-300 group-hover:text-amber-400 transition-colors'></i>
+        
+        <div class="flex flex-col gap-1">
+          <span class="font-medium">FP Converter</span>
+          
+          <div class="flex gap-[2px] mt-2 justify-center" title="IEEE-754: Sign, Exponent, Mantissa">
+            <div class="w-2 h-4 bg-red-500/80 rounded-sm shadow-[0_0_8px_rgba(239,68,68,0.4)]"></div>
+            <div class="flex gap-[1px]">
+              <div class="w-1.5 h-4 bg-green-500/60 rounded-sm"></div>
+              <div class="w-1.5 h-4 bg-green-500/60 rounded-sm"></div>
+              <div class="w-1.5 h-4 bg-green-500/60 rounded-sm"></div>
+            </div>
+            <div class="flex gap-[1px]">
+              <div class="w-1 h-4 bg-blue-500/40 rounded-sm"></div>
+              <div class="w-1 h-4 bg-blue-500/40 rounded-sm"></div>
+              <div class="w-1 h-4 bg-blue-500/40 rounded-sm"></div>
+              <div class="w-1 h-4 bg-blue-500/40 rounded-sm"></div>
+              <div class="w-1 h-4 bg-blue-500/40 rounded-sm"></div>
+            </div>
+          </div>
+          <span class="text-[9px] uppercase tracking-widest text-slate-500 mt-1">IEEE-754 Standard</span>
+        </div>
+      </div>
+    </a>
+
+    <!-- Placeholder tools -->
+    <div class="glass ring-soft rounded-2xl p-6 opacity-50 cursor-not-allowed">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class="si si-cplusplus text-4xl text-slate-500"></i>
+        <span class="font-medium text-slate-500">C++</span>
+        <span class="badge text-xs">Coming Soon</span>
+      </div>
+    </div>
+
+    <div class="glass ring-soft rounded-2xl p-6 opacity-50 cursor-not-allowed">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class="si si-javascript text-4xl text-slate-500"></i>
+        <span class="font-medium text-slate-500">JavaScript</span>
+        <span class="badge text-xs">Coming Soon</span>
+      </div>
+    </div>
+
+    <div class="glass ring-soft rounded-2xl p-6 opacity-50 cursor-not-allowed">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class="si si-go text-4xl text-slate-500"></i>
+        <span class="font-medium text-slate-500">Go</span>
+        <span class="badge text-xs">Coming Soon</span>
+      </div>
+    </div>
+
+    <div class="glass ring-soft rounded-2xl p-6 opacity-50 cursor-not-allowed">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class="si si-rust text-4xl text-slate-500"></i>
+        <span class="font-medium text-slate-500">Rust</span>
+        <span class="badge text-xs">Coming Soon</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 {%endblock%}

@@ -1,158 +1,162 @@
 {% extends "bar.html" %}
 
-{%block content%}
- <link rel="stylesheet" href="../static/profile.css">
-<style>
-  body {
-    background-image: url("{{ user.banner or url_for('static', filename='images/banm.jpg') }}");
+{% block header_class %}relative{% endblock %}
 
-    background-repeat: no-repeat;
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 
-    background-size: cover;
-
-    background-position: center;
-
-    background-attachment: fixed;
-
-    margin: 0;
-    min-height: 100vh;
-    
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    backdrop-filter: blur(8px); /* Bulanıklık şiddeti */
-    -webkit-backdrop-filter: blur(8px); /* Safari desteği */
-    z-index: -1; /* İçeriğin arkasında kalması için */
-  }
-</style>
-
-  <main class="main-content">
-    <div class="profile-wrapper">
-      
-      <div id="viewMode" class="profile-card">
-        <div class="banner-area">
-          <img src="{{ user.banner if user.banner else '../static/images/banm.jpg' }}" alt="Banner Cover">
-        </div>
-        <div class="profile-body">
-          <div class="avatar-area">
-            <img src="{{ user.photo if user.photo else '../static/images/default.png' }}" alt="Avatar">
-          </div>
-          <div class="info-area">
-            <h2>{{ user.name }}</h2>
-            <p class="email-text">@{{ user.name }} • {{ user.email }}</p>
-            
-            <div class="meta-tags">
-              <span class="material-symbols-outlined">home</span></i> {{ user.location if user.location else 'Location unset' }}
-              <span class="material-symbols-outlined">calendar_today</span><span id="joinDateDisplay"></span>
-            </div>
-
-            <button id="toEditBtn" class="btn-action">
-              <span class="material-symbols-outlined">edit</span> Profili Redaktə Et
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <div id="editMode" class="profile-card hidden">
-        <div class="card-header">
-          <h3>Profil Məlumatlarını Yenilə</h3>
-        </div>
-        
-        <form id="profileForm">
-          <div class="form-row">
-            <div class="form-group">
-              <label>Profil Şəkli</label>
-              <input type="file" name="profile_photo" accept="image/*">
-            </div>
-            <div class="form-group">
-              <label>Banner Şəkli</label>
-              <input type="file" name="banner_photo" accept="image/*">
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label>Lokasiya</label>
-            <input type="text" name="location" value="{{ user.location if user.location else '' }}" placeholder="Məs: Bakı, Azərbaycan">
-          </div>
-
-          <div class="divider"><span>Təhlükəsizlik (Şifrə dəyişimi)</span></div>
-
-          <div class="form-group">
-            <label>Köhnə Şifrə (Dəyişiklik üçün mütləqdir)</label>
-            <input type="password" name="old_password" placeholder="Cari şifrəniz">
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label>Yeni Şifrə</label>
-              <input type="password" name="new_password" placeholder="Yeni şifrə">
-            </div>
-            <div class="form-group">
-              <label>Yeni Şifrəni Təsdiqlə</label>
-              <input type="password" name="confirm_password" placeholder="Təkrar daxil et">
-            </div>
-          </div>
-
-          <div class="form-actions">
-            <button type="button" id="cancelEditBtn" class="btn-secondary">Ləğv Et</button>
-            <button type="submit" class="btn-primary">Yadda Saxla</button>
-          </div>
-        </form>
-      </div>
-
+<div class="max-w-5xl mx-auto px-4 py-8">
+  <div id="viewMode" class="glass ring-soft rounded-2xl overflow-hidden">
+    <div class="h-48 bg-gradient-to-r from-indigo-600/40 to-cyan-600/40 relative">
+      {% if user.banner %}
+      <img src="{{ user.banner }}" alt="Banner" class="w-full h-full object-cover">
+      {% endif %}
     </div>
-  </main>
 
-  <script>
+    <div class="p-6 md:p-8">        
+      <div class="flex flex-col md:flex-row gap-6 items-start -mt-20 md:-mt-16">
+        <img src="{{ user.photo or url_for('static', filename='images/default.png') }}" alt="Avatar"
+          class="h-32 w-32 rounded-2xl border-4 border-[#0b1220] object-cover">
 
-    const rawDate = "{{ user.createdAt }}";
-    if (rawDate) {
-      document.getElementById("joinDateDisplay").innerText = new Date(parseInt(rawDate)).toLocaleDateString();
-    }
+        <div class="flex-1">
+          <h2 class="text-2xl font-bold mb-1">{{ user.name }}</h2>
+          <p class="text-slate-400 mb-4">@{{ user.name }} • {{ user.email }}</p>
 
-    // Toggle Məntiqi
-    const viewMode = document.getElementById('viewMode');
-    const editMode = document.getElementById('editMode');
-    const form = document.getElementById('profileForm');
+          <div class="flex flex-wrap gap-4 text-sm text-slate-400 mb-4">
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">home</span>
+              {{ user.location if user.location else 'Location unset' }}
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="material-symbols-outlined text-lg">calendar_today</span>
+              <span id="joinDateDisplay"></span>
+            </div>
+          </div>
 
-    document.getElementById('toEditBtn').addEventListener('click', () => {
-      viewMode.classList.add('hidden');
-      editMode.classList.remove('hidden');
-    });
+          {% if user.role %}
+          <span class="badge">{{ user.role }}</span>
+          {% endif %}
+        </div>
 
-    document.getElementById('cancelEditBtn').addEventListener('click', () => {
-      editMode.classList.add('hidden');
-      viewMode.classList.remove('hidden');
-      form.reset();
-    });
+        <button id="toEditBtn" class="btn btn-primary">
+          <span class="material-symbols-outlined">edit</span>
+          Profili Redaktə Et
+        </button>
+      </div>
 
-    // AJAX ilə məlumatı göndərmək (Backend-ə)
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
+      {% if user.about %}
+      <div class="mt-6 glass ring-soft rounded-xl p-4">
+        <h3 class="font-semibold mb-2">Haqqında</h3>
+        <p class="text-slate-300">{{ user.about }}</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
 
-      try {
-        const response = await fetch('/update_profile', {
-          method: 'POST',
-          body: formData
-        });
-        const result = await response.json();
-        
-        if (result.success) {
-          alert('Məlumatlar yadda saxlanıldı!');
-          window.location.reload();
-        } else {
-          alert('Xəta: ' + result.message);
-        }
-      } catch (err) {
-        alert('Sistem xətası baş verdi.');
+  <div id="editMode" class="glass ring-soft rounded-2xl p-6 md:p-8 hidden">
+    <h3 class="text-xl font-bold mb-6">Profil Məlumatlarını Yenilə</h3>
+
+    <form id="profileForm" class="space-y-6">
+      <div class="grid md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-slate-300 mb-1">Profil Şəkli</label>
+          <input type="file" name="profile_photo" accept="image/*" class="input w-full rounded-xl px-4 py-3">
+        </div>
+        <div>
+          <label class="block text-sm text-slate-300 mb-1">Banner Şəkli</label>
+          <input type="file" name="banner_photo" accept="image/*" class="input w-full rounded-xl px-4 py-3">
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-sm text-slate-300 mb-1">Lokasiya</label>
+        <input type="text" name="location" value="{{ user.location if user.location else '' }}"
+          placeholder="Məs: Bakı, Azərbaycan" class="input w-full rounded-xl px-4 py-3">
+      </div>
+
+      <div>
+        <label class="block text-sm text-slate-300 mb-1">Haqqında</label>
+        <textarea name="about" class="input w-full rounded-xl px-4 py-3 min-h-[100px]"
+          placeholder="Özünüz haqqında məlumat">{{ user.about if user.about else '' }}</textarea>
+      </div>
+
+      <div class="border-t border-white/10 pt-6">
+        <h4 class="font-semibold mb-4">Təhlükəsizlik (Şifrə dəyişimi)</h4>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm text-slate-300 mb-1">Köhnə Şifrə</label>
+            <input type="password" name="old_password" placeholder="Cari şifrəniz"
+              class="input w-full rounded-xl px-4 py-3">
+          </div>
+
+          <div class="grid md:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm text-slate-300 mb-1">Yeni Şifrə</label>
+              <input type="password" name="new_password" placeholder="Yeni şifrə"
+                class="input w-full rounded-xl px-4 py-3">
+            </div>
+            <div>
+              <label class="block text-sm text-slate-300 mb-1">Yeni Şifrəni Təsdiqlə</label>
+              <input type="password" name="confirm_password" placeholder="Təkrar daxil et"
+                class="input w-full rounded-xl px-4 py-3">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-3">
+        <button type="button" id="cancelEditBtn" class="btn btn-muted flex-1">Ləğv Et</button>
+        <button type="submit" class="btn btn-primary flex-1">Yadda Saxla</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const rawDate = "{{ user.createdAt }}";
+  if (rawDate) {
+    document.getElementById("joinDateDisplay").innerText = new Date(parseInt(rawDate)).toLocaleDateString();
+  }
+
+  const viewMode = document.getElementById('viewMode');
+  const editMode = document.getElementById('editMode');
+  const form = document.getElementById('profileForm');
+
+  document.getElementById('toEditBtn').addEventListener('click', () => {
+    viewMode.classList.add('hidden');
+    editMode.classList.remove('hidden');
+    editMode.classList.add('profile-animate-in');
+  });
+
+  document.getElementById('cancelEditBtn').addEventListener('click', () => {
+    editMode.classList.remove('profile-animate-in');
+    editMode.classList.add('hidden');
+    viewMode.classList.remove('hidden');
+    form.reset();
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('/update_profile', {
+        method: 'POST',
+        body: formData
+      });
+      const result = await response.json();
+
+      if (result.success) {
+        alert('Məlumatlar yadda saxlanıldı!');
+        window.location.reload();
+      } else {
+        alert('Xəta: ' + result.message);
       }
-    });
-  </script>
-    <script src="../static/script.js"></script>
+    } catch (err) {
+      alert('Sistem xətası baş verdi.');
+    }
+  });
+</script>
 
-
-{%endblock%}
+{% endblock %}

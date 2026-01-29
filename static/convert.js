@@ -11,6 +11,10 @@ const btnText = document.getElementById('btn-text');
 
 let selectedFile = null;
 
+dropZone.addEventListener('click', () => {
+    fileInput.click();
+});
+
 fileInput.addEventListener('change', (e) => {
     if (e.target.files.length > 0) {
         handleFile(e.target.files[0]);

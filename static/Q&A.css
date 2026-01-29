@@ -18,13 +18,7 @@
     --shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
-body {
-    background-color: var(--body-bg);
-    color: var(--text-main);
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 20px;
-}
+/* Removed body styles to prevent conflicts with bar.html */
 
 .wrapper {
     display: flex;
@@ -276,9 +270,20 @@ body {
     text-align: center;
 }
 
-.q-score.positive { background: #064e3b; color: #10b981; }
-.q-score.negative { background: #450a0a; color: #ef4444; }
-.q-score.neutral { background: #1f2937; color: #6b7280; }
+.q-score.positive {
+    background: #064e3b;
+    color: #10b981;
+}
+
+.q-score.negative {
+    background: #450a0a;
+    color: #ef4444;
+}
+
+.q-score.neutral {
+    background: #1f2937;
+    color: #6b7280;
+}
 
 .q-replies {
     text-align: center;
@@ -295,43 +300,126 @@ body {
 }
 
 /* Siyahı və Detal üçün Ümumi Əlavələr */
-.page-title { font-size: 26px; margin-bottom: 20px; color: var(--text-main); }
+.page-title {
+    font-size: 26px;
+    margin-bottom: 20px;
+    color: var(--text-main);
+}
 
 /* Siyahı Sətirləri */
 .q-list-item {
-    background: var(--card-bg); border-radius: 12px; padding: 20px;
-    display: flex; justify-content: space-between; margin-bottom: 15px;
-    box-shadow: var(--shadow); cursor: pointer; transition: 0.2s;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    transition: 0.2s;
 }
-.q-list-item:hover { background: #fdfdfd; transform: scale(1.01); }
+
+.q-list-item:hover {
+    background: #fdfdfd;
+    transform: scale(1.01);
+}
 
 /* Sual Detalı Hissəsi */
-.detail-header { margin-bottom: 15px; }
-.back-link { background: none; border: none; color: var(--accent); cursor: pointer; font-weight: 600; }
-
-.main-post-card, .comment-card {
-    background: var(--card-bg); border-radius: 16px; padding: 25px;
-    margin-bottom: 20px; box-shadow: var(--shadow);
+.detail-header {
+    margin-bottom: 15px;
 }
 
-.post-user, .comment-user { display: flex; align-items: center; gap: 12px; margin-bottom: 15px; }
-.post-user img, .comment-user img { width: 32px; height: 32px; border-radius: 50%; }
+.back-link {
+    background: none;
+    border: none;
+    color: var(--accent);
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.main-post-card,
+.comment-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 25px;
+    margin-bottom: 20px;
+    box-shadow: var(--shadow);
+}
+
+.post-user,
+.comment-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.post-user img,
+.comment-user img {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+}
 
 /* Kod Bloku - Light Mode-da belə tünd fon daha peşəkar görünür */
 .code-block {
-    background: #1e1e1e; color: #dcdcdc; padding: 15px; border-radius: 8px;
-    font-family: 'Consolas', monospace; font-size: 14px; margin: 15px 0; overflow-x: auto;
+    background: #1e1e1e;
+    color: #dcdcdc;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: 'Consolas', monospace;
+    font-size: 14px;
+    margin: 15px 0;
+    overflow-x: auto;
 }
 
 /* Səsvermə və Reply */
-.comment-actions { display: flex; justify-content: space-between; margin-top: 15px; border-top: 1px solid var(--input-bg); padding-top: 15px; }
-.vote-system { display: flex; gap: 12px; color: var(--text-sub); }
-.vote-system i { cursor: pointer; }
+.comment-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    border-top: 1px solid var(--input-bg);
+    padding-top: 15px;
+}
+
+.vote-system {
+    display: flex;
+    gap: 12px;
+    color: var(--text-sub);
+}
+
+.vote-system i {
+    cursor: pointer;
+}
 
 /* Reply Input */
-.reply-input-box { background: var(--card-bg); padding: 20px; border-radius: 16px; box-shadow: var(--shadow); }
-.reply-input-box textarea { width: 100%; height: 80px; border: 1px solid var(--input-bg); border-radius: 8px; padding: 10px; outline: none; resize: none; }
-.send-btn { background: var(--accent); color: white; border: none; padding: 8px 20px; border-radius: 20px; cursor: pointer; float: right; margin-top: 10px; }
+.reply-input-box {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+.reply-input-box textarea {
+    width: 100%;
+    height: 80px;
+    border: 1px solid var(--input-bg);
+    border-radius: 8px;
+    padding: 10px;
+    outline: none;
+    resize: none;
+}
+
+.send-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    float: right;
+    margin-top: 10px;
+}
 
 /* Ümumi Konteyner */
 .qa-container {
@@ -380,7 +468,7 @@ body {
     margin: 10px 0;
     color: var(--text-main);
 }
- 
+
 .post-body {
     line-height: 1.6;
     color: var(--text-main);
@@ -469,10 +557,12 @@ body {
     border: 1px solid var(--input-bg) !important;
     border-radius: 8px 8px 0 0;
 }
+
 .ql-toolbar * {
     color: var(--text-main) !important;
     stroke: var(--text-main) !important;
 }
+
 .ql-container {
     border: 1px solid var(--input-bg) !important;
     border-radius: 0 0 8px 8px;
@@ -481,6 +571,7 @@ body {
     color: var(--text-main);
     min-height: 150px;
 }
+
 .ql-editor.ql-blank::before {
     color: var(--text-sub) !important;
 }
@@ -491,28 +582,33 @@ body {
     position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Tam mərkəzləmə */
+    transform: translate(-50%, -50%);
+    /* Tam mərkəzləmə */
     background: var(--card-bg);
     padding: 25px;
-    box-shadow: 0 0 50px rgba(0,0,0,0.4);
+    box-shadow: 0 0 50px rgba(0, 0, 0, 0.4);
     border-radius: 12px;
-    z-index: 10000; /* Digər elementlərin üzərində qalması üçün */
+    z-index: 10000;
+    /* Digər elementlərin üzərində qalması üçün */
     width: 600px;
     max-width: 90%;
     color: var(--text-main);
 }
- 
+
 #questionModal input {
     background: var(--input-bg);
     color: var(--text-main);
     border: 1px solid var(--input-bg);
 }
- 
+
 #modalOverlay {
     display: none;
     position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
     z-index: 9999;
 }
 
@@ -528,6 +624,7 @@ body {
     opacity: 0.7;
     transition: 0.3s;
 }
+
 .delete-btn:hover {
     opacity: 1;
     background: rgba(220, 53, 69, 0.1);
@@ -545,18 +642,20 @@ body {
     align-items: center;
     margin-bottom: 10px;
 }
+
 .reply-badge i {
     margin-left: 8px;
     cursor: pointer;
     color: #dc3545;
 }
+
 .reply-indicator {
     border-left: 3px solid var(--accent);
     padding-left: 10px;
     margin-bottom: 5px;
     font-size: 0.9em;
     color: var(--text-sub);
-    background: rgba(0,0,0,0.03);
+    background: rgba(0, 0, 0, 0.03);
     padding: 5px;
 }
 
@@ -570,9 +669,34 @@ body {
 }
 
 /* --- Rol Rəngləri --- */
-.role-yeni { color: gray; font-weight: bold; }
-.role-uzv { color: lightgreen; font-weight: bold; } /* Açıq yaşıl */
-.role-coxbilmis { color: lightblue; font-weight: bold; } /* Açıq göy */
-.role-staff { color: orange; font-weight: bold; }
-.role-moderator { color: purple; font-weight: bold; }
-.role-administrator { color: red; font-weight: bold; }
+.role-yeni {
+    color: gray;
+    font-weight: bold;
+}
+
+.role-uzv {
+    color: lightgreen;
+    font-weight: bold;
+}
+
+/* Açıq yaşıl */
+.role-coxbilmis {
+    color: lightblue;
+    font-weight: bold;
+}
+
+/* Açıq göy */
+.role-staff {
+    color: orange;
+    font-weight: bold;
+}
+
+.role-moderator {
+    color: purple;
+    font-weight: bold;
+}
+
+.role-administrator {
+    color: red;
+    font-weight: bold;
+}

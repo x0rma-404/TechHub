@@ -61,11 +61,17 @@
 
 .terminal-body {
     flex: 1;
+    min-height: 60vh;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     scrollbar-width: thin;
     scrollbar-color: #444 transparent;
+}
+
+/* Inline styles in template set min-height; this backs it up */
+#terminalBody.terminal-body {
+    min-height: 60vh;
 }
 
 .terminal-body::-webkit-scrollbar {

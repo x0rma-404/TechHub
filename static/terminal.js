@@ -4,16 +4,25 @@ const terminalBody = document.getElementById('terminalBody');
 const terminal = document.getElementById('terminal');
 const promptPath = document.querySelector('.prompt-path');
 
-// Keep focus on input
-terminal.addEventListener('click', () => terminalInput.focus());
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.textContent = text;
+  return div.innerHTML;
+}
+
+// Keep focus on input when clicking anywhere in terminal
+if (terminal) {
+  terminal.addEventListener('click', () => terminalInput.focus());
+}
 
 function formatLS(output) {
     if (!output) return '';
-    return output.split(' ').map(item => {
+    return output.split(' ').filter(Boolean).map(item => {
+        const safe = escapeHtml(item);
         if (item.endsWith('/')) {
-            return `<span class="dir-link">${item}</span>`;
+            return `<span class="dir-link">${safe}</span>`;
         }
-        return `<span class="file-link">${item}</span>`;
+        return `<span class="file-link">${safe}</span>`;
     }).join('  ');
 }
 
@@ -25,8 +34,8 @@ terminalInput.addEventListener('keydown', async (e) => {
         // Add command to output
         const cmdLine = document.createElement('div');
         cmdLine.className = 'command-line';
-        const currentPath = promptPath.textContent;
-        cmdLine.innerHTML = `<span class="prompt-symbol">user@techhub</span>:<span class="prompt-path">${currentPath}</span>$ <span class="highlight-cmd">${command}</span>`;
+        const currentPath = promptPath ? promptPath.textContent : '~';
+        cmdLine.innerHTML = `<span class="prompt-symbol text-cyan-400">user@techhub</span>:<span class="prompt-path text-blue-400">${escapeHtml(currentPath)}</span>$ <span class="highlight-cmd text-green-400">${escapeHtml(command)}</span>`;
         outputArea.appendChild(cmdLine);
 
         terminalInput.value = '';
@@ -58,7 +67,7 @@ terminalInput.addEventListener('keydown', async (e) => {
             }
 
             // Update prompt path
-            if (data.path) {
+            if (data.path && promptPath) {
                 promptPath.textContent = data.path === '/home/user' ? '~' : data.path.replace('/home/user', '~');
             }
 

@@ -1,48 +1,53 @@
 {% extends "bar.html" %}
 
 {% block content %}
-
 <link rel="stylesheet" href="../static/logic.css">
 
-<div class="logic-container">
-    <div class="logic-header">
-        <h1>Məntiqi Qiymətləndirici</h1>
-        <p>Məntiqi ifadələrinizi daxil edin və həqiqət cədvəlini görün</p>
-    </div>
-
-    <div class="logic-input-section card">
-        <div class="input-group">
-            <input type="text" id="logicExpression" placeholder="Məsələn: A*B + !C -> D" spellcheck="false">
-            <button id="evaluateBtn" class="btn btn-primary">Hesabla</button>
+<div class="max-w-5xl mx-auto px-4">
+    <div class="glass ring-soft rounded-2xl p-6 md:p-8 mb-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2">Məntiqi Qiymətləndirici</h1>
+            <p class="text-slate-400">Məntiqi ifadələrinizi daxil edin və həqiqət cədvəlini görün</p>
         </div>
 
-        <div class="notation-guide">
-            <div class="guide-item"><span>*</span> AND</div>
-            <div class="guide-item"><span>+</span> OR</div>
-            <div class="guide-item"><span>!</span> NOT</div>
-            <div class="guide-item"><span>^</span> XOR</div>
-            <div class="guide-item"><span>-></span> Implication</div>
-            <div class="guide-item"><span>
-                    <=>
-                </span> Equivalence</div>
+        <div class="space-y-4">
+            <div class="flex gap-3">
+                <input type="text" id="logicExpression" class="input flex-1 rounded-xl px-4 py-3"
+                    placeholder="Məsələn: A*B + !C -> D" spellcheck="false">
+                <button id="evaluateBtn" class="btn btn-primary px-6">Hesabla</button>
+            </div>
+
+            <div class="flex flex-wrap gap-2 text-sm">
+                <div class="badge"><span class="font-bold">*</span> AND</div>
+                <div class="badge"><span class="font-bold">+</span> OR</div>
+                <div class="badge"><span class="font-bold">!</span> NOT</div>
+                <div class="badge"><span class="font-bold">^</span> XOR</div>
+                <div class="badge"><span class="font-bold">-></span> Implication</div>
+                <div class="badge"><span class="font-bold">
+                        <=>
+                    </span> Equivalence</div>
+            </div>
         </div>
     </div>
 
-    <div id="loading" class="loading-spinner" style="display: none;">
-        <div class="spinner"></div>
-        <p>Hesablanır...</p>
+    <div id="loading" class="glass ring-soft rounded-2xl p-8 text-center hidden">
+        <div
+            class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-500 border-r-transparent">
+        </div>
+        <p class="mt-4 text-slate-400">Hesablanır...</p>
     </div>
 
-    <div id="results" class="results-section" style="display: none;">
-        <div class="simplified-result card">
-            <h3>Sadələşdirilmiş İfadə:</h3>
-            <div id="simplifiedText" class="expression-display"></div>
+    <div id="results" class="space-y-6 hidden">
+        <div class="glass ring-soft rounded-2xl p-6">
+            <h3 class="font-semibold mb-3">Sadələşdirilmiş İfadə:</h3>
+            <div id="simplifiedText"
+                class="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-4 font-mono text-indigo-300"></div>
         </div>
 
-        <div class="table-container card">
-            <h3>Həqiqət Cədvəli</h3>
-            <div class="table-wrapper">
-                <table id="truthTable">
+        <div class="glass ring-soft rounded-2xl p-6">
+            <h3 class="font-semibold mb-4">Həqiqət Cədvəli</h3>
+            <div class="overflow-x-auto">
+                <table id="truthTable" class="w-full">
                     <thead id="tableHead"></thead>
                     <tbody id="tableBody"></tbody>
                 </table>
@@ -50,10 +55,8 @@
         </div>
     </div>
 
-    <div id="errorMessage" class="error-message card" style="display: none;"></div>
+    <div id="errorMessage" class="glass ring-soft rounded-2xl p-6 border-red-500/50 bg-red-500/10 hidden"></div>
 </div>
-
-
 
 <script src="../static/logic.js"></script>
 {% endblock %}

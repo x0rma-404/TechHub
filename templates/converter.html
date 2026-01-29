@@ -3,47 +3,56 @@
 {% block content %}
 <link rel="stylesheet" href="../static/convert.css">
 
-<div class="converter-container">
-    <div class="converter-card">
-        <div class="card-header">
-            <i class='bx bx-transfer-alt'></i>
-            <h2>File Converter</h2>
-            <p>Convert your CSV files to JSON and vice-versa instantly</p>
-        </div>
-
-        <div class="upload-area" id="drop-zone">
-            <i class='bx bx-cloud-upload'></i>
-            <span>Click or drag your CSV/JSON file here</span>
-            <input type="file" id="file-input" class="file-input" accept=".csv,.json">
-        </div>
-
-        <div class="file-info" id="file-info">
-            <i class='bx bxs-file-doc'></i>
-            <div class="file-details">
-                <span class="file-name" id="display-filename">filename.csv</span>
-                <span class="file-size" id="display-filesize">0 KB</span>
+<div class="max-w-3xl mx-auto px-4 py-8">
+    <div class="glass ring-soft rounded-2xl p-6 md:p-8">
+        <div class="text-center mb-8">
+            <div
+                class="inline-flex items-center justify-center h-16 w-16 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 mb-4">
+                <i class='bx bx-transfer-alt text-3xl text-indigo-400'></i>
             </div>
-            <i class='bx bx-x' style="color: #ff5252; cursor: pointer;" onclick="resetFile()"></i>
+            <h2 class="text-2xl font-bold mb-2">File Converter</h2>
+            <p class="text-slate-400">Convert your CSV files to JSON and vice-versa instantly</p>
         </div>
 
-        <div class="options-grid" id="csv-options" style="display: none;">
-            <div class="option-item">
-                <label>CSV Delimiter</label>
-                <select class="select-styled" id="delimiter">
-                    <option value=",">Comma (,)</option>
-                    <option value=";">Semicolon (;)</option>
-                    <option value="tab">Tab</option>
-                    <option value="|">Pipe (|)</option>
-                </select>
+        <div class="glass ring-soft rounded-xl p-8 mb-6 text-center cursor-pointer hover:border-indigo-500/50 transition-all"
+            id="drop-zone">
+            <i class='bx bx-cloud-upload text-5xl text-indigo-400 mb-4'></i>
+            <p class="text-slate-300 mb-2">Click or drag your CSV/JSON file here</p>
+            <p class="text-sm text-slate-500">Supports .csv and .json files</p>
+            <input type="file" id="file-input" class="hidden" accept=".csv,.json">
+        </div>
+
+        <div class="glass ring-soft rounded-xl p-4 mb-6 hidden" id="file-info">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <i class='bx bxs-file-doc text-2xl text-indigo-400'></i>
+                    <div>
+                        <div class="font-medium" id="display-filename">filename.csv</div>
+                        <div class="text-sm text-slate-400" id="display-filesize">0 KB</div>
+                    </div>
+                </div>
+                <button onclick="resetFile()" class="btn btn-muted">
+                    <i class='bx bx-x'></i>
+                </button>
             </div>
         </div>
 
-        <button class="btn-convert" id="convert-btn" disabled onclick="handleConvert()">
-            <div class="loader" id="loader"></div>
+        <div class="mb-6 hidden" id="csv-options">
+            <label class="block text-sm text-slate-300 mb-2">CSV Delimiter</label>
+            <select class="input w-full rounded-xl px-4 py-3" id="delimiter">
+                <option value=",">Comma (,)</option>
+                <option value=";">Semicolon (;)</option>
+                <option value="tab">Tab</option>
+                <option value="|">Pipe (|)</option>
+            </select>
+        </div>
+
+        <button class="btn btn-primary w-full justify-center py-4" id="convert-btn" disabled onclick="handleConvert()">
+            <div class="loader hidden" id="loader"></div>
             <span id="btn-text">Convert & Download</span>
         </button>
 
-        <div class="status-msg" id="status-msg"></div>
+        <div class="mt-4 text-center text-sm" id="status-msg"></div>
     </div>
 </div>
 

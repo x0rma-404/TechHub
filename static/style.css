@@ -174,3 +174,28 @@ body {
   background: var(--bg-body);
   transition: background 0.3s ease;
 }
+
+/* Auth pages (login / register) animations */
+@keyframes authIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-container {
+  animation: authIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.auth-container .form-group input,
+.auth-container button {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.auth-container button:hover {
+  transform: translateY(-1px);
+}

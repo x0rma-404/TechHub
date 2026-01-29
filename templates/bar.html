@@ -2,83 +2,60 @@
 <html lang="en">
 
 <head>
-  <script>
-    (function () {
-      const theme = localStorage.getItem('theme');
-      if (theme === 'dark') {
-        document.documentElement.classList.add('dark-mode');
-      }
-    })();
-  </script>
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logo.ico') }}">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>TechHub</title>
+  <meta name="theme-color" content="#0b1220" />
+  <link rel="icon" href="{{ url_for('static', filename='images/logo.ico') }}">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons-font@v15/font/simple-icons.min.css">
-  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='toggle.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='tools-icons.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='newbar.css') }}">
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="{{ url_for('static', filename='menu.css') }}">
 </head>
 
-<body>
-  <nav class="nav">
-    <ul class="nav-content">
-      <li class="nav-list">
-        <a href="/" class="link-item active">
-          <i class='bx bxs-home link-icon'></i>
-          <span class="link-text">Home</span>
-        </a>
-      </li>
-      <li class="nav-list">
-        <a href="/tools" class="link-item">
-          <i class='bx bxs-terminal link-icon'></i>
-          <span class="link-text">Tools</span>
-        </a>
-      </li>
-      <li class="nav-list">
-        <a href="/profile" class="link-item">
-          <i class='bx bxs-user link-icon'></i>
-          <span class="link-text">Profile</span>
-        </a>
-      </li>
-      <li class="nav-list">
-        <a href="/Q&A" class="link-item">
-          <i class='bx bx-help-circle link-icon'></i>
-          <span class="link-text">Q&A</span>
-        </a>
-      </li>
-      <li class="nav-list">
-        <a href="#" class="link-item">
-          <i class='bx bxl-github link-icon'></i>
-          <span class="link-text">GitHub</span>
-        </a>
-      </li>
-      <li class="nav-list" id="logoutBtn">
-        <a href="#" class="link-item">
-          <i class='bx bxs-log-out link-icon'></i>
-          <span class="link-text">Logout</span>
-        </a>
-      </li>
-      <li class="nav-list" id="theme-toggle">
-        <a href="#" class="link-item">
-          <i class='bx bxs-moon link-icon moon'></i>
-          <i class='bx bxs-sun link-icon sun'></i>
-          <span class="link-text">Theme</span>
-        </a>
-      </li>
-    </ul>
-  </nav>
+<body class="min-h-dvh antialiased selection:bg-indigo-500/30 bg-[#0b1220] text-slate-200">
+  <div id="toaster" class="toast"></div>
 
-  <div class="main-container">
-    {% block content %}
+  <header class="{% block header_class %}sticky top-0{% endblock %} z-40">
+    <div class="glass ring-soft">
+      <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
+        <a href="/dashboard" class="flex items-center gap-3">
+          <span><img src="{{ url_for('static', filename='images/logo.png') }}" alt="" width="40px" height="40px"></span>
+          <div class="leading-tight">
+            <div class="font-semibold tracking-tight">TechHub</div>
+            <div class="text-xs text-slate-400">Technological Development</div>
+          </div>
+        </a>
+        <nav class="flex items-center gap-2">
+          <div class="hidden md:flex items-center gap-6 mr-4 text-sm font-medium text-slate-400">
+            <a href="/tools" class="hover:text-indigo-400 transition-colors">Tools</a>
+            <a href="/Q&A" class="hover:text-indigo-400 transition-colors">Q&A</a>
+            <a href="/profile" class="hover:text-indigo-400 transition-colors">Profile</a>
+          </div>
 
-    {% endblock %}
-  </div>
-  <script src="{{ url_for('static', filename='newbar.js') }}"></script>
+          <a href="https://github.com/x0rma-404/TechHub" target="_blank" class="btn btn-muted hidden md:flex">
+            <i class='bx bxl-github'></i>
+            GitHub
+          </a>
+          <button id="logoutBtn" class="btn btn-muted">
+            <i class='bx bxs-log-out'></i>
+            Logout
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="py-6">
+    <div class="page-content">
+      {% block content %}
+
+      {% endblock %}
+    </div>
+  </main>
+
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
