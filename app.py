@@ -1,12 +1,10 @@
 import os
-import requests
 import json
 import time
 import uuid
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, Response
 from werkzeug.utils import secure_filename
-from dotenv import load_dotenv
 
 # --- ARAÇ IMPORTLARI ---
 from tools.logical_evaluator.algo import lex_and_consider_adjacents, create_ast
@@ -15,50 +13,48 @@ from tools.logical_evaluator.register import reg_global
 from tools.LinuxSimulator.linux_simulator import LinuxTerminal
 from tools.CsvJson_Converter import CsvJsonConverter
 
-# .env yükle
-load_dotenv()
-
 app = Flask(__name__, static_url_path='/static')
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "your_secret_key_here")
-
-# --- 🛠️ KRİTİK AYARLAR ---
-TUNNEL_URL = os.getenv("TUNNEL_URL").rstrip('/')
-SECRET_KEY = os.getenv("DATA_SECRET_KEY")
+app.secret_key = 'your_secret_key_here'
 
 UPLOAD_FOLDER = os.path.join('static', 'images', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
+# Local JSON file paths
+USERS_DB_FILE = os.path.join('static', 'techhub_users_db.json')
+QA_DB_FILE = os.path.join('static', 'techhub_qa_db.json')
+
 # Linux Simulator
 linux_simulator = LinuxTerminal()
 
-# --- 📡 HABERLEŞME KATMANI ---
+# --- 📡 LOCAL JSON FUNCTIONS ---
 
 def load_json(db_type_key):
-    """Eski PC-den datanı çəkir"""
+    """Load data from local JSON file"""
     db_type = 'users' if 'user' in str(db_type_key).lower() else 'qa'
-    headers = {"X-Auth-Token": SECRET_KEY}
-    url = f"{TUNNEL_URL}/read/{db_type}"
-    try:
-        response = requests.get(url, headers=headers, timeout=10)
-        if response.status_code == 200:
-            return response.json()
+    db_file = USERS_DB_FILE if db_type == 'users' else QA_DB_FILE
+    
+    if not os.path.exists(db_file):
         return {} if db_type == 'users' else []
-    except Exception as e:
-        print(f"� Tunnel Read Error: {e}")
+    
+    try:
+        with open(db_file, 'r', encoding='utf-8') as f:
+            return json.load(f)
+    except (json.JSONDecodeError, FileNotFoundError):
         return {} if db_type == 'users' else []
 
 def save_json(db_type_key, data):
-    """Eski PC-yə datanı yazır"""
+    """Save data to local JSON file"""
     db_type = 'users' if 'user' in str(db_type_key).lower() else 'qa'
-    headers = {"X-Auth-Token": SECRET_KEY, "Content-Type": "application/json"}
-    url = f"{TUNNEL_URL}/write/{db_type}"
+    db_file = USERS_DB_FILE if db_type == 'users' else QA_DB_FILE
+    
     try:
-        response = requests.post(url, headers=headers, json=data, timeout=10)
-        return response.status_code == 200
+        with open(db_file, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+        return True
     except Exception as e:
-        print(f"� Tunnel Write Error: {e}")
+        print(f"❌ Save Error: {e}")
         return False
 
 # Yardımcılar
@@ -70,7 +66,7 @@ def format_time(timestamp):
 
 app.jinja_env.filters['format_time'] = format_time
 
-# --- �️ LOGGING ---
+# --- 🖼️ LOGGING ---
 @app.before_request
 def log_request_info():
     if request.path.startswith('/static'): return
@@ -91,20 +87,6 @@ def log_response_info(response):
     if not request.path.startswith('/static'):
         print(f"--- 📤 Status: {response.status} ---")
     return response
-
-# --- �🖼️ GÖRSEL PROXY ---
-@app.route('/static/images/uploads/<filename>')
-def proxy_image(filename):
-    try:
-        r = requests.get(f"{TUNNEL_URL}/static/images/uploads/{filename}", 
-                         headers={"X-Auth-Token": SECRET_KEY}, stream=True)
-        if r.status_code == 200:
-            excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
-            resp_headers = [(name, value) for (name, value) in r.raw.headers.items()
-                           if name.lower() not in excluded_headers]
-            return r.content, 200, resp_headers
-        return "Resim yok", 404
-    except: return "Proxy Hatası", 502
 
 # --- 🎖️ ROL MƏNTİQİ ---
 def update_role_logic(user_data):
@@ -260,7 +242,6 @@ def get_filtered_questions():
         filtered_data = [q for q in all_questions if len(q.get('answers', [])) == 0]
         filtered_data.sort(key=lambda x: x['timestamp'], reverse=True)
     elif filter_type == 'yeni-sorgu':
-        # 24 saat kısıtlaması kaldırıldı
         filtered_data = sorted(all_questions, key=lambda x: x['timestamp'], reverse=True)
     
     total = len(filtered_data)
@@ -406,5 +387,5 @@ def update_profile():
 
 if __name__ == '__main__':
     print(f"\n🚀 SİSTEM BAŞLIYOR...")
-    print(f"🔗 HEDEF TÜNEL: {TUNNEL_URL}")
+    print(f"📁 LOCAL MODE - Using JSON files")
     app.run(host='0.0.0.0', port=5000, debug=True)
