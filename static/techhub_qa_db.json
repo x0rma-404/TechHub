@@ -1,0 +1,158 @@
+[
+  {
+    "id": "547236d2-4fe9-4d85-b81c-838f7ca65f82",
+    "title": "jjjjjj",
+    "content": "<p>ggggg</p>",
+    "category": "python",
+    "author_email": "12334@gmail.com",
+    "author_name": "123456",
+    "author_photo": "",
+    "timestamp": 1769722257441,
+    "views": 0,
+    "answers": []
+  },
+  {
+    "id": "15dc0e85-b36b-4f33-b6ad-840861f358de",
+    "title": "fdsfdsaf",
+    "content": "<p>safasfdsafa</p>",
+    "category": "web",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_4fbfda9d.png",
+    "timestamp": 1769721016610,
+    "views": 0,
+    "answers": []
+  },
+  {
+    "id": "dae9f0ff-6729-471d-b1db-5604b3eb34a7",
+    "title": "fdsfasfds",
+    "content": "<p>dsfsdfdsf</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_4fbfda9d.png",
+    "timestamp": 1769720966035,
+    "views": 0,
+    "answers": []
+  },
+  {
+    "id": "52a01755-b6bb-478b-833a-2821881d74cf",
+    "title": "How to use JavaScript arrays effectively?",
+    "content": "<p>I'm learning JavaScript and want to know the best practices for working with arrays. What are some common methods and when to use them?</p>",
+    "category": "web",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_537b169a.png",
+    "timestamp": 1769717976567,
+    "views": 0,
+    "answers": []
+  },
+  {
+    "id": "ac510d35-96f9-47f2-9bc5-158af7725bc1",
+    "title": "Python list comprehensions vs for loops",
+    "content": "<p>When should I use list comprehensions instead of regular for loops in Python? Are there performance differences?</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "../static/images/uploads/Hemid_profile.ico",
+    "timestamp": 1769714222587,
+    "views": 0,
+    "answers": [
+      {
+        "id": "083e3b34-4751-4b09-957e-190c4367cd24",
+        "text": "<p>List comprehensions are generally faster and more concise for simple operations. Use them when you need to create a new list from an existing iterable with a simple transformation.</p>",
+        "reply_to": null,
+        "author_email": "hemidd@gmail.com",
+        "author_name": "Hemid",
+        "author_photo": "../static/images/uploads/Hemid_profile.ico",
+        "role": "Yeni",
+        "timestamp": 1769714226743,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "new-q-1",
+    "title": "How to install Linux on a virtual machine?",
+    "content": "<p>I'm new to Linux and want to try it out. What's the best way to install Ubuntu on VirtualBox?</p>",
+    "category": "linux",
+    "author_email": "user@example.com",
+    "author_name": "TechUser",
+    "author_photo": "",
+    "timestamp": 1769800000000,
+    "views": 0,
+    "answers": [
+      {
+        "id": "b8add666-78e9-4b81-9ea6-d77f5ed6879c",
+        "text": "<p>use termianl</p><p><br></p>",
+        "reply_to": null,
+        "author_email": "hemidd@gmail.com",
+        "author_name": "Hemid",
+        "author_photo": "/static/images/uploads/Hemid_profile_4fbfda9d.png",
+        "role": "Yeni",
+        "timestamp": 1769722516662,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "new-q-2",
+    "title": "CSS Grid vs Flexbox - when to use which?",
+    "content": "<p>Can someone explain the difference between CSS Grid and Flexbox? When should I use one over the other?</p>",
+    "category": "web",
+    "author_email": "dev@example.com",
+    "author_name": "WebDev",
+    "author_photo": "",
+    "timestamp": 1769750000000,
+    "views": 0,
+    "answers": [
+      {
+        "id": "ans-1",
+        "text": "<p>Use Flexbox for one-dimensional layouts (rows or columns) and Grid for two-dimensional layouts. Grid is better for complex page layouts.</p>",
+        "reply_to": null,
+        "author_email": "dev@example.com",
+        "author_name": "WebDev",
+        "author_photo": "",
+        "role": "Üzv",
+        "timestamp": 1769751000000,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "new-q-3",
+    "title": "Python virtual environments best practices",
+    "content": "<p>How do you manage virtual environments in Python projects? What tools do you recommend?</p>",
+    "category": "python",
+    "author_email": "pythonista@example.com",
+    "author_name": "Pythonista",
+    "author_photo": "",
+    "timestamp": 1769700000000,
+    "views": 0,
+    "answers": []
+  },
+  {
+    "id": "new-q-4",
+    "title": "Basic Linux commands every developer should know",
+    "content": "<p>What are the essential Linux commands that every developer working with Linux should know?</p>",
+    "category": "linux",
+    "author_email": "linuxfan@example.com",
+    "author_name": "LinuxFan",
+    "author_photo": "",
+    "timestamp": 1769650000000,
+    "views": 0,
+    "answers": [
+      {
+        "id": "ans-2",
+        "text": "<p>ls, cd, mkdir, rm, cp, mv, grep, find, chmod, chown, ps, top, kill, sudo, apt/yum, ssh, scp</p>",
+        "reply_to": null,
+        "author_email": "linuxfan@example.com",
+        "author_name": "LinuxFan",
+        "author_photo": "",
+        "role": "Çoxbilmiş",
+        "timestamp": 1769651000000,
+        "votes": 0
+      }
+    ]
+  }
+]

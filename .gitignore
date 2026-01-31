@@ -11,10 +11,6 @@ ENV/
 instance/
 .webassets-cache
 
-# Database/Storage
-static/images/uploads/
-*.json
-!static/tools-icons.json
 
 # IDEs
 .vscode/

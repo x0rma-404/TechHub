@@ -1,0 +1,194 @@
+{% extends "bar.html" %}
+
+{% block content %}
+
+<div class="max-w-5xl mx-auto px-4">
+    <div class="glass ring-soft rounded-2xl p-6 md:p-8 mb-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2">8-Bit Floating Point Converter</h1>
+            <p class="text-slate-400">Enter a decimal number to convert to 8-bit floating point representation</p>
+            <p class="text-sm text-slate-500 mt-2">Format: 1 sign bit + 3 exponent bits (bias=3) + 4 mantissa bits</p>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Mode Toggle -->
+            <div class="flex gap-2 p-1 bg-slate-800/50 rounded-lg w-fit">
+                <button id="modeDecimal" class="px-4 py-2 rounded-md bg-indigo-500 text-white transition-all">Decimal →
+                    Binary</button>
+                <button id="modeBinary"
+                    class="px-4 py-2 rounded-md text-slate-400 hover:text-white transition-all">Binary →
+                    Decimal</button>
+            </div>
+
+            <!-- Decimal to Binary Mode -->
+            <div id="decimalMode">
+                <div class="flex gap-3">
+                    <input type="text" id="floatingInput" class="input flex-1 rounded-xl px-4 py-3"
+                        placeholder="Enter a number (e.g., 5.75, -3.5, 0.375)" spellcheck="false">
+                    <button id="evaluateBtn" class="btn btn-primary px-6">Convert to Binary</button>
+                </div>
+
+                <!-- Examples -->
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="text-sm text-slate-400">Examples:</span>
+                    <button class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                        onclick="setExample('5.75')">5.75</button>
+                    <button class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                        onclick="setExample('-5.75')">-5.75</button>
+                    <button class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                        onclick="setExample('0.375')">0.375</button>
+                    <button class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                        onclick="setExample('12.5')">12.5</button>
+                    <button class="text-sm text-indigo-400 hover:text-indigo-300 transition-colors"
+                        onclick="setExample('1.0')">1.0</button>
+                </div>
+            </div>
+
+            <!-- Binary to Decimal Mode -->
+            <div id="binaryMode" class="hidden">
+                <div class="flex gap-3">
+                    <input type="text" id="binaryInput2" class="input flex-1 rounded-xl px-4 py-3 font-mono"
+                        placeholder="Enter 8-bit binary (e.g., 01010110 or 0 101 0110)" spellcheck="false">
+                    <button id="reverseBtn2" class="btn btn-primary px-6">Convert to Decimal</button>
+                </div>
+
+                <!-- Examples -->
+                <div class="flex flex-wrap gap-2 mt-3">
+                    <span class="text-sm text-slate-400">Examples:</span>
+                    <button
+                        class="text-sm font-mono transition-colors px-2 py-1 rounded bg-slate-800/50 hover:bg-slate-700/50"
+                        onclick="setBinaryExample('01010111')">
+                        <span class="text-red-400">0</span><span class="text-green-400">101</span><span
+                            class="text-blue-400">0111</span>
+                    </button>
+                    <button
+                        class="text-sm font-mono transition-colors px-2 py-1 rounded bg-slate-800/50 hover:bg-slate-700/50"
+                        onclick="setBinaryExample('11010111')">
+                        <span class="text-red-400">1</span><span class="text-green-400">101</span><span
+                            class="text-blue-400">0111</span>
+                    </button>
+                    <button
+                        class="text-sm font-mono transition-colors px-2 py-1 rounded bg-slate-800/50 hover:bg-slate-700/50"
+                        onclick="setBinaryExample('00101000')">
+                        <span class="text-red-400">0</span><span class="text-green-400">010</span><span
+                            class="text-blue-400">1000</span>
+                    </button>
+                    <button
+                        class="text-sm font-mono transition-colors px-2 py-1 rounded bg-slate-800/50 hover:bg-slate-700/50"
+                        onclick="setBinaryExample('01101001')">
+                        <span class="text-red-400">0</span><span class="text-green-400">110</span><span
+                            class="text-blue-400">1001</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    <div id="errorMessage" class="glass ring-soft rounded-2xl p-4 mb-6 hidden border-l-4 border-red-500">
+        <p class="text-red-400"></p>
+    </div>
+
+    <!-- Loading -->
+    <div id="loading" class="glass ring-soft rounded-2xl p-8 text-center hidden">
+        <div
+            class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-500 border-r-transparent">
+        </div>
+        <p class="mt-4 text-slate-400">Converting...</p>
+    </div>
+
+    <!-- Binary to Decimal Result -->
+    <div id="binaryResult" class="glass ring-soft rounded-2xl p-6 hidden">
+        <h3 class="font-semibold mb-4 text-xl">Decimal Value</h3>
+        <div id="decimalValue"
+            class="bg-green-500/10 border border-green-500/20 rounded-xl p-6 font-mono text-2xl text-green-300 text-center">
+        </div>
+
+        <!-- Show the input binary with colors -->
+        <div class="mt-4 text-center">
+            <p class="text-slate-400 text-sm mb-2">Input Binary:</p>
+            <div id="inputBinaryColored" class="font-mono text-lg"></div>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div id="results" class="space-y-6 hidden">
+        <!-- Binary Representation -->
+        <div class="glass ring-soft rounded-2xl p-6">
+            <h3 class="font-semibold mb-4 text-xl">Binary Representation</h3>
+            <div class="bg-indigo-500/10 border border-indigo-500/20 rounded-xl p-6 text-center">
+                <div id="simplifiedText" class="font-mono text-2xl tracking-wider inline-block"></div>
+            </div>
+            <div class="flex justify-center gap-6 mt-4 text-sm">
+                <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 bg-red-500 rounded"></span>
+                    <span class="text-slate-400">Sign (1 bit)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 bg-green-500 rounded"></span>
+                    <span class="text-slate-400">Exponent (3 bits)</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 bg-blue-500 rounded"></span>
+                    <span class="text-slate-400">Mantissa (4 bits)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Component Breakdown (shown only if detailed data is available) -->
+        <div id="detailsSection" class="space-y-6 hidden">
+            <div class="glass ring-soft rounded-2xl p-6">
+                <h3 class="font-semibold mb-4 text-xl">Component Breakdown</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-800/50 rounded-lg p-4">
+                        <p class="text-slate-400 text-sm mb-2">Sign Bit</p>
+                        <p id="signBit" class="font-mono text-xl text-indigo-300"></p>
+                        <p id="signMeaning" class="text-sm text-slate-500 mt-1"></p>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-4">
+                        <p class="text-slate-400 text-sm mb-2">Exponent (3 bits)</p>
+                        <p id="exponentBits" class="font-mono text-xl text-indigo-300"></p>
+                        <p id="exponentValue" class="text-sm text-slate-500 mt-1"></p>
+                    </div>
+                    <div class="bg-slate-800/50 rounded-lg p-4">
+                        <p class="text-slate-400 text-sm mb-2">Mantissa (4 bits)</p>
+                        <p id="mantissaBits" class="font-mono text-xl text-indigo-300"></p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Details -->
+            <div class="glass ring-soft rounded-2xl p-6">
+                <h3 class="font-semibold mb-4 text-xl">Conversion Details</h3>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Decimal to Binary:</span>
+                        <span id="decimalBinary" class="font-mono text-indigo-300"></span>
+                    </div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-slate-400">Actual Exponent:</span>
+                        <span id="actualExponent" class="font-mono text-indigo-300"></span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reverse Conversion -->
+            <div class="glass ring-soft rounded-2xl p-6">
+                <h3 class="font-semibold mb-4 text-xl">Verify (Convert Back to Decimal)</h3>
+                <div class="flex gap-3">
+                    <input type="text" id="binaryInput" class="input flex-1 rounded-xl px-4 py-3 font-mono"
+                        placeholder="Enter 8-bit binary (e.g., 01010110 or 0 101 0110)" spellcheck="false">
+                    <button id="reverseBtn" class="btn btn-primary px-6">To Decimal</button>
+                </div>
+                <div id="reverseResult" class="mt-4 p-4 bg-green-500/10 border border-green-500/20 rounded-xl hidden">
+                    <p class="text-green-300">Decimal value: <span id="reverseDecimal"
+                            class="font-mono font-bold"></span></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/fp.js"></script>
+
+{% endblock %}

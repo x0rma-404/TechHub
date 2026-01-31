@@ -12,6 +12,7 @@ from tools.logical_evaluator.truth_table import TruthTable, TooLongError
 from tools.logical_evaluator.register import reg_global
 from tools.LinuxSimulator.linux_simulator import LinuxTerminal
 from tools.CsvJson_Converter.csv_json_converter import CsvJsonConverter
+from tools.floating_point.floating_point import FloatingPoint
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'your_secret_key_here'
@@ -25,8 +26,9 @@ if not os.path.exists(UPLOAD_FOLDER):
 USERS_DB_FILE = os.path.join('static', 'techhub_users_db.json')
 QA_DB_FILE = os.path.join('static', 'techhub_qa_db.json')
 
-# Linux Simulator
+# Initialize tools
 linux_simulator = LinuxTerminal()
+floating_point_converter = FloatingPoint()  # ✅ INITIALIZE HERE, NOT IN ROUTE
 
 # --- 📡 LOCAL JSON FUNCTIONS ---
 
@@ -109,7 +111,7 @@ def dashboard():
     if 'user' not in session: return redirect(url_for('home'))
     all_questions = load_json("qa")
     sorted_questions = sorted(all_questions, key=lambda x: x['timestamp'], reverse=True)
-    recent_activity = sorted_questions[:3]  # Get 3 most recent
+    recent_activity = sorted_questions[:3]
     return render_template('index.html', recent_activity=recent_activity)
 
 @app.route('/api/user')
@@ -310,7 +312,72 @@ def linux_sim():
     output = linux_simulator.run_command(data.get("command", ""))
     return jsonify({"output": output, "path": linux_simulator.current_path})
 
-@app.route('/python-compiler')
+@app.route('/tools/floating-point')
+def floating_point_page():  # ✅ RENAMED TO AVOID CONFLICT
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('floating.html')
+
+@app.route('/api/evaluate-floating', methods=['POST'])
+def evaluate_floating():
+    if 'user' not in session: 
+        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
+    
+    data = request.get_json()
+    number = data.get('number', '').strip()
+    
+    if not number:
+        return jsonify({'success': False, 'message': 'Please enter a number'})
+    
+    try:
+        # ✅ USE THE GLOBAL INSTANCE
+        result = floating_point_converter.convert_to_floating_point(number)
+        
+        # Check if result is a dict (new version) or string (old version)
+        if isinstance(result, dict):
+            return jsonify({
+                'success': True,
+                'binary': result['formatted'],
+                'raw_binary': result['binary'],
+                'details': {
+                    'sign': 'Negative' if result['sign'] == '1' else 'Positive',
+                    'exponent_bits': result['exponent'],
+                    'exponent_value': result['actual_exponent'],
+                    'mantissa': result['mantissa'],
+                    'decimal_binary': result['decimal_binary']
+                }
+            })
+        else:
+            # Old version compatibility
+            return jsonify({'success': True, 'binary': result})
+            
+    except ValueError as e:
+        return jsonify({'success': False, 'message': str(e)})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'})
+
+@app.route('/api/floating-to-decimal', methods=['POST'])
+def floating_to_decimal():
+    """Convert 8-bit floating point back to decimal"""
+    if 'user' not in session:
+        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
+    
+    data = request.get_json()
+    binary = data.get('binary', '').strip()
+    
+    if not binary:
+        return jsonify({'success': False, 'message': 'Please enter a binary number'})
+    
+    try:
+        decimal = floating_point_converter.convert_from_floating_point(binary)
+        return jsonify({
+            'success': True,
+            'decimal': decimal
+        })
+    except ValueError as e:
+        return jsonify({'success': False, 'message': str(e)})
+    except Exception as e:
+        return jsonify({'success': False, 'message': f'Error: {str(e)}'})
+
 @app.route('/tools/python3')
 def python_comp():
     if 'user' not in session: return redirect(url_for('home'))
