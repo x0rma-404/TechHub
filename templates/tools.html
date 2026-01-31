@@ -1,6 +1,7 @@
 {% extends "bar.html" %}
 
 {%block content%}
+<link rel="stylesheet" href="../static/tools.css">
 
 <div class="max-w-6xl mx-auto px-4 py-8">
   <div class="mb-8">
@@ -9,21 +10,21 @@
   </div>
 
   <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 animate-stagger">
-    <a href="/tools/terminal" class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
+    <a href="/tools/terminal" class="glass ring-soft rounded-2xl p-6 tool-card tool-card-indigo group">
       <div class="flex flex-col items-center text-center gap-3">
         <i class="si si-linux text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors"></i>
         <span class="font-medium">Terminal</span>
       </div>
     </a>
 
-    <a href="/tools/python3" class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
+    <a href="/tools/python3" class="glass ring-soft rounded-2xl p-6 tool-card tool-card-indigo group">
       <div class="flex flex-col items-center text-center gap-3">
         <i class="si si-python text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors"></i>
         <span class="font-medium">Python</span>
       </div>
     </a>
 
-    <a href="/tools/logic" class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
+    <a href="/tools/logic" class="glass ring-soft rounded-2xl p-6 tool-card tool-card-indigo group">
       <div class="flex flex-col items-center text-center gap-3">
         <span class="material-symbols-outlined text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors"
           style="font-size: 2rem;">schema</span>
@@ -31,20 +32,19 @@
       </div>
     </a>
 
-    <a href="/tools/converter" class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
+    <a href="/tools/converter" class="glass ring-soft rounded-2xl p-6 tool-card tool-card-indigo group">
       <div class="flex flex-col items-center text-center gap-3">
         <i class='bx bx-transfer-alt text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors'></i>
         <span class="font-medium">Converter</span>
       </div>
     </a>
     <a href="/tools/floating-point"
-      class="glass ring-soft rounded-2xl p-6 hover:border-amber-500/50 transition-all group relative overflow-hidden">
+      class="glass ring-soft rounded-2xl p-6 tool-card tool-card-amber group relative overflow-hidden">
       <div class="flex flex-col items-center text-center gap-4">
         <i class='bx bx-chip text-4xl text-slate-300 group-hover:text-amber-400 transition-colors'></i>
 
         <div class="flex flex-col gap-1">
           <span class="font-medium">FP Converter</span>
-
           <div class="flex gap-[2px] mt-2 justify-center" title="IEEE-754: Sign, Exponent, Mantissa">
             <div class="w-2 h-4 bg-red-500/80 rounded-sm shadow-[0_0_8px_rgba(239,68,68,0.4)]"></div>
             <div class="flex gap-[1px]">
@@ -65,16 +65,36 @@
       </div>
     </a>
 
-    <!-- Placeholder tools -->
-    <div class="glass ring-soft rounded-2xl p-6 opacity-50 cursor-not-allowed">
+    <a href="/tools/c++" class="glass ring-soft rounded-2xl p-6 tool-card tool-card-indigo group">
       <div class="flex flex-col items-center text-center gap-3">
-        <i class="si si-cplusplus text-4xl text-slate-500"></i>
-        <span class="font-medium text-slate-500">C++</span>
-        <span class="badge text-xs">Coming Soon</span>
+        <i class="si si-cplusplus text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors"></i>
+        <span class="font-medium">C/C++</span>
       </div>
-    </div>
+    </a>
 
-    <div class="glass ring-soft rounded-2xl p-6 opacity-50 cursor-not-allowed">
+    <a href="/tools/go" class="glass ring-soft rounded-2xl p-6 tool-card tool-card-indigo group">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class="si si-go text-4xl text-slate-300 group-hover:text-indigo-400 transition-colors"></i>
+        <span class="font-medium">Go</span>
+      </div>
+    </a>
+
+    <a href="/tools/ruby" class="glass ring-soft rounded-2xl p-6 tool-card tool-card-red group">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class="si si-ruby text-4xl text-slate-300 group-hover:text-red-400 transition-colors"></i>
+        <span class="font-medium">Ruby</span>
+      </div>
+    </a>
+
+
+    <a href="/tools/java" class="glass ring-soft rounded-2xl p-6 tool-card tool-card-orange group">
+      <div class="flex flex-col items-center text-center gap-3">
+        <i class='bx bxl-java text-6xl text-slate-300 group-hover:text-orange-500 transition-colors'></i>
+        <span class="font-medium">Java</span>
+      </div>
+    </a>
+
+    <div class="glass ring-soft rounded-2xl p-6 tool-card-disabled">
       <div class="flex flex-col items-center text-center gap-3">
         <i class="si si-javascript text-4xl text-slate-500"></i>
         <span class="font-medium text-slate-500">JavaScript</span>
@@ -82,21 +102,6 @@
       </div>
     </div>
 
-    <div class="glass ring-soft rounded-2xl p-6 opacity-50 cursor-not-allowed">
-      <div class="flex flex-col items-center text-center gap-3">
-        <i class="si si-go text-4xl text-slate-500"></i>
-        <span class="font-medium text-slate-500">Go</span>
-        <span class="badge text-xs">Coming Soon</span>
-      </div>
-    </div>
-
-    <div class="glass ring-soft rounded-2xl p-6 opacity-50 cursor-not-allowed">
-      <div class="flex flex-col items-center text-center gap-3">
-        <i class="si si-rust text-4xl text-slate-500"></i>
-        <span class="font-medium text-slate-500">Rust</span>
-        <span class="badge text-xs">Coming Soon</span>
-      </div>
-    </div>
   </div>
 </div>
 

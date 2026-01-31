@@ -1,0 +1,28 @@
+    .CodeMirror {
+        height: 100% !important;
+        font-family: 'Fira Code', monospace;
+        background: transparent !important;
+    }
+
+    .cm-s-material-darker.CodeMirror {
+        background: transparent !important;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .scrollbar-thumb-white\/10::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .CodeMirror-gutters {
+        background: transparent !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .CodeMirror-linenumber {
+        color: #64748b !important;
+    }

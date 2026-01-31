@@ -28,7 +28,7 @@ QA_DB_FILE = os.path.join('static', 'techhub_qa_db.json')
 
 # Initialize tools
 linux_simulator = LinuxTerminal()
-floating_point_converter = FloatingPoint()  # ✅ INITIALIZE HERE, NOT IN ROUTE
+floating_point_converter = FloatingPoint()
 
 # --- 📡 LOCAL JSON FUNCTIONS ---
 
@@ -397,6 +397,284 @@ def terminal():
 def converter():
     if 'user' not in session: return redirect(url_for('home'))
     return render_template('converter.html')
+
+@app.route('/tools/c++')
+def cpp_playground():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('cpp_comp.html')
+
+@app.route('/tools/ruby')
+def ruby_playground():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('ruby.html')
+
+@app.route('/tools/go')
+def go_playground():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('go.html')
+
+@app.route('/tools/java')
+def java_playground():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('java.html')
+
+@app.route('/run-cpp', methods=['POST'])
+def run_cpp():
+    # if 'user' not in session: return jsonify({'error': 'Unauthorized'}), 401
+    
+    code = request.json.get('code')
+    if not code: return jsonify({'error': 'No code provided'}), 400
+
+    import requests
+
+    # Godbolt API Configuration
+    # Using GCC 14.1.0 (g141) as a stable, modern choice
+    GODBOLD_API_URL = "https://godbolt.org/api/compiler/g141/compile"
+    
+    payload = {
+        "source": code,
+        "options": {
+            "userArguments": "",
+            "compilerOptions": {
+                "executorRequest": True  # Enable execution
+            },
+            "filters": {
+                "execute": True  # THIS IS KEY: Request execution of the compiled code
+            },
+            "tools": [],
+            "libraries": []
+        }
+    }
+    
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
+
+    try:
+        response = requests.post(GODBOLD_API_URL, json=payload, headers=headers)
+        result = response.json()
+        
+        # Check for compilation errors first
+        if result.get('code') != 0 and not result.get('didExecute'):
+            # Combine stdout and stderr from compilation
+            error_msg = ""
+            for line in result.get('stderr', []):
+                error_msg += line.get('text', '') + "\n"
+            return jsonify({'success': False, 'error': error_msg or "Compilation failed"})
+            
+        # If execution happened
+        if result.get('didExecute'):
+            # Combine execution stdout
+            output = ""
+            for line in result.get('stdout', []):
+                output += line.get('text', '') + "\n"
+            
+            # Combine execution stderr (e.g. runtime errors)
+            stderr_out = ""
+            for line in result.get('stderr', []):
+                stderr_out += line.get('text', '') + "\n"
+                
+            final_output = output + ("\nRuntime Error:\n" + stderr_out if stderr_out else "")
+            return jsonify({'success': True, 'output': final_output or "Program executed successfully (no output)."})
+        else:
+             # Fallback if execution flag was ignored or failed silently
+             return jsonify({'success': False, 'error': "Compilation successful, but execution failed or was not returned."})
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': "API Error: " + str(e)})
+
+@app.route('/run-ruby', methods=['POST'])
+def run_ruby():
+    # if 'user' not in session: return jsonify({'error': 'Unauthorized'}), 401
+    
+    code = request.json.get('code')
+    if not code: return jsonify({'error': 'No code provided'}), 400
+
+    import requests
+
+    # Godbolt API Configuration for Ruby
+    # Using Ruby 3.3.4
+    GODBOLD_API_URL = "https://godbolt.org/api/compiler/ruby334/compile"
+    
+    payload = {
+        "source": code,
+        "options": {
+            "userArguments": "",
+            "compilerOptions": {
+                "executorRequest": True
+            },
+            "filters": {
+                "execute": True
+            },
+            "tools": [],
+            "libraries": []
+        }
+    }
+    
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
+
+    try:
+        response = requests.post(GODBOLD_API_URL, json=payload, headers=headers)
+        if response.status_code != 200:
+             return jsonify({'success': False, 'error': f"Godbolt API Error ({response.status_code}): {response.text}"})
+
+        result = response.json()
+        
+        # Check for compilation/execution errors
+        if result.get('code') != 0 and not result.get('didExecute'):
+            error_msg = ""
+            for line in result.get('stderr', []):
+                error_msg += line.get('text', '') + "\n"
+            return jsonify({'success': False, 'error': error_msg or "Execution failed"})
+            
+        if result.get('didExecute'):
+            output = ""
+            for line in result.get('stdout', []):
+                output += line.get('text', '') + "\n"
+            
+            stderr_out = ""
+            for line in result.get('stderr', []):
+                stderr_out += line.get('text', '') + "\n"
+                
+            final_output = output + ("\nRuntime Error:\n" + stderr_out if stderr_out else "")
+            return jsonify({'success': True, 'output': final_output or "Program executed successfully."})
+        else:
+             return jsonify({'success': False, 'error': "Execution failed or returned no output."})
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': "API Error: " + str(e)})
+
+@app.route('/run-go', methods=['POST'])
+def run_go():
+    # if 'user' not in session: return jsonify({'error': 'Unauthorized'}), 401
+    
+    code = request.json.get('code')
+    if not code: return jsonify({'error': 'No code provided'}), 400
+
+    import requests
+
+    # Godbolt API Configuration for Go
+    # Using Go 1.22.12 (gl12212) - Stable x86-64 gc
+    GODBOLT_API_URL = "https://godbolt.org/api/compiler/gl12212/compile"
+    
+    payload = {
+        "source": code,
+        "options": {
+            "userArguments": "",
+            "compilerOptions": {
+                "executorRequest": True
+            },
+            "filters": {
+                "execute": True
+            },
+            "tools": [],
+            "libraries": []
+        }
+    }
+    
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
+
+    try:
+        response = requests.post(GODBOLT_API_URL, json=payload, headers=headers)
+        if response.status_code != 200:
+             return jsonify({'success': False, 'error': f"Godbolt API Error ({response.status_code}): {response.text}"})
+
+        result = response.json()
+        
+        # Check for compilation/execution errors
+        if result.get('code') != 0 and not result.get('didExecute'):
+            error_msg = ""
+            for line in result.get('stderr', []):
+                error_msg += line.get('text', '') + "\n"
+            return jsonify({'success': False, 'error': error_msg or "Execution failed"})
+            
+        if result.get('didExecute'):
+            output = ""
+            for line in result.get('stdout', []):
+                output += line.get('text', '') + "\n"
+            
+            stderr_out = ""
+            for line in result.get('stderr', []):
+                stderr_out += line.get('text', '') + "\n"
+                
+            final_output = output + ("\nRuntime Error:\n" + stderr_out if stderr_out else "")
+            return jsonify({'success': True, 'output': final_output or "Program executed successfully."})
+        else:
+             return jsonify({'success': False, 'error': "Execution failed or returned no output."})
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': "API Error: " + str(e)})
+
+@app.route('/run-java', methods=['POST'])
+def run_java():
+    # if 'user' not in session: return jsonify({'error': 'Unauthorized'}), 401
+    
+    code = request.json.get('code')
+    if not code: return jsonify({'error': 'No code provided'}), 400
+
+    import requests
+
+    # Godbolt API Configuration for Java
+    # Using JDK 23.0.1 (java2301)
+    GODBOLT_API_URL = "https://godbolt.org/api/compiler/java2301/compile"
+    
+    payload = {
+        "source": code,
+        "options": {
+            "userArguments": "",
+            "compilerOptions": {
+                "executorRequest": True
+            },
+            "filters": {
+                "execute": True
+            },
+            "tools": [],
+            "libraries": []
+        }
+    }
+    
+    headers = {
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+    }
+
+    try:
+        response = requests.post(GODBOLT_API_URL, json=payload, headers=headers)
+        if response.status_code != 200:
+             return jsonify({'success': False, 'error': f"Godbolt API Error ({response.status_code}): {response.text}"})
+
+        result = response.json()
+        
+        # Check for compilation/execution errors
+        if result.get('code') != 0 and not result.get('didExecute'):
+            error_msg = ""
+            for line in result.get('stderr', []):
+                error_msg += line.get('text', '') + "\n"
+            return jsonify({'success': False, 'error': error_msg or "Execution failed"})
+            
+        if result.get('didExecute'):
+            output = ""
+            for line in result.get('stdout', []):
+                output += line.get('text', '') + "\n"
+            
+            stderr_out = ""
+            for line in result.get('stderr', []):
+                stderr_out += line.get('text', '') + "\n"
+                
+            final_output = output + ("\nRuntime Error:\n" + stderr_out if stderr_out else "")
+            return jsonify({'success': True, 'output': final_output or "Program executed successfully."})
+        else:
+             return jsonify({'success': False, 'error': "Execution failed or returned no output."})
+
+    except Exception as e:
+        return jsonify({'success': False, 'error': "API Error: " + str(e)})
 
 @app.route('/api/logic/evaluate', methods=['POST'])
 def evaluate_logic():

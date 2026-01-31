@@ -1,0 +1,72 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/material-darker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/ruby/ruby.min.js"></script>
+<link rel="stylesheet" href="../static/python.css">
+<link rel="stylesheet" href="../static/ruby.css">
+<div class="max-w-[1400px] mx-auto px-4 py-8 h-[85vh] min-h-[600px] flex flex-col">
+    <div class="glass ring-soft rounded-2xl overflow-hidden flex flex-col flex-1 shadow-2xl">
+        <!-- Toolbar -->
+        <div
+            class="flex items-center justify-between px-6 py-4 border-b border-white/5 shrink-0 bg-white/5 backdrop-blur-md">
+            <div class="flex items-center gap-3">
+                <i class="bx bxl-ruby text-3xl text-rose-500 drop-shadow-[0_0_8px_rgba(244,63,94,0.5)]"></i>
+                <span class="font-semibold text-lg text-slate-200">Ruby Playground</span>
+            </div>
+            <div class="flex gap-3">
+                <button class="btn btn-muted px-4 py-2 hover:bg-white/10 transition-colors" onclick="clearConsole()">
+                    <i class='bx bx-trash mr-2'></i> Clear
+                </button>
+                <button
+                    class="btn btn-primary px-6 py-2 bg-rose-600 hover:bg-rose-500 transition-all shadow-lg hover:shadow-rose-500/30"
+                    id="runBtn" onclick="runRuby()" disabled>
+                    <i class='bx bx-play mr-2'></i> Run Code
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid lg:grid-cols-[1.5fr_1fr] flex-1 min-h-0 divide-x divide-white/5">
+            <!-- Editor Section -->
+            <div class="flex flex-col relative bg-slate-900/40">
+                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+                    <span class="text-xs font-semibold text-slate-400 tracking-wider">EDITOR</span>
+                    <span class="text-xs text-slate-500 font-mono">main.rb</span>
+                </div>
+                <div class="relative flex-1 text-base">
+                    <textarea id="code-editor"># TechHub Ruby Playground (Godbolt API - Ruby 3.3.4)
+
+def salamla(ad)
+  "Salam, #{ad}! Ruby Godbolt-da işləyir."
+end
+
+puts salamla("İstifadəçi")
+
+# Döngü nümunəsi
+5.times do |i|
+  puts "Say: #{i+1}"
+end</textarea>
+                </div>
+            </div>
+
+            <!-- Console Section -->
+            <div class="flex flex-col bg-slate-950/50">
+                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+                    <span class="text-xs font-semibold text-slate-400 tracking-wider">OUTPUT</span>
+                    <span id="status-badge"
+                        class="text-xs font-medium px-2 py-0.5 rounded-full bg-white/5 text-slate-400">Ready</span>
+                </div>
+                <pre id="console"
+                    class="p-6 flex-1 font-mono text-sm leading-relaxed overflow-auto text-rose-300 selection:bg-rose-500/20 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">Ready to execute (Using Godbolt API)...</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="../static/ruby.js"></script>
+{% endblock %}

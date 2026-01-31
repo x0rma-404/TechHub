@@ -1,0 +1,169 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/material-darker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/clike/clike.min.js"></script>
+<link rel="stylesheet" href="../static/python.css">
+
+<div class="max-w-[1400px] mx-auto px-4 py-8 h-[85vh] min-h-[600px] flex flex-col">
+    <div class="glass ring-soft rounded-2xl overflow-hidden flex flex-col flex-1 shadow-2xl">
+        <!-- Toolbar -->
+        <div
+            class="flex items-center justify-between px-6 py-4 border-b border-white/5 shrink-0 bg-white/5 backdrop-blur-md">
+            <div class="flex items-center gap-3">
+                <i class="si si-cplusplus text-3xl text-blue-400 drop-shadow-[0_0_8px_rgba(96,165,250,0.5)]"></i>
+                <span class="font-semibold text-lg text-slate-200">C++ Playground</span>
+            </div>
+            <div class="flex gap-3">
+                <button class="btn btn-muted px-4 py-2 hover:bg-white/10 transition-colors" onclick="clearConsole()">
+                    <i class='bx bx-trash mr-2'></i> Clear
+                </button>
+                <button
+                    class="btn btn-primary px-6 py-2 bg-blue-600 hover:bg-blue-500 transition-all shadow-lg hover:shadow-blue-500/30"
+                    id="runBtn" onclick="runCpp()">
+                    <i class='bx bx-play mr-2'></i> Run Code
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="grid lg:grid-cols-[1.5fr_1fr] flex-1 min-h-0 divide-x divide-white/5">
+            <!-- Editor Section -->
+            <div class="flex flex-col relative bg-slate-900/40">
+                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+                    <span class="text-xs font-semibold text-slate-400 tracking-wider">EDITOR</span>
+                    <span class="text-xs text-slate-500 font-mono">main.cpp</span>
+                </div>
+                <div class="relative flex-1 text-base">
+                    <textarea id="code-editor">#include <iostream>
+#include <vector>
+#include <string>
+
+// TechHub C++ Playground (GCC 14.1)
+
+int main() {
+    std::cout << "Hello, TechHub C++!" << std::endl;
+    
+    std::vector<std::string> fruits = {"Apple", "Banana", "Cherry"};
+    
+    for(size_t i = 0; i < fruits.size(); ++i) {
+        std::cout << i + 1 << ". " << fruits[i] << std::endl;
+    }
+    
+    return 0;
+}</textarea>
+                </div>
+            </div>
+
+            <!-- Console Section -->
+            <div class="flex flex-col bg-slate-950/50">
+                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+                    <span class="text-xs font-semibold text-slate-400 tracking-wider">OUTPUT</span>
+                    <span id="status-badge"
+                        class="text-xs font-medium px-2 py-0.5 rounded-full bg-white/5 text-slate-400">Ready</span>
+                </div>
+                <!-- Updated console text color to sky-300 -->
+                <pre id="console"
+                    class="p-6 flex-1 font-mono text-sm leading-relaxed overflow-auto text-sky-300 selection:bg-sky-500/20 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">Ready to compile (Using Godbolt API)...</pre>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .CodeMirror {
+        height: 100% !important;
+        font-family: 'Fira Code', monospace;
+        background: transparent !important;
+    }
+
+    .cm-s-material-darker.CodeMirror {
+        background: transparent !important;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .scrollbar-thumb-white\/10::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .CodeMirror-gutters {
+        background: transparent !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .CodeMirror-linenumber {
+        color: #64748b !important;
+    }
+</style>
+
+<script>
+    let editor;
+
+    window.onload = function () {
+        editor = CodeMirror.fromTextArea(document.getElementById("code-editor"), {
+            lineNumbers: true,
+            mode: "text/x-c++src",
+            theme: "material-darker",
+            indentUnit: 4,
+            matchBrackets: true,
+            autoCloseBrackets: true
+        });
+
+        // Shortcuts
+        document.addEventListener('keydown', function (e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                runCpp();
+            }
+        });
+    };
+
+    function clearConsole() {
+        document.getElementById("console").textContent = "";
+    }
+
+    async function runCpp() {
+        const runBtn = document.getElementById("runBtn");
+        const statusBadge = document.getElementById("status-badge");
+        const consoleElem = document.getElementById("console");
+        const code = editor.getValue();
+
+        runBtn.disabled = true;
+        statusBadge.textContent = "Compiling...";
+        statusBadge.className = "text-xs font-medium px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-400";
+        consoleElem.textContent = "Sending to Godbolt Compiler...";
+
+        try {
+            const response = await fetch('/run-cpp', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ code: code })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                consoleElem.textContent = data.output;
+                statusBadge.textContent = "Success";
+                statusBadge.className = "text-xs font-medium px-2 py-0.5 rounded-full bg-green-500/20 text-green-400";
+            } else {
+                consoleElem.textContent = "Error:\n" + (data.error || "Unknown error occurred");
+                statusBadge.textContent = "Failed";
+                statusBadge.className = "text-xs font-medium px-2 py-0.5 rounded-full bg-red-500/20 text-red-400";
+            }
+        } catch (err) {
+            consoleElem.textContent = "Network Error: " + err.message;
+            statusBadge.textContent = "Error";
+            statusBadge.style.color = "#ff5252";
+        } finally {
+            runBtn.disabled = false;
+        }
+    }
+</script>
+{% endblock %}

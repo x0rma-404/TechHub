@@ -8,30 +8,36 @@
 <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
 <link rel="stylesheet" href="{{ url_for('static', filename='python.css') }}">
 
-<div class="max-w-7xl mx-auto px-4 py-6">
-    <div class="glass ring-soft rounded-2xl overflow-hidden">
-        <div class="flex items-center justify-between px-6 py-4 border-b border-white/10">
+<div class="max-w-[1400px] mx-auto px-4 py-8 h-[85vh] min-h-[600px] flex flex-col">
+    <div class="glass ring-soft rounded-2xl overflow-hidden flex flex-col flex-1 shadow-2xl">
+        <!-- Toolbar -->
+        <div
+            class="flex items-center justify-between px-6 py-4 border-b border-white/5 shrink-0 bg-white/5 backdrop-blur-md">
             <div class="flex items-center gap-3">
-                <i class="bx bxl-python text-3xl text-indigo-400"></i>
-                <span class="font-semibold">Python Playground</span>
+                <i class="bx bxl-python text-3xl text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]"></i>
+                <span class="font-semibold text-lg text-slate-200">Python Playground</span>
             </div>
-            <div class="flex gap-2">
-                <button class="btn btn-muted" onclick="clearConsole()">
-                    <i class='bx bx-trash'></i> Clear
+            <div class="flex gap-3">
+                <button class="btn btn-muted px-4 py-2 hover:bg-white/10 transition-colors" onclick="clearConsole()">
+                    <i class='bx bx-trash mr-2'></i> Clear
                 </button>
-                <button class="btn btn-primary" id="runBtn" onclick="runCode()" disabled>
-                    <i class='bx bx-play'></i> Run Code
+                <button
+                    class="btn btn-primary px-6 py-2 bg-indigo-600 hover:bg-indigo-500 transition-all shadow-lg hover:shadow-indigo-500/30"
+                    id="runBtn" onclick="runCode()" disabled>
+                    <i class='bx bx-play mr-2'></i> Run Code
                 </button>
             </div>
         </div>
 
-        <div class="grid lg:grid-cols-[1.5fr_1fr] gap-0 min-h-[600px]">
-            <div class="border-r border-white/10 flex flex-col">
-                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/10">
-                    <span class="text-xs font-semibold text-slate-400">EDITOR</span>
-                    <span class="text-xs text-slate-500">main.py</span>
+        <!-- Main Content Grid -->
+        <div class="grid lg:grid-cols-[1.5fr_1fr] flex-1 min-h-0 divide-x divide-white/5">
+            <!-- Editor Section -->
+            <div class="flex flex-col relative bg-slate-900/40">
+                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+                    <span class="text-xs font-semibold text-slate-400 tracking-wider">EDITOR</span>
+                    <span class="text-xs text-slate-500 font-mono">main.py</span>
                 </div>
-                <div class="relative flex-1" style="background: linear-gradient(135deg, #1e3a8a 0%, #3730a3 100%);">
+                <div class="relative flex-1 text-base">
                     <textarea id="code-editor"># TechHub Python Playground
 # Daxil edin və Run düyməsini sıxın
 # Yalnız default lib lər istifadə edə bilərsiniz
@@ -46,29 +52,65 @@ meyveler = ["Alma", "Armud", "Gilas"]
 for index, meyve in enumerate(meyveler, 1):
     print(f"{index}. {meyve}")
 </textarea>
+
+                    <!-- Simpler Loading Overlay -->
                     <div id="editor-loading"
-                        class="absolute inset-0 bg-[#0b1220]/90 backdrop-blur-sm grid place-items-center z-10">
-                        <div class="text-center">
+                        class="absolute inset-0 bg-[#0b1220]/80 backdrop-blur-sm grid place-items-center z-10">
+                        <div class="flex flex-col items-center gap-4">
                             <div
-                                class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-500 border-r-transparent mb-3">
+                                class="w-10 h-10 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin">
                             </div>
-                            <p class="text-slate-400">Başladılır...</p>
+                            <p class="text-indigo-400 font-medium animate-pulse">Initializing Pyodide...</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-col">
-                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/10">
-                    <span class="text-xs font-semibold text-slate-400">OUTPUT</span>
-                    <span id="status-badge" class="text-xs text-green-400">Ready</span>
+            <!-- Console Section -->
+            <div class="flex flex-col bg-slate-950/50">
+                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+                    <span class="text-xs font-semibold text-slate-400 tracking-wider">OUTPUT</span>
+                    <span id="status-badge"
+                        class="text-xs font-medium px-2 py-0.5 rounded-full bg-white/5 text-slate-400">Ready</span>
                 </div>
+                <!-- Updated console text color to emerald-400 for better readability on slate-950 -->
                 <pre id="console"
-                    class="p-4 flex-1 bg-[#0d1117] text-green-400 font-mono text-sm overflow-auto">Kodu icra etmək üçün 'Run' düyməsini sıxın...</pre>
+                    class="p-6 flex-1 font-mono text-sm leading-relaxed overflow-auto text-emerald-400 selection:bg-emerald-400/20 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">Run code to see output...</pre>
             </div>
         </div>
     </div>
 </div>
 
-<script src="{{ url_for('static', filename='python.js') }}"></script>
+<style>
+    .CodeMirror {
+        height: 100% !important;
+        font-family: 'Fira Code', monospace;
+        background: transparent !important;
+    }
+
+    .cm-s-material-darker.CodeMirror {
+        background: transparent !important;
+    }
+
+    .scrollbar-thin::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+    }
+
+    .scrollbar-thumb-white\/10::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+    }
+
+    .CodeMirror-gutters {
+        background: transparent !important;
+        border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+    }
+
+    .CodeMirror-linenumber {
+        color: #64748b !important;
+    }
+</style>
+
+<script src="../static/python.js"></script>
 {% endblock %}

@@ -1,0 +1,48 @@
+/* Base Tool Card Logic */
+.tool-card {
+    display: block;
+    position: relative;
+
+    /* GPU hızlandırma ve titreme engelleme */
+    transform: perspective(1000px) translateZ(0);
+    backface-visibility: hidden;
+    will-change: transform, box-shadow, background-color, border-color;
+
+    /* Akıcılık Ayarları - Tek bir satırda daha temiz yönetim */
+    transition:
+        transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+        box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1),
+        border-color 0.4s ease,
+        background-color 0.4s ease;
+}
+
+/* Hover - Ortak Akıcı Yükselme */
+main .tool-card:hover {
+    /* !important'ı kaldırdık, seçici gücü (main .tool-card) zaten yeterli */
+    transform: translateY(-12px);
+    background-color: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.4);
+    z-index: 10;
+    /* Diğer kartların üzerine çıkması için */
+}
+
+/* Renk Bazlı Hover Efektleri - Daha Akıcı Gölge Geçişleri */
+main a.tool-card-indigo:hover {
+    border-color: rgba(99, 102, 241, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(99, 102, 241, 0.4);
+}
+
+main a.tool-card-amber:hover {
+    border-color: rgba(245, 158, 11, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(245, 158, 11, 0.4);
+}
+
+main a.tool-card-red:hover {
+    border-color: rgba(239, 68, 68, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.4);
+}
+
+main a.tool-card-orange:hover {
+    border-color: rgba(249, 115, 22, 0.5);
+    box-shadow: 0 25px 50px -12px rgba(249, 115, 22, 0.4);
+}
