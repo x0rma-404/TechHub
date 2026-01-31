@@ -1,0 +1,151 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../static/logic.css">
+
+<div class="max-w-5xl mx-auto px-4">
+    <div class="glass ring-soft rounded-2xl p-6 md:p-8 mb-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2">Subnet Kalkulyatoru</h1>
+            <p class="text-slate-400">IP ünvanını və Prefix-i daxil edərək şəbəkə detallarını hesablayın</p>
+        </div>
+
+        <div class="space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <input type="text" id="ipAddress" class="input flex-[2] rounded-xl px-4 py-3"
+                    placeholder="Məsələn: 192.168.1.10" spellcheck="false">
+
+                <input type="number" id="prefix" class="input flex-1 rounded-xl px-4 py-3" placeholder="Prefix (0-32)"
+                    min="0" max="32">
+
+                <button id="calculateBtn" class="btn btn-primary px-6">Hesabla</button>
+            </div>
+
+            <div class="flex flex-wrap gap-2 text-sm">
+                <div class="badge">IPv4</div>
+                <div class="badge">CIDR Notasiyası</div>
+                <div class="badge">Subnet Mask</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="loading" class="glass ring-soft rounded-2xl p-8 text-center hidden">
+        <div
+            class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-indigo-500 border-r-transparent">
+        </div>
+        <p class="mt-4 text-slate-400">Hesablanır...</p>
+    </div>
+
+    <div id="results" class="space-y-6 hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="glass ring-soft rounded-2xl p-6">
+                <h3 class="text-slate-400 text-sm font-medium mb-1">Subnet Mask</h3>
+                <div id="resMask" class="text-xl font-mono text-indigo-300"></div>
+            </div>
+            <div class="glass ring-soft rounded-2xl p-6">
+                <h3 class="text-slate-400 text-sm font-medium mb-1">Maksimum Host Sayı</h3>
+                <div id="resMaxHosts" class="text-xl font-mono text-emerald-400"></div>
+            </div>
+        </div>
+
+        <div class="glass ring-soft rounded-2xl p-6">
+            <h3 class="font-semibold mb-4 text-lg">Şəbəkə Detalları</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <tbody class="divide-y divide-slate-700/50">
+                        <tr>
+                            <td class="py-3 text-slate-400">Network ID</td>
+                            <td id="resNetwork" class="py-3 font-mono text-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-400">Broadcast Address</td>
+                            <td id="resBroadcast" class="py-3 font-mono text-right"></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-400">İlk İstifadə Oluna Bilən IP</td>
+                            <td id="resFirstIp" class="py-3 font-mono text-right text-indigo-400"></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-400">Son İstifadə Oluna Bilən IP</td>
+                            <td id="resLastIp" class="py-3 font-mono text-right text-indigo-400"></td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 text-slate-400">Host Bit Sayı</td>
+                            <td id="resHostBits" class="py-3 font-mono text-right"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="errorMessage" class="glass ring-soft rounded-2xl p-6 border-red-500/50 bg-red-500/10 hidden text-red-400">
+    </div>
+</div>
+
+<script>
+    const ipInput = document.getElementById('ipAddress');
+    const prefixInput = document.getElementById('prefix');
+    const calculateBtn = document.getElementById('calculateBtn');
+
+    // ENTER düyməsi funksionallığı
+    [ipInput, prefixInput].forEach(input => {
+        input.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                calculateBtn.click();
+            }
+        });
+    });
+
+    calculateBtn.addEventListener('click', async () => {
+        const resultsDiv = document.getElementById('results');
+        const errorDiv = document.getElementById('errorMessage');
+        const loadingDiv = document.getElementById('loading');
+
+        const ip = ipInput.value.trim();
+        const prefix = prefixInput.value.trim();
+
+        if (!ip || !prefix) {
+            errorDiv.textContent = 'Zəhmət olmasa həm IP, həm də Prefix daxil edin.';
+            errorDiv.classList.remove('hidden');
+            return;
+        }
+
+        resultsDiv.classList.add('hidden');
+        errorDiv.classList.add('hidden');
+        loadingDiv.classList.remove('hidden');
+
+        try {
+            const response = await fetch('/api/ipsub', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ip, prefix })
+            });
+
+            if (!response.ok) throw new Error('Server cavab vermir (Status: ' + response.status + ')');
+
+            const data = await response.json();
+
+            if (data.success) {
+                document.getElementById('resMask').textContent = data.subnet_mask;
+                document.getElementById('resMaxHosts').textContent = data.max_hosts.toLocaleString();
+                document.getElementById('resNetwork').textContent = data.network_address;
+                document.getElementById('resBroadcast').textContent = data.broadcast_address;
+                document.getElementById('resFirstIp').textContent = data.first_usable_ip;
+                document.getElementById('resLastIp').textContent = data.last_usable_ip;
+                document.getElementById('resHostBits').textContent = data.host_bits;
+
+                resultsDiv.classList.remove('hidden');
+            } else {
+                errorDiv.textContent = data.message || 'Hesablama zamanı xəta baş verdi.';
+                errorDiv.classList.remove('hidden');
+            }
+        } catch (e) {
+            errorDiv.textContent = 'Bağlantı xətası: ' + e.message;
+            errorDiv.classList.remove('hidden');
+        } finally {
+            loadingDiv.classList.add('hidden');
+        }
+    });
+</script>
+{% endblock %}

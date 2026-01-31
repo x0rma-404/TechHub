@@ -13,6 +13,7 @@ from tools.logical_evaluator.register import reg_global
 from tools.LinuxSimulator.linux_simulator import LinuxTerminal
 from tools.CsvJson_Converter.csv_json_converter import CsvJsonConverter
 from tools.floating_point.floating_point import FloatingPoint
+from tools.ip_subnet.subcalc import SubnetCalculator
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'your_secret_key_here'
@@ -317,6 +318,11 @@ def floating_point_page():  # ✅ RENAMED TO AVOID CONFLICT
     if 'user' not in session: return redirect(url_for('home'))
     return render_template('floating.html')
 
+@app.route('/tools/ipsub')
+def ipsub_page():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('ipsub.html')
+
 @app.route('/api/evaluate-floating', methods=['POST'])
 def evaluate_floating():
     if 'user' not in session: 
@@ -377,6 +383,32 @@ def floating_to_decimal():
         return jsonify({'success': False, 'message': str(e)})
     except Exception as e:
         return jsonify({'success': False, 'message': f'Error: {str(e)}'})
+
+@app.route('/api/ipsub', methods=['POST'])
+def calculate():
+    try:
+        data = request.get_json()
+        ip = data.get('ip')
+        prefix = int(data.get('prefix'))
+
+        # Sinifdən obyekt yaradırıq
+        calc = SubnetCalculator(ip, prefix)
+        
+        # Məlumatları alırıq
+        nw, bc, first, last = calc.get_network_details()
+        
+        return jsonify({
+            'success': True,
+            'subnet_mask': calc.get_mask(),
+            'max_hosts': calc.get_max_hosts(),
+            'network_address': nw,
+            'broadcast_address': bc,
+            'first_usable_ip': first,
+            'last_usable_ip': last,
+            'host_bits': calc.get_host_bits()
+        })
+    except Exception as e:
+        return jsonify({'success': False, 'message': str(e)})
 
 @app.route('/tools/python3')
 def python_comp():

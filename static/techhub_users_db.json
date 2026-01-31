@@ -23,13 +23,13 @@
     "email": "hemidd@gmail.com",
     "password": "Salam123",
     "createdAt": 1769274151876,
-    "about": "Baku Higher Oil School \r\n\r\n",
-    "lastLogin": 1769854811884,
-    "location": "ASs",
+    "about": "Baku Higher Oil School - Computer Engineering",
+    "lastLogin": 1769887850392,
+    "location": "Azerbaijan Absheron",
     "photo": "/static/images/uploads/Hemid_profile_4fbfda9d.png",
     "banner": "/static/images/uploads/Hemid_banner_519ccc99.jpg",
     "answerCount": 2,
-    "role": "Yeni"
+    "role": "Admin"
   },
   "12334@gmail.com": {
     "name": "123456",
