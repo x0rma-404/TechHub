@@ -88,13 +88,15 @@
     flex: 1;
     background: var(--logic-input-bg);
     border: 1px solid var(--logic-input-border);
-    border-radius: 8px;
-    padding: 0.8rem 1.2rem;
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
     color: var(--logic-input-text);
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1.1rem;
-    transition: border-color 0.3s;
-    width: 100%;
+    font-family: 'Poppins', 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 1.25rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 #logicExpression:focus {
@@ -166,13 +168,15 @@
 
 .expression-display {
     background: var(--logic-input-bg);
-    padding: 1rem;
-    border-radius: 8px;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 1.4rem;
+    padding: 1.5rem;
+    border-radius: 12px;
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+    font-size: 1.6rem;
+    font-weight: 600;
     color: var(--logic-table-header-text);
     text-align: center;
     margin-top: 0.5rem;
+    letter-spacing: 0.05em;
 }
 
 .table-wrapper {
@@ -197,6 +201,9 @@ td {
 th {
     background: var(--logic-table-header-bg);
     color: var(--logic-table-header-text);
+    font-family: 'Poppins', 'Inter', system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1.1rem;
 }
 
 tr:hover {

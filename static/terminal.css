@@ -1,25 +1,27 @@
 :root {
-    --term-bg: #1e1e1e;
-    --term-text: #d4d4d4;
-    --term-prompt: #4cc38a;
-    --term-path: #3a96dd;
-    --term-cursor: #ffffff;
-    --term-border: #333333;
-}
-
-.dark-mode {
-    --term-bg: #0b1220;
-    --term-text: #e2e8f0;
-    --term-prompt: #818cf8;
-    --term-path: #22d3ee;
+    --term-bg: #161b22;
+    /* Standard GitHub-like dark charcoal */
+    --term-text: #d1d5db;
+    /* Neutral light gray */
+    --term-prompt: #10b981;
+    /* Emerald-500 (classic green) */
+    --term-path: #60a5fa;
+    /* Blue-400 (classic blue) */
     --term-cursor: #ffffff;
     --term-border: rgba(255, 255, 255, 0.1);
+}
+
+.unified-output {
+    background-color: var(--term-bg) !important;
+    color: var(--term-text) !important;
+    font-family: 'JetBrains Mono', 'Fira Code', 'Monaco', monospace !important;
+    line-height: 1.6 !important;
 }
 
 .terminal-container {
     background: var(--term-bg);
     color: var(--term-text);
-    font-family: 'Courier New', Courier, monospace;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
     padding: 20px;
     border-radius: 12px;
     border: 1px solid var(--term-border);
@@ -56,7 +58,7 @@
 }
 
 .dot-green {
-    background: #27c93f;
+    background: #10b981;
 }
 
 .terminal-body {

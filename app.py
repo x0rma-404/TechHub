@@ -328,10 +328,15 @@ def bst_page():
     if 'user' not in session: return redirect(url_for('home'))
     return render_template('bst.html')
 
-@app.route('/tools/sorting-visualizer')
-def sorting_vis_page():
-    if 'user' not in session: return redirect(url_for('home'))
+@app.route('/tools/sorting-vis')
+def sorting_vis():
+    if 'user' not in session: return redirect(url_for('login'))
     return render_template('sorting_vis.html')
+
+@app.route('/tools/py-visualizer')
+def py_visualizer():
+    if 'user' not in session: return redirect(url_for('login'))
+    return render_template('py_visualizer.html')
 
 @app.route('/api/evaluate-floating', methods=['POST'])
 def evaluate_floating():
@@ -722,7 +727,29 @@ def run_java():
 def evaluate_logic():
     if 'user' not in session: return jsonify({'success': False}), 401
     data = request.get_json()
-    expression = data.get('expression', '').replace("->", "$").replace("<=>", "#")
+    raw_expr = data.get('expression', '')
+    
+    # Normalize Unicode symbols to Internal tokens
+    import re
+    expression = raw_expr
+    # Handle precomposed overline characters (Ā, B̄, etc.)
+    expression = expression.replace("Ā", "!A").replace("B̄", "!B").replace("C̄", "!C").replace("D̄", "!D")
+    expression = expression.replace("Ē", "!E").replace("F̄", "!F").replace("Ḡ", "!G").replace("H̄", "!H")
+    expression = expression.replace("Ī", "!I").replace("J̄", "!J").replace("K̄", "!K").replace("L̄", "!L")
+    expression = expression.replace("M̄", "!M").replace("N̄", "!N").replace("Ō", "!O").replace("P̄", "!P")
+    expression = expression.replace("Q̄", "!Q").replace("R̄", "!R").replace("S̄", "!S").replace("T̄", "!T")
+    expression = expression.replace("Ū", "!U").replace("V̄", "!V").replace("W̄", "!W").replace("X̄", "!X")
+    expression = expression.replace("Ȳ", "!Y").replace("Z̄", "!Z")
+    expression = expression.replace("ā", "!a").replace("b̄", "!b").replace("c̄", "!c").replace("d̄", "!d").replace("ē", "!e")
+    
+    # Handle generic combining overlines
+    COMB_OVER = '\u0304'
+    expression = re.sub(r'([a-zA-Z0-9])' + COMB_OVER, r'!\1', expression)
+    
+    expression = expression.replace("→", "$").replace("↔", "#").replace("⊕", "^")
+    # Compatibility for old symbols if they were pasted
+    expression = expression.replace("->", "$").replace("<=>", "#")
+    
     try:
         reg_global.reset()
         tokens = lex_and_consider_adjacents(expression)
@@ -730,9 +757,35 @@ def evaluate_logic():
         tt = TruthTable(reg_global.get_headers(), reg_global.objs, ast)
         tt.generate()
         tt.simplify()
-        headers = tt.headers + ['X']
+        
+        # Format output headers and simplified string with PRETTY symbols
+        def format_pretty(s):
+            if not s: return s
+            s = s.replace("$", "→").replace("#", "↔").replace("^", "⊕")
+            # Convert !A back to Ā (precomposed if possible)
+            s = s.replace("!A", "Ā").replace("!B", "B̄").replace("!C", "C̄").replace("!D", "D̄")
+            s = s.replace("!E", "Ē").replace("!F", "F̄").replace("!G", "Ḡ").replace("!H", "H̄")
+            s = s.replace("!I", "Ī").replace("!J", "J̄").replace("!K", "K̄").replace("!L", "L̄")
+            s = s.replace("!M", "M̄").replace("!N", "N̄").replace("!O", "Ō").replace("!P", "P̄")
+            s = s.replace("!Q", "Q̄").replace("!R", "R̄").replace("!S", "S̄").replace("!T", "T̄")
+            s = s.replace("!U", "Ū").replace("!V", "V̄").replace("!W", "W̄").replace("!X", "X̄")
+            s = s.replace("!Y", "Ȳ").replace("!Z", "Z̄")
+            s = s.replace("!a", "ā").replace("!b", "b̄").replace("!c", "c̄").replace("!d", "d̄").replace("!e", "ē")
+            # Generic fallback for !
+            COMB_OVER = '\u0304'
+            s = re.sub(r'!([a-zA-Z0-9])', r'\1' + COMB_OVER, s)
+            return s
+
+        pretty_headers = [format_pretty(h) for h in tt.headers] + ['X']
+        pretty_simplified = format_pretty(tt.simplified_str)
+        
         rows = [[(1 if val else 0) for val in row.ls] + [1 if row.value else 0] for row in tt.rows]
-        return jsonify({'success': True, 'headers': headers, 'rows': rows, 'simplified': tt.simplified_str})
+        return jsonify({
+            'success': True, 
+            'headers': pretty_headers, 
+            'rows': rows, 
+            'simplified': pretty_simplified
+        })
     except TooLongError: return jsonify({'success': False, 'message': 'Limit 6 dəyişəndir.'}), 400
     except Exception as e: return jsonify({'success': False, 'message': str(e)}), 400
 

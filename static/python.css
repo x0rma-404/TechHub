@@ -1,17 +1,10 @@
-/* Python Playground Styles - FIXED VERSION */
+/* python.css - Restored to original version */
 
-/* ===== CODEMIRROR EDITOR STYLES ===== */
+/* CodeMirror Editor General Styles */
 .CodeMirror {
-    height: 100% !important;
-    font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
-    font-size: 18px;
-    line-height: 1.8;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%) !important;
+    font-family: 'Fira Code', 'Monaco', 'Consolas', monospace !important;
+    font-size: 14px;
     border-radius: 8px;
-}
-
-.CodeMirror-scroll {
-    min-height: 100%;
     height: 100%;
 }
 
@@ -36,22 +29,21 @@
     border-radius: 4px;
 }
 
-.CodeMirror-selected {
-    background: rgba(251, 182, 206, 0.4) !important;
-    border-radius: 4px;
+/* Scrollbar styles for the editor */
+.CodeMirror-vscrollbar::-webkit-scrollbar,
+.CodeMirror-hscrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
 }
 
-.CodeMirror-matchingbracket {
-    color: #fbb6ce !important;
-    background: rgba(251, 182, 206, 0.25) !important;
-    font-weight: bold;
-    border-radius: 2px;
+.CodeMirror-vscrollbar::-webkit-scrollbar-track,
+.CodeMirror-hscrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
 }
 
-/* Override material-darker theme colors with vibrant theme */
-.cm-s-material-darker.CodeMirror {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
-    color: #ffffff !important;
+.CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
+.CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 8px;
 }
 
@@ -64,209 +56,54 @@
 }
 
 /* ===== CONSOLE STYLES ===== */
-#console {
-    min-height: 600px;
-    max-height: 700px;
-    font-family: 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
-    font-size: 15px;
-    line-height: 1.7;
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    overflow-y: auto;
+.console-container {
+    background: #0d1117;
+    border-radius: 12px;
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* ===== LOADING OVERLAY ===== */
-#editor-loading {
-    transition: opacity 0.35s ease;
-}
-
-/* ===== STATUS BADGE ===== */
-#status-badge {
-    transition: color 0.3s ease;
-    font-weight: 600;
-}
-
-/* ===== BUTTON STYLES ===== */
-.btn {
-    transition: all 0.2s ease;
-}
-
-.btn:hover:not(:disabled) {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-}
-
-.btn:active:not(:disabled) {
-    transform: translateY(0);
-}
-
-.btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-/* ===== GRID LAYOUT - MUCH BIGGER ===== */
-/* Changed from 1.5fr 1fr to 2fr 1fr - Editor is now 66% of width */
-@media (min-width: 1024px) {
-    .grid[class*="lg:grid-cols"] {
-        grid-template-columns: 2fr 1fr !important;
-        min-height: 700px !important;
-    }
-}
-
-/* ===== RESPONSIVE BREAKPOINTS ===== */
-@media (max-width: 1024px) {
-    .grid[class*="lg:grid-cols"] {
-        grid-template-columns: 1fr !important;
-        grid-template-rows: 1fr 1fr !important;
-        min-height: 1000px !important;
-    }
-
-    [class*="border-r"] {
-        border-right: none !important;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
-    }
-
-    #console {
-        min-height: 450px;
-    }
-}
-
-@media (max-width: 640px) {
-    .flex.items-center.justify-between {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start !important;
-    }
-
-    .action-buttons,
-    .flex.gap-2 {
-        width: 100%;
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 0.5rem;
-    }
-
-    .btn {
-        justify-content: center;
-        font-size: 0.875rem;
-        padding: 0.625rem 1rem;
-    }
-
-    .CodeMirror {
-        font-size: 14px;
-    }
-
-    #console {
-        font-size: 13px;
-        min-height: 350px;
-    }
-
-    .grid[class*="lg:grid-cols"] {
-        min-height: 800px !important;
-    }
-}
-
-/* ===== SCROLLBAR STYLING ===== */
-#console::-webkit-scrollbar,
-.CodeMirror-scroll::-webkit-scrollbar {
-    width: 12px;
-    height: 12px;
-}
-
-#console::-webkit-scrollbar-track,
-.CodeMirror-scroll::-webkit-scrollbar-track {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
-}
-
-#console::-webkit-scrollbar-thumb,
-.CodeMirror-scroll::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.4);
-    border-radius: 6px;
-    border: 2px solid transparent;
-    background-clip: content-box;
-}
-
-#console::-webkit-scrollbar-thumb:hover,
-.CodeMirror-scroll::-webkit-scrollbar-thumb:hover {
-    background: rgba(99, 102, 241, 0.6);
-    background-clip: content-box;
-}
-
-/* ===== ANIMATIONS ===== */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(15px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+.console-header {
+    background: rgba(255, 255, 255, 0.03);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 8px 16px;
 }
 
 #console {
-    animation: fadeInUp 0.4s ease-out;
+    font-family: 'Fira Code', monospace;
+    font-size: 13px;
+    line-height: 1.6;
+    color: #e2e8f0;
 }
 
-/* ===== FOCUS STATES ===== */
-.CodeMirror-focused {
-    outline: 2px solid rgba(99, 102, 241, 0.5) !important;
-    outline-offset: -2px;
-    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+/* Output styling */
+.output-val {
+    color: #fbd38d;
 }
 
-/* ===== CONTAINER FIXES ===== */
-.relative.flex-1 {
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
+.output-err {
+    color: #feb2b2;
 }
 
-.flex.flex-col {
-    height: 100%;
-    min-height: 0;
-}
-
-.CodeMirror-wrap {
-    height: 100% !important;
-}
-
-/* ===== SYNTAX HIGHLIGHTING OVERRIDES ===== */
-.cm-s-material-darker .cm-keyword {
-    color: #fbb6ce !important;
-    /* Pink for keywords */
-}
-
-.cm-s-material-darker .cm-string {
-    color: #a8e6cf !important;
-    /* Mint green for strings */
-}
-
-.cm-s-material-darker .cm-number {
-    color: #ffd93d !important;
-    /* Yellow for numbers */
-}
-
-.cm-s-material-darker .cm-comment {
-    color: #b8c5d6 !important;
-    /* Light gray for comments */
+.output-sys {
+    color: #9f7aea;
     font-style: italic;
 }
 
-.cm-s-material-darker .cm-def {
-    color: #9f7aea !important;
-    /* Purple for function definitions */
+/* Custom Scrollbar for Tool and Console */
+::-webkit-scrollbar {
+    width: 6px;
 }
 
-.cm-s-material-darker .cm-builtin {
-    color: #fbb6ce !important;
-    /* Pink for built-ins */
+::-webkit-scrollbar-track {
+    background: transparent;
 }
 
-.cm-s-material-darker .cm-operator {
-    color: #ffd93d !important;
-    /* Yellow for operators */
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
 }

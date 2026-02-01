@@ -1,0 +1,117 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<!-- CodeMirror & Pyodide -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/material-darker.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/python/python.min.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='terminal.css') }}">
+<link rel="stylesheet" href="../static/py_visualizer.css">
+
+<div class="max-w-[1500px] mx-auto px-4 py-8 h-[90vh] min-h-[700px] flex flex-col">
+    <div class="glass ring-soft rounded-2xl overflow-hidden flex flex-col flex-1 shadow-2xl border border-white/10">
+        <!-- Toolbar -->
+        <div
+            class="flex items-center justify-between px-6 py-4 border-b border-white/5 shrink-0 bg-white/5 backdrop-blur-md">
+            <div class="flex items-center gap-3">
+                <i class="bx bx-analyse text-3xl text-indigo-400 drop-shadow-[0_0_8px_rgba(129,140,248,0.5)]"></i>
+                <div>
+                    <span class="font-semibold text-lg text-slate-200 block leading-tight">Python Visualizer</span>
+                    <span class="text-xs text-slate-400">Addım-addım kod icrasını izləyin</span>
+                </div>
+            </div>
+            <div class="flex gap-3">
+                <button class="btn btn-muted px-4 py-2 hover:bg-white/10 transition-colors" onclick="resetVisualizer()">
+                    <i class='bx bx-refresh mr-2'></i> Sıfırla
+                </button>
+                <button
+                    class="btn btn-primary px-6 py-2 bg-indigo-600 hover:bg-indigo-500 transition-all shadow-lg hover:shadow-indigo-500/30"
+                    id="visBtn" onclick="startVisualization()" disabled>
+                    <i class='bx bx-play-circle mr-2'></i> Visualizə Et
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Workspace -->
+        <div class="grid lg:grid-cols-[1.2fr_1fr] flex-1 min-h-0 divide-x divide-white/5">
+            <!-- Left Panel: Editor -->
+            <div class="flex flex-col relative bg-slate-900/40">
+                <div class="flex items-center justify-between px-4 py-2 bg-white/5 border-b border-white/5">
+                    <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase">Kod Redaktoru</span>
+                    <span class="text-xs text-slate-500 font-mono">script.py</span>
+                </div>
+                <div class="relative flex-1 text-base overflow-hidden">
+                    <textarea id="code-editor"># Sadə bir nümunə
+liste = [1, 2, 3]
+toplam = 0
+
+for x in liste:
+    toplam += x
+    print(f"X: {x}, Toplam: {toplam}")
+
+print("Nəticə:", toplam)</textarea>
+
+                    <div id="vis-loading"
+                        class="absolute inset-0 bg-[#0b1220]/80 backdrop-blur-sm grid place-items-center z-10">
+                        <div class="flex flex-col items-center gap-4">
+                            <div
+                                class="w-10 h-10 border-4 border-indigo-500/30 border-t-indigo-500 rounded-full animate-spin">
+                            </div>
+                            <p class="text-indigo-400 font-medium animate-pulse">Pyodide yüklənir...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Visualization & Variables -->
+            <div class="flex flex-col bg-slate-950/50 min-h-0">
+                <!-- Controls bar -->
+                <div class="px-4 py-3 bg-white/5 border-b border-white/5 flex flex-col gap-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-semibold text-slate-400 tracking-wider uppercase">İcra Nəzarəti</span>
+                        <div id="step-counter" class="text-xs font-mono text-indigo-400">Addım: 0 / 0</div>
+                    </div>
+
+                    <div class="flex items-center gap-4">
+                        <button id="prevBtn" class="vis-control-btn" onclick="prevStep()" disabled>
+                            <i class='bx bx-chevron-left text-2xl'></i>
+                        </button>
+
+                        <input type="range" id="stepSlider" min="0" max="0" value="0"
+                            class="flex-1 accent-indigo-500 h-1.5 rounded-full" oninput="goToStep(this.value)">
+
+                        <button id="nextBtn" class="vis-control-btn" onclick="nextStep()" disabled>
+                            <i class='bx bx-chevron-right text-2xl'></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Variable Inspector Area -->
+                <div class="flex-1 overflow-auto p-4 space-y-4 custom-scrollbar">
+                    <div id="variables-container" class="space-y-3">
+                        <div class="text-center py-20 text-slate-500 italic">
+                            <i class='bx bx-info-circle text-4xl block mb-2 opacity-20'></i>
+                            Kodunuzu visualizə etmək üçün "Visualizə Et" düyməsini sıxın
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mini Console -->
+                <div class="h-40 bg-black/40 border-t border-white/5 flex flex-col">
+                    <div class="flex items-center justify-between px-4 py-1.5 bg-white/5 border-b border-white/5">
+                        <span class="text-[10px] font-bold text-slate-500 tracking-widest uppercase">Console
+                            Output</span>
+                    </div>
+                    <pre id="vis-console"
+                        class="flex-1 p-3 font-mono text-xs unified-output overflow-auto custom-scrollbar leading-relaxed"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="../static/py_visualizer.js"></script>
+{% endblock %}

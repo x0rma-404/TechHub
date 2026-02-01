@@ -9,6 +9,18 @@
     "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
     "timestamp": 1769940842063,
     "views": 0,
-    "answers": []
+    "answers": [
+      {
+        "id": "cedb3144-a612-4dc0-8654-bacb801b4c8c",
+        "text": "<p>Salam</p>",
+        "reply_to": null,
+        "author_email": "hemidd@gmail.com",
+        "author_name": "Hemid",
+        "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+        "role": "Admin",
+        "timestamp": 1769963793084,
+        "votes": 0
+      }
+    ]
   }
 ]

@@ -103,6 +103,7 @@ body {
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -118,22 +119,24 @@ body {
 @keyframes pageIn {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(20px);
   }
+
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
 @keyframes cardIn {
   from {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(15px) scale(0.98);
   }
+
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: none;
   }
 }
 
@@ -147,20 +150,89 @@ body {
 }
 
 /* Staggered children: add class animate-stagger to a grid/container */
-.animate-stagger > * {
+.animate-stagger>* {
   animation: cardIn 0.5s var(--ease-out-smooth) both;
 }
 
-.animate-stagger > *:nth-child(1) { animation-delay: 0.04s; }
-.animate-stagger > *:nth-child(2) { animation-delay: 0.08s; }
-.animate-stagger > *:nth-child(3) { animation-delay: 0.12s; }
-.animate-stagger > *:nth-child(4) { animation-delay: 0.16s; }
-.animate-stagger > *:nth-child(5) { animation-delay: 0.2s; }
-.animate-stagger > *:nth-child(6) { animation-delay: 0.24s; }
-.animate-stagger > *:nth-child(7) { animation-delay: 0.28s; }
-.animate-stagger > *:nth-child(8) { animation-delay: 0.32s; }
-.animate-stagger > *:nth-child(9) { animation-delay: 0.36s; }
-.animate-stagger > *:nth-child(10) { animation-delay: 0.4s; }
+.animate-stagger>*:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.animate-stagger>*:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.animate-stagger>*:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.animate-stagger>*:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.animate-stagger>*:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.animate-stagger>*:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+.animate-stagger>*:nth-child(7) {
+  animation-delay: 0.35s;
+}
+
+.animate-stagger>*:nth-child(8) {
+  animation-delay: 0.4s;
+}
+
+.animate-stagger>*:nth-child(9) {
+  animation-delay: 0.45s;
+}
+
+.animate-stagger>*:nth-child(10) {
+  animation-delay: 0.5s;
+}
+
+.animate-stagger>*:nth-child(11) {
+  animation-delay: 0.55s;
+}
+
+.animate-stagger>*:nth-child(12) {
+  animation-delay: 0.6s;
+}
+
+.animate-stagger>*:nth-child(13) {
+  animation-delay: 0.65s;
+}
+
+.animate-stagger>*:nth-child(14) {
+  animation-delay: 0.7s;
+}
+
+.animate-stagger>*:nth-child(15) {
+  animation-delay: 0.75s;
+}
+
+.animate-stagger>*:nth-child(16) {
+  animation-delay: 0.8s;
+}
+
+.animate-stagger>*:nth-child(17) {
+  animation-delay: 0.85s;
+}
+
+.animate-stagger>*:nth-child(18) {
+  animation-delay: 0.9s;
+}
+
+.animate-stagger>*:nth-child(19) {
+  animation-delay: 0.95s;
+}
+
+.animate-stagger>*:nth-child(20) {
+  animation-delay: 1s;
+}
 
 /* Glass cards: hover lift and transition — smooth */
 main .glass {
@@ -183,8 +255,13 @@ header nav a:hover {
 
 /* Header bar entrance (every bar page) */
 @keyframes headerIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 header {

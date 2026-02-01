@@ -2,28 +2,26 @@
 .tool-card {
     display: block;
     position: relative;
-
-    /* GPU hızlandırma ve titreme engelleme */
-    transform: perspective(1000px) translateZ(0);
+    /* GPU acceleration and flicker prevention */
+    transform: perspective(1000px);
+    transform-style: preserve-3d;
     backface-visibility: hidden;
     will-change: transform, box-shadow, background-color, border-color;
 
-    /* Akıcılık Ayarları - Tek bir satırda daha temiz yönetim */
+    /* Transition Settings */
     transition:
-        transform 0.5s cubic-bezier(0.25, 1, 0.5, 1),
-        box-shadow 0.5s cubic-bezier(0.25, 1, 0.5, 1),
-        border-color 0.4s ease,
-        background-color 0.4s ease;
+        transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+        box-shadow 0.4s ease,
+        border-color 0.3s ease,
+        background-color 0.3s ease;
 }
 
-/* Hover - Ortak Akıcı Yükselme */
-main .tool-card:hover {
-    /* !important'ı kaldırdık, seçici gücü (main .tool-card) zaten yeterli */
-    transform: translateY(-12px);
+/* Hover - Smooth Lift with Perspective */
+.tool-card:hover {
+    transform: perspective(1000px) translateY(-12px) translateZ(10px);
     background-color: rgba(255, 255, 255, 0.08);
     border-color: rgba(255, 255, 255, 0.4);
     z-index: 10;
-    /* Diğer kartların üzerine çıkması için */
 }
 
 /* Renk Bazlı Hover Efektleri - Daha Akıcı Gölge Geçişleri */

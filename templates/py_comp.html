@@ -6,6 +6,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/python/python.min.js"></script>
 <script src="https://cdn.jsdelivr.net/pyodide/v0.25.0/full/pyodide.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='terminal.css') }}">
 <link rel="stylesheet" href="../static/python.css">
 <div class="max-w-[1400px] mx-auto px-4 py-8 h-[85vh] min-h-[600px] flex flex-col">
     <div class="glass ring-soft rounded-2xl overflow-hidden flex flex-col flex-1 shadow-2xl">
@@ -72,9 +73,9 @@ for index, meyve in enumerate(meyveler, 1):
                     <span id="status-badge"
                         class="text-xs font-medium px-2 py-0.5 rounded-full bg-white/5 text-slate-400">Ready</span>
                 </div>
-                <!-- Updated console text color to emerald-400 for better readability on slate-950 -->
+                <!-- Unified Professional Output -->
                 <pre id="console"
-                    class="p-6 flex-1 font-mono text-sm leading-relaxed overflow-auto text-emerald-400 selection:bg-emerald-400/20 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">Run code to see output...</pre>
+                    class="p-6 flex-1 font-mono text-sm leading-relaxed overflow-auto unified-output scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">Run code to see output...</pre>
             </div>
         </div>
     </div>
@@ -110,6 +111,7 @@ for index, meyve in enumerate(meyveler, 1):
         color: #64748b !important;
     }
 </style>
+
 
 <script src="../static/python.js"></script>
 {% endblock %}

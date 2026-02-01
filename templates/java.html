@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/material-darker.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/clike/clike.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='terminal.css') }}">
 <link rel="stylesheet" href="../static/python.css">
 <link rel="stylesheet" href="../static/ruby.css">
 
@@ -67,8 +68,9 @@ class Main {
                     <span id="status-badge"
                         class="text-xs font-medium px-2 py-0.5 rounded-full bg-white/5 text-slate-400">Ready</span>
                 </div>
+                <!-- Unified Professional Output -->
                 <pre id="console"
-                    class="p-6 flex-1 font-mono text-sm leading-relaxed overflow-auto text-orange-200 selection:bg-orange-500/20 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">Ready to compile (Using Godbolt API)...</pre>
+                    class="p-6 flex-1 font-mono text-sm leading-relaxed overflow-auto unified-output scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">Ready to compile (Using Godbolt API)...</pre>
             </div>
         </div>
     </div>

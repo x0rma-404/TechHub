@@ -5,14 +5,14 @@ const terminal = document.getElementById('terminal');
 const promptPath = document.querySelector('.prompt-path');
 
 function escapeHtml(text) {
-  const div = document.createElement('div');
-  div.textContent = text;
-  return div.innerHTML;
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 // Keep focus on input when clicking anywhere in terminal
 if (terminal) {
-  terminal.addEventListener('click', () => terminalInput.focus());
+    terminal.addEventListener('click', () => terminalInput.focus());
 }
 
 function formatLS(output) {

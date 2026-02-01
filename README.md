@@ -8,11 +8,11 @@ TechHub is a web‑based **Project Sharing and Q&A platform** where developers c
 
 * 📌 Share your **projects** with descriptions, tech stack, and demo links
 * ❓ Ask questions and get answers from other developers
-* 🛠 Use **coding tools** directly on the platform
+* 🛠 Use **professional coding tools** with advanced UI/UX
 * 🔎 Browse projects with categories & filters
 * 👤 Track user activity with profiles & badges
-* 🔗 Optional: Sync projects with GitHub repositories
-* 📱 Responsive design support (future improvements planned)
+* ✨ **Premium UI**: Smooth 3D effects, staggered animations, and modern glassmorphism
+* 📱 Responsive design for both desktop and mobile
 
 ---
 
@@ -20,6 +20,7 @@ TechHub is a web‑based **Project Sharing and Q&A platform** where developers c
 
 * **Python** with the **Flask** web framework
 * **HTML, CSS, JavaScript** for frontend
+* **Tailwind CSS** for modern styling
 * **REST API** architecture
 
 ---
@@ -60,20 +61,17 @@ http://localhost:5000
 * Register an account
 * Login and ask or answer questions
 * Share your own projects
-* Explore tools like:
+* Explore professional tools:
 
-  * Floating point converter
-  * Logic evaluator
-  * Linux simulator
-  * IP subnet calculator
-  * CSV ↔ JSON converter
-* Explore mini İDES
-  * Python
-  * C/C++
-  * Java
-  * Ruby
-  * Go
-  * Javascript(soon)
+  * **Floating Point Converter**: IEEE-754 standard visualization
+  * **Python Visualizer**: Step-by-step code execution with variable tracing
+  * **Logic Evaluator**: Real-time conversion to professional symbols (e.g., `!A` → `Ā`, `->` → `→`, `^` → `⊕`)
+  * **Linux Simulator**: Command-line interface simulation
+  * **IP Subnet Calculator**: Network details and mask calculations
+  * **CSV ↔ JSON Converter**: Data format transformation
+* Explore mini IDEs:
+  * Python, C/C++, Java, Ruby, Go
+  * Javascript (Coming Soon)
 
 ---
 
