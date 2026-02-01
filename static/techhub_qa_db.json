@@ -1,1 +1,14 @@
-[]
+[
+  {
+    "id": "edb4fa5e-6843-4755-86f2-5b1b78000803",
+    "title": "Men admin",
+    "content": "<p>aaa</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1769940842063,
+    "views": 0,
+    "answers": []
+  }
+]
