@@ -1,5 +1,9 @@
 # 💻 TechHub - Project Sharing and Q&A Platform
 
+![Contributors](https://img.shields.io/github/contributors/x0rma-404/TechHub?style=for-the-badge&color=blue)
+![Forks](https://img.shields.io/github/forks/x0rma-404/TechHub?style=for-the-badge&color=magenta)
+![Stars](https://img.shields.io/github/stars/x0rma-404/TechHub?style=for-the-badge&color=yellow)
+
 TechHub is a web‑based **Project Sharing and Q&A platform** where developers can share their projects, ask questions, exchange knowledge, and try out useful mini coding tools — kind of like a mini **GitHub + forum + coding sandbox**! ✨
 
 ---
@@ -30,11 +34,9 @@ TechHub is a web‑based **Project Sharing and Q&A platform** where developers c
 You **do not need a virtual environment**; just install dependencies globally:
 
 1. Clone the repository:
-
 ```bash
-git clone https://github.com/x0rma-404/TechHub.git
+git clone [https://github.com/x0rma-404/TechHub.git](https://github.com/x0rma-404/TechHub.git)
 cd TechHub
-```
 
 2. Install dependencies globally:
 
@@ -108,11 +110,6 @@ A huge thanks to these amazing people who have contributed to TechHub:
 <a href="https://github.com/x0rma-404/TechHub/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=x0rma-404/TechHub" />
 </a>
----
-
-![Contributors](https://img.shields.io/github/contributors/x0rma-404/TechHub?style=for-the-badge&color=blue)
-![Forks](https://img.shields.io/github/forks/x0rma-404/TechHub?style=for-the-badge&color=magenta)
-![Stars](https://img.shields.io/github/stars/x0rma-404/TechHub?style=for-the-badge&color=yellow)
 
 ---
 
