@@ -69,8 +69,14 @@ http://localhost:5000
   * **Linux Simulator**: Command-line interface simulation
   * **IP Subnet Calculator**: Network details and mask calculations
   * **CSV ↔ JSON Converter**: Data format transformation
-* Explore mini IDEs:
-  * Python, C/C++, Java, Ruby, Go
+  * **Python Visualizer**: Visualize your python script
+
+## 📟 Explore mini IDEs:
+  * Python
+  * C/C++
+  * Java
+  * Ruby
+  * Go
   * Javascript (Coming Soon)
 
 ---
