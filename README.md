@@ -108,8 +108,12 @@ A huge thanks to these amazing people who have contributed to TechHub:
 <a href="https://github.com/x0rma-404/TechHub/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=x0rma-404/TechHub" />
 </a>
+---
 
-Made with [contrib.rocks](https://contrib.rocks).
+![Contributors](https://img.shields.io/github/contributors/x0rma-404/TechHub?style=for-the-badge&color=blue)
+![Forks](https://img.shields.io/github/forks/x0rma-404/TechHub?style=for-the-badge&color=magenta)
+![Stars](https://img.shields.io/github/stars/x0rma-404/TechHub?style=for-the-badge&color=yellow)
+
 ---
 
 ## 🙌 Thanks
