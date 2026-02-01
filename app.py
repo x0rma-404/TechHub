@@ -323,6 +323,16 @@ def ipsub_page():
     if 'user' not in session: return redirect(url_for('home'))
     return render_template('ipsub.html')
 
+@app.route('/tools/bst')
+def bst_page():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('bst.html')
+
+@app.route('/tools/sorting-visualizer')
+def sorting_vis_page():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('sorting_vis.html')
+
 @app.route('/api/evaluate-floating', methods=['POST'])
 def evaluate_floating():
     if 'user' not in session: 

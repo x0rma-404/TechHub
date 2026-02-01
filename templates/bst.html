@@ -1,0 +1,152 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../static/logic.css">
+<style>
+    #treeCanvas {
+        width: 100%;
+        min-height: 200px;
+        display: block;
+        transition: height 0.3s ease;
+    }
+
+    .node-legend {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .node-legend .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #94a3b8;
+    }
+
+    .node-legend .legend-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+    }
+
+    .legend-dot.normal {
+        background: #6366f1;
+    }
+
+    .legend-dot.found {
+        background: #34d399;
+    }
+
+    .legend-dot.path {
+        background: #fbbf24;
+    }
+
+    .legend-dot.deleted {
+        background: #f87171;
+    }
+</style>
+
+<div class="max-w-5xl mx-auto px-4">
+
+    <!-- Header -->
+    <div class="glass ring-soft rounded-2xl p-6 md:p-8 mb-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2">Binary Search Tree</h1>
+            <p class="text-slate-400">Node əlavə et, sil və axtarış edə bilərsiniz. Ağac real-time canlanır.</p>
+        </div>
+
+        <div class="space-y-4">
+            <div class="flex flex-col md:flex-row gap-3">
+                <input id="nodeValue" class="input flex-1 rounded-xl px-4 py-3" placeholder="Node qiyməti daxil edin"
+                    spellcheck="false">
+
+                <button id="insertBtn" class="btn btn-primary px-6">Əlavə Et</button>
+                <button id="deleteBtn" class="btn btn-primary px-6" style="background: #ef4444;">Sil</button>
+                <button id="searchBtn" class="btn btn-primary px-6" style="background: #10b981;">Axtarış</button>
+            </div>
+
+            <div class="flex flex-wrap gap-2 text-sm">
+                <div class="badge">Insert</div>
+                <div class="badge">Delete</div>
+                <div class="badge">Search</div>
+                <div class="badge">Traversal</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tree Visual -->
+    <div class="glass ring-soft rounded-2xl p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-lg">Ağac Görünüşü</h3>
+            <div class="node-legend">
+                <div class="legend-item">
+                    <div class="legend-dot normal"></div> Node
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot found"></div> Tapıldı
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot path"></div> Axtarış Yolu
+                </div>
+            </div>
+        </div>
+        <canvas id="treeCanvas"></canvas>
+    </div>
+
+    <!-- Stats Grid -->
+    <div id="stats" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="glass ring-soft rounded-2xl p-5 text-center">
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Node Sayı</h3>
+            <div id="statCount" class="text-2xl font-mono text-indigo-300">0</div>
+        </div>
+        <div class="glass ring-soft rounded-2xl p-5 text-center">
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Yüksəklik</h3>
+            <div id="statHeight" class="text-2xl font-mono text-emerald-400">0</div>
+        </div>
+        <div class="glass ring-soft rounded-2xl p-5 text-center">
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Min</h3>
+            <div id="statMin" class="text-2xl font-mono text-indigo-300">—</div>
+        </div>
+        <div class="glass ring-soft rounded-2xl p-5 text-center">
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Max</h3>
+            <div id="statMax" class="text-2xl font-mono text-indigo-300">—</div>
+        </div>
+    </div>
+
+    <!-- Traversals -->
+    <div class="glass ring-soft rounded-2xl p-6 mb-6">
+        <h3 class="font-semibold text-lg mb-4">Traversals</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <tbody class="divide-y divide-slate-700/50">
+                    <tr>
+                        <td class="py-3 text-slate-400">Inorder</td>
+                        <td id="travInorder" class="py-3 font-mono text-right text-indigo-300">—</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 text-slate-400">Preorder</td>
+                        <td id="travPreorder" class="py-3 font-mono text-right text-indigo-300">—</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 text-slate-400">Postorder</td>
+                        <td id="travPostorder" class="py-3 font-mono text-right text-indigo-300">—</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Status / Error -->
+    <div id="statusMessage" class="glass ring-soft rounded-2xl p-4 mb-4 hidden text-emerald-400 font-medium"></div>
+    <div id="errorMessage"
+        class="glass ring-soft rounded-2xl p-4 border-red-500/50 bg-red-500/10 hidden text-red-400 font-medium"></div>
+
+    <!-- Clear Button -->
+    <div class="text-center mt-4">
+        <button id="clearBtn" class="btn btn-primary px-6" style="background: #475569;">Ağacı Temizlə</button>
+    </div>
+</div>
+
+<script src="../static/bst.js"></script>
+{% endblock %}

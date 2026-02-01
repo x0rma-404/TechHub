@@ -1,0 +1,183 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../static/logic.css">
+<style>
+    #sortCanvas {
+        width: 100%;
+        height: 340px;
+        display: block;
+    }
+
+    .legend {
+        display: flex;
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+
+    .legend .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 13px;
+        color: #94a3b8;
+    }
+
+    .legend .legend-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+    }
+
+    .legend-dot.normal {
+        background: #6366f1;
+    }
+
+    .legend-dot.compare {
+        background: #f59e0b;
+    }
+
+    .legend-dot.swap {
+        background: #ef4444;
+    }
+
+    .legend-dot.sorted {
+        background: #10b981;
+    }
+
+    .algo-btn {
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+
+    .algo-btn.active {
+        background: #6366f1 !important;
+        color: #fff;
+    }
+</style>
+
+<div class="max-w-5xl mx-auto px-4">
+
+    <!-- Header -->
+    <div class="glass ring-soft rounded-2xl p-6 md:p-8 mb-6">
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold mb-2">Sorting Visualizer</h1>
+            <p class="text-slate-400">Sıralama algoritmalarını real-time animasiyonla izləyin</p>
+        </div>
+
+        <div class="space-y-4">
+            <!-- Algorithm selection -->
+            <div class="flex flex-wrap gap-2">
+                <button class="algo-btn btn btn-primary px-4 active" data-algo="bubble">Bubble Sort</button>
+                <button class="algo-btn btn btn-primary px-4" data-algo="selection">Selection Sort</button>
+                <button class="algo-btn btn btn-primary px-4" data-algo="insertion">Insertion Sort</button>
+                <button class="algo-btn btn btn-primary px-4" data-algo="merge">Merge Sort</button>
+                <button class="algo-btn btn btn-primary px-4" data-algo="quick">Quick Sort</button>
+            </div>
+
+            <!-- Controls -->
+            <div class="flex flex-col md:flex-row gap-3 items-center">
+                <div class="flex items-center gap-3 flex-1">
+                    <label class="text-slate-400 text-sm whitespace-nowrap">Sürət</label>
+                    <input type="range" id="speedSlider" class="flex-1" min="1" max="100" value="50">
+                </div>
+                <div class="flex items-center gap-3">
+                    <label class="text-slate-400 text-sm whitespace-nowrap">Array Boyutu</label>
+                    <input type="range" id="sizeSlider" min="10" max="100" value="40" class="w-32">
+                </div>
+            </div>
+
+            <!-- Action buttons -->
+            <div class="flex flex-wrap gap-3">
+                <button id="startBtn" class="btn btn-primary px-6">Başla</button>
+                <button id="resetBtn" class="btn btn-primary px-6" style="background: #475569;">Yeniden Düzle</button>
+                <button id="newArrayBtn" class="btn btn-primary px-6" style="background: #475569;">Yeni Array</button>
+            </div>
+
+            <div class="flex flex-wrap gap-2 text-sm">
+                <div class="badge">Bubble Sort</div>
+                <div class="badge">Selection Sort</div>
+                <div class="badge">Insertion Sort</div>
+                <div class="badge">Merge Sort</div>
+                <div class="badge">Quick Sort</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizer Canvas -->
+    <div class="glass ring-soft rounded-2xl p-6 mb-6">
+        <div class="flex items-center justify-between mb-4">
+            <h3 class="font-semibold text-lg">Array Görünüşü</h3>
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-dot normal"></div> Normal
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot compare"></div> Karşılaştırma
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot swap"></div> Swap
+                </div>
+                <div class="legend-item">
+                    <div class="legend-dot sorted"></div> Sıralandı
+                </div>
+            </div>
+        </div>
+        <canvas id="sortCanvas"></canvas>
+    </div>
+
+    <!-- Stats -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="glass ring-soft rounded-2xl p-5 text-center">
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Algorithm</h3>
+            <div id="statAlgo" class="text-xl font-mono text-indigo-300">Bubble</div>
+        </div>
+        <div class="glass ring-soft rounded-2xl p-5 text-center">
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Müqayisə</h3>
+            <div id="statComparisons" class="text-2xl font-mono text-emerald-400">0</div>
+        </div>
+        <div class="glass ring-soft rounded-2xl p-5 text-center">
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Swap</h3>
+            <div id="statSwaps" class="text-2xl font-mono text-indigo-300">0</div>
+        </div>
+        <div class="glass ring-soft rounded-2xl p-5 text-center">
+            <h3 class="text-slate-400 text-sm font-medium mb-1">Vəiyyət</h3>
+            <div id="statStatus" class="text-xl font-mono text-slate-400">Hazır</div>
+        </div>
+    </div>
+
+    <!-- Complexity Info -->
+    <div class="glass ring-soft rounded-2xl p-6 mb-6">
+        <h3 class="font-semibold text-lg mb-4">Time Complexity</h3>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <tbody class="divide-y divide-slate-700/50">
+                    <tr>
+                        <td class="py-3 text-slate-400">Best Case</td>
+                        <td id="complexBest" class="py-3 font-mono text-right text-emerald-400">O(n)</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 text-slate-400">Average Case</td>
+                        <td id="complexAvg" class="py-3 font-mono text-right text-indigo-300">O(n²)</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 text-slate-400">Worst Case</td>
+                        <td id="complexWorst" class="py-3 font-mono text-right text-red-400">O(n²)</td>
+                    </tr>
+                    <tr>
+                        <td class="py-3 text-slate-400">Space</td>
+                        <td id="complexSpace" class="py-3 font-mono text-right text-indigo-300">O(1)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Status / Error -->
+    <div id="statusMessage" class="glass ring-soft rounded-2xl p-4 mb-4 hidden text-emerald-400 font-medium"></div>
+    <div id="errorMessage"
+        class="glass ring-soft rounded-2xl p-4 border-red-500/50 bg-red-500/10 hidden text-red-400 font-medium"></div>
+</div>
+
+<script src="../static/sorting.js"></script>
+{% endblock %}
