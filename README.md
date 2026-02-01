@@ -96,10 +96,20 @@ This project currently has **No License** — you can use and modify it freely.
 
 ---
 
-## 😊 Contributing
+## 🤝 Contributing
 
-Suggestions, improvements and bug reports are welcome! Open issues or submit pull requests.
+Contributions, issues, and feature requests are welcome!  
+Feel free to check the [issues page](https://github.com/x0rma-404/TechHub/issues).
 
+### ✨ Contributors
+
+A huge thanks to these amazing people who have contributed to TechHub:
+
+<a href="https://github.com/x0rma-404/TechHub/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=x0rma-404/TechHub" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
 ---
 
 ## 🙌 Thanks
