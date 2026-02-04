@@ -35,7 +35,7 @@ You **do not need a virtual environment**; just install dependencies globally:
 
 1. Clone the repository:
 ```bash
-git clone [https://github.com/x0rma-404/TechHub.git](https://github.com/x0rma-404/TechHub.git)
+git clone https://github.com/x0rma-404/TechHub.git
 cd TechHub
 ```
 
