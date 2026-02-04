@@ -26,6 +26,65 @@ function formatLS(output) {
     }).join('  ');
 }
 
+// Nano Editor Logic
+const nanoEditor = document.getElementById('nanoEditor');
+const nanoTextArea = document.getElementById('nanoTextArea');
+const nanoFilename = document.getElementById('nanoFilename');
+const promptLine = document.getElementById('promptLine');
+let currentNanoFile = null;
+
+function openNano(data) {
+    currentNanoFile = data.full_path;
+    nanoFilename.textContent = `File: ${data.filename}`;
+    nanoTextArea.value = data.content;
+    nanoEditor.classList.remove('hidden');
+    promptLine.classList.add('hidden');
+    nanoTextArea.focus();
+}
+
+async function saveNano() {
+    if (!currentNanoFile) return;
+    try {
+        await fetch('/linux-sim/save', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                full_path: currentNanoFile,
+                content: nanoTextArea.value
+            })
+        });
+        showNanoMessage(`Saved ${currentNanoFile.split('/').pop()}`);
+    } catch (error) {
+        showNanoMessage('Error saving file');
+    }
+}
+
+function closeNano() {
+    nanoEditor.classList.add('hidden');
+    promptLine.classList.remove('hidden');
+    terminalInput.focus();
+    currentNanoFile = null;
+}
+
+function showNanoMessage(msg) {
+    const originalText = nanoFilename.textContent;
+    nanoFilename.textContent = msg;
+    setTimeout(() => {
+        if (currentNanoFile) nanoFilename.textContent = originalText;
+    }, 2000);
+}
+
+// Handle Nano Keyboard Shortcuts
+nanoTextArea.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.key === 'o') {
+        e.preventDefault();
+        saveNano();
+    } else if (e.ctrlKey && e.key === 'x') {
+        e.preventDefault();
+        closeNano();
+    }
+});
+
 terminalInput.addEventListener('keydown', async (e) => {
     if (e.key === 'Enter') {
         const command = terminalInput.value.trim();
@@ -56,6 +115,12 @@ terminalInput.addEventListener('keydown', async (e) => {
             });
 
             const data = await response.json();
+
+            // Handle Nano Interactive Mode
+            if (data.__nano_edit__) {
+                openNano(data);
+                return;
+            }
 
             if (data.output === "__exit__") {
                 const exitLine = document.createElement('div');

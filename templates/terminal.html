@@ -13,13 +13,27 @@
                 TechHub</span>
         </div>
 
-        <div class="terminal-body p-4 flex-1 min-h-[60vh] font-mono text-sm leading-relaxed" id="terminalBody"
+        <div class="terminal-body p-4 flex-1 min-h-[60vh] font-mono text-sm leading-relaxed relative" id="terminalBody"
             style="background-color: var(--term-bg);">
             <div id="outputArea" class="terminal-output" style="color: var(--term-text);"></div>
-            <div class="terminal-input-line flex items-center gap-2 mt-2">
+            <div class="terminal-input-line flex items-center gap-2 mt-2" id="promptLine">
                 <span class="prompt-symbol">user@techhub</span>:<span class="prompt-path">~</span>$
                 <input type="text" id="terminalInput" class="flex-1 bg-transparent border-none outline-none font-mono"
                     style="color: var(--term-text);" autofocus spellcheck="false" autocomplete="off">
+            </div>
+
+            <!-- Nano Editor Overlay -->
+            <div id="nanoEditor" class="absolute inset-0 bg-[#161b22] z-50 hidden flex-col">
+                <div class="bg-slate-700 px-4 py-1 flex justify-between items-center text-white text-xs">
+                    <span id="nanoFilename">File: </span>
+                    <span>GNU nano 5.4</span>
+                </div>
+                <textarea id="nanoTextArea"
+                    class="flex-1 bg-transparent border-none outline-none p-4 text-slate-200 font-mono resize-none"></textarea>
+                <div class="bg-slate-700 px-4 py-2 grid grid-cols-2 md:grid-cols-4 gap-2 text-[10px] text-white">
+                    <div><span class="nano-shortcut">^O</span> Save</div>
+                    <div><span class="nano-shortcut">^X</span> Exit</div>
+                </div>
             </div>
         </div>
     </div>

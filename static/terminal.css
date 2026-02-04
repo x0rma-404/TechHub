@@ -142,6 +142,28 @@
     color: var(--term-prompt);
 }
 
+/* Nano Editor Styles */
+#nanoTextArea {
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    caret-color: #fff;
+    line-height: 1.6;
+}
+
+#nanoTextArea:focus {
+    box-shadow: none;
+    outline: none;
+}
+
+.nano-shortcut {
+    display: inline-block;
+    background: #e2e8f0;
+    color: #0f172a;
+    padding: 0 4px;
+    border-radius: 2px;
+    font-weight: bold;
+    margin-right: 4px;
+}
+
 /* Mobile Adjustments */
 @media (max-width: 600px) {
     .terminal-container {

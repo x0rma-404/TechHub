@@ -311,7 +311,24 @@ def upload_image():
 def linux_sim():
     data = request.get_json()
     output = linux_simulator.run_command(data.get("command", ""))
+    
+    # Check if output is a dictionary (internal signal)
+    if isinstance(output, dict):
+        return jsonify(output)
+        
     return jsonify({"output": output, "path": linux_simulator.current_path})
+
+@app.route('/linux-sim/save', methods=["POST"])
+def linux_sim_save():
+    data = request.get_json()
+    full_path = data.get("full_path")
+    content = data.get("content")
+    
+    if full_path:
+        linux_simulator.fs[full_path] = content
+        linux_simulator.change_dict["modified"] = True
+        return jsonify({"success": True})
+    return jsonify({"success": False, "message": "Missing path"}), 400
 
 @app.route('/tools/floating-point')
 def floating_point_page():  # ✅ RENAMED TO AVOID CONFLICT
