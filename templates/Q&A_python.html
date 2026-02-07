@@ -5,20 +5,26 @@
 <link rel="stylesheet" href="../static/Q&A.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<div class="wrapper">
+<div class="wrapper animate-stagger">
     <main class="content-area">
         <div class="header-section">
-            <h1 class="page-title">Python Sorğuları</h1>
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+            <div class="flex items-center gap-4 mb-2">
                 <button onclick="history.back()" class="cat-btn">
-                    <i class="fas fa-arrow-left"></i> Geriyə
+                    <i class="fas fa-arrow-left"></i>
                 </button>
-                <button onclick="openQuestionModal()" class="cat-btn active">+ Yeni Sual Ver</button>
+                <h1 class="page-title !mb-0">Python Sorğuları</h1>
             </div>
+            <p class="text-slate-400 mb-6">Python proqramlaşdırma dili, kitabxanalar və freymvorklar haqqında
+                suallarınızı burada verə bilərsiniz.</p>
 
-            <div class="search-box">
-                <i class="fas fa-search"></i>
-                <input type="text" id="searchInput" placeholder="Sual axtar..." onkeyup="filterTopics()">
+            <div class="flex flex-wrap gap-4 items-center">
+                <button onclick="openQuestionModal()" class="cat-btn active">
+                    <i class="fas fa-plus mr-2"></i> Yeni Sual Ver
+                </button>
+                <div class="search-box !max-w-none flex-1">
+                    <i class="fas fa-search text-slate-400"></i>
+                    <input type="text" id="searchInput" placeholder="Bu kategoriyada axtar..." onkeyup="filterTopics()">
+                </div>
             </div>
         </div>
 

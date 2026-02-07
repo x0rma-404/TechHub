@@ -5,77 +5,79 @@
 <link rel="stylesheet" href="/static/Q&A.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<div class="wrapper">
+<div class="wrapper animate-stagger">
     <main class="content-area">
         <div class="header-section">
-            <button onclick="history.back()" class="cat-btn" style="width: fit-content;">
+            <button onclick="history.back()" class="cat-btn">
                 <i class="fas fa-arrow-left"></i> Geriyə
             </button>
         </div>
 
-        <div class="main-post-card"
-            style="background: var(--card-bg); padding: 25px; border-radius: 10px; box-shadow: var(--shadow); margin-bottom: 30px;">
-            <div class="q-user-meta" style="display: flex; align-items: center; gap: 10px; margin-bottom: 15px;">
-                <img class="comment-avatar"
+        <article class="main-post-card group">
+            <div class="q-user-meta mb-6">
+                <img class="comment-avatar border-2 border-slate-700 shadow-xl"
                     src="{{ question.author_photo.replace('../', '/') if question.author_photo else 'https://ui-avatars.com/api/?background=random&color=fff&name=' + (question.author_name | urlencode) }}"
                     alt="avatar"
-                    onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ question.author_name | urlencode }}';"
-                    style="width: 45px; height: 45px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
-                <div>
-                    <strong style="font-size: 1.1em;">{{ question.author_name }}</strong>
-                    <div style="font-size: 0.85em; color: var(--text-sub);">{{ question.timestamp | format_time }}</div>
+                    onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ question.author_name | urlencode }}';">
+                <div class="flex-1">
+                    <strong class="text-slate-100 text-lg block leading-tight">{{ question.author_name }}</strong>
+                    <div class="text-sm text-slate-500">{{ question.timestamp | format_time }}</div>
                 </div>
 
-                <button class="cat-btn" style="margin-left: auto; font-size: 0.8rem; padding: 5px 15px;"
+                <button class="cat-btn !text-xs !py-1 !px-3"
                     onclick="setReply(null, '{{ question.author_name }}', 'main')">
-                    <i class="fas fa-reply"></i> Cavabla
+                    <i class="fas fa-reply mr-1"></i> Cavabla
                 </button>
             </div>
 
-            <h1 style="margin: 10px 0; font-size: 1.8rem; color: var(--text-main);">{{ question.title }}</h1>
+            <h1 class="text-3xl font-extrabold text-slate-100 mb-6 leading-tight tracking-tight">{{ question.title }}
+            </h1>
 
-            <div class="post-body ql-editor" style="padding: 0; min-height: auto;">
+            <div class="post-body ql-editor !p-0 !min-h-0 text-lg leading-relaxed text-slate-300">
                 {{ question.content | safe }}
             </div>
 
-            <div class="q-tags" style="margin-top: 20px;">
-                <span class="tag">{{ question.category|upper }}</span>
+            <div class="q-tags mt-8 border-t border-slate-800 pt-6">
+                <span
+                    class="tag active bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 uppercase tracking-wider text-[10px] font-bold">{{
+                    question.category }}</span>
                 {% for tag in question.tags %}
-                <span class="tag">{{ tag }}</span>
+                <span class="tag uppercase tracking-wider text-[10px] font-bold">{{ tag }}</span>
                 {% endfor %}
             </div>
-        </div>
+        </article>
 
-        <h3 style="margin-bottom: 20px;">{{ question.answers|length }} Cavab</h3>
-        <div class="answers-list">
+        <h3 class="text-xl font-bold text-slate-100 mb-6 flex items-center gap-2">
+            <i class="fas fa-comments text-indigo-400"></i>
+            {{ question.answers|length }} Cavab
+        </h3>
+
+        <div class="answers-list space-y-6">
             {% for ans in question.answers %}
-            <div class="comment-card" id="ans-{{ ans.id }}"
-                style="padding: 20px; border-radius: 8px; margin-bottom: 15px; border-left: 4px solid var(--accent); position: relative;">
-
-                <div style="display: flex; justify-content: space-between; align-items: start;">
-                    <div style="display: flex; gap: 10px;">
-                        <img class="comment-avatar"
+            <div class="comment-card" id="ans-{{ ans.id }}">
+                <div class="flex justify-between items-start mb-4">
+                    <div class="flex gap-3 items-center">
+                        <img class="comment-avatar border border-slate-700"
                             src="{{ ans.author_photo.replace('../', '/') if ans.author_photo else 'https://ui-avatars.com/api/?background=random&color=fff&name=' + (ans.author_name | urlencode) }}"
                             alt="avatar"
-                            onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ ans.author_name | urlencode }}';"
-                            style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
+                            onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?background=random&color=fff&name={{ ans.author_name | urlencode }}';">
                         <div>
-                            <strong>{{ ans.author_name }}</strong>
-                            <span class="user-role-badge {% if ans.role == 'AI Assistant' %}role-ai{% endif %}">{{
+                            <strong class="text-slate-200">{{ ans.author_name }}</strong>
+                            <span class="user-role-badge !ml-2 {% if ans.role == 'AI Assistant' %}role-ai{% endif %}">{{
                                 ans.role }}</span>
-                            <div style="font-size: 0.8rem; color: #888;">{{ ans.timestamp | format_time }}</div>
+                            <div class="text-xs text-slate-500 mt-1">{{ ans.timestamp | format_time }}</div>
                         </div>
                     </div>
 
-                    <div style="display: flex; align-items: center;">
-                        <button
-                            style="border:none; background:none; color:var(--accent); cursor:pointer; margin-right: 10px;"
-                            onclick="setReply('{{ ans.id }}', '{{ ans.author_name }}', 'sub')">
+                    <div class="flex items-center gap-2">
+                        <button class="cat-btn !p-2 !rounded-lg !bg-transparent !border-transparent hover:!bg-slate-800"
+                            onclick="setReply('{{ ans.id }}', '{{ ans.author_name }}', 'sub')" title="Cavabla">
                             <i class="fas fa-reply"></i>
                         </button>
 
                         {% if user.email == ans.author_email or user.role in ['Administrator', 'Moderator', 'Staff'] %}
-                        <button class="delete-btn" onclick="deleteAnswer('{{ question.id }}', '{{ ans.id }}')">
+                        <button class="delete-btn !m-0 !p-2 rounded-lg hover:bg-red-500/10"
+                            onclick="deleteAnswer('{{ question.id }}', '{{ ans.id }}')" title="Sil">
                             <i class="fas fa-trash"></i>
                         </button>
                         {% endif %}
@@ -83,35 +85,37 @@
                 </div>
 
                 {% if ans.reply_to %}
-                <div class="reply-indicator"
-                    style="margin-top: 10px; font-size: 0.9em; background: var(--input-bg); padding: 5px 10px; border-radius: 5px;">
-                    <i class="fas fa-share" style="margin-right: 5px;"></i>
-                    Cavab verilir: <strong>{{ ans.reply_to.name }}</strong>
+                <div class="reply-indicator">
+                    <i class="fas fa-share-alt mr-2"></i>
+                    Cavab verilir: <span class="text-slate-300 font-semibold">{{ ans.reply_to.name }}</span>
                 </div>
                 {% endif %}
 
-                <div class="comment-content ql-editor" style="padding: 10px 0; min-height: auto;">
+                <div class="comment-content ql-editor !p-0 !min-h-0 text-slate-300">
                     {{ ans.text | safe }}
                 </div>
             </div>
             {% endfor %}
         </div>
 
-        <div class="reply-section" style="margin-top: 40px; padding: 20px; border-radius: 10px;">
-            <h3>Cavab yaz</h3>
+        <div class="reply-section mt-12 glass-panel !p-8 ring-premium">
+            <h3 class="text-xl font-bold text-slate-100 mb-6">Fikrini bildir</h3>
 
-            <div id="reply-tag-area" style="display: none; margin-bottom: 10px;">
-                <span class="reply-badge">
+            <div id="reply-tag-area" class="hidden mb-4">
+                <span
+                    class="reply-badge bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-4 py-2 rounded-xl text-sm inline-flex items-center gap-2">
                     <span id="reply-target-name">Sualın özünə cavab</span>
-                    <i class="fas fa-times" onclick="cancelReply()"></i>
+                    <i class="fas fa-times cursor-pointer hover:text-red-400" onclick="cancelReply()"></i>
                 </span>
             </div>
 
-            <div id="editor-container" style="height: 150px; margin-bottom: 50px;"></div>
+            <div id="editor-container" class="!bg-slate-900 !border-slate-800 rounded-xl"
+                style="height: 180px; margin-bottom: 50px;"></div>
 
-            <div style="text-align: right; margin-top: 10px;">
-                <button class="cat-btn active" onclick="submitAnswer('{{ question.id }}')">
-                    <i class="fas fa-paper-plane"></i> Göndər
+            <div class="flex justify-end pt-4">
+                <button class="cat-btn active !px-8 !py-3 !rounded-xl text-lg"
+                    onclick="submitAnswer('{{ question.id }}')">
+                    <i class="fas fa-paper-plane mr-2"></i> Göndər
                 </button>
             </div>
         </div>

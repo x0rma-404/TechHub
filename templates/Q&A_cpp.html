@@ -3,16 +3,27 @@
 <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 <link rel="stylesheet" href="../static/Q&A.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-<div class="wrapper">
+<div class="wrapper animate-stagger">
     <main class="content-area">
         <div class="header-section">
-            <h1 class="page-title">C++ / C Sorğuları</h1>
-            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
-                <button onclick="history.back()" class="cat-btn"><i class="fas fa-arrow-left"></i> Geriyə</button>
-                <button onclick="openQuestionModal()" class="cat-btn active">+ Yeni Sual Ver</button>
+            <div class="flex items-center gap-4 mb-2">
+                <button onclick="history.back()" class="cat-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1 class="page-title !mb-0">C++ / C Sorğuları</h1>
             </div>
-            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput"
-                    placeholder="Sual axtar..." onkeyup="filterTopics()"></div>
+            <p class="text-slate-400 mb-6">Sistem proqramlaşdırma, verilənlər strukturları, alqoritmlər və performans
+                optimallaşdırma haqqında suallar.</p>
+
+            <div class="flex flex-wrap gap-4 items-center">
+                <button onclick="openQuestionModal()" class="cat-btn active">
+                    <i class="fas fa-plus mr-2"></i> Yeni Sual Ver
+                </button>
+                <div class="search-box !max-w-none flex-1">
+                    <i class="fas fa-search text-slate-400"></i>
+                    <input type="text" id="searchInput" placeholder="Bu kategoriyada axtar..." onkeyup="filterTopics()">
+                </div>
+            </div>
         </div>
         <div class="questions-list">
             {% if questions|length == 0 %}<p style="text-align:center; color:#666; margin-top:20px;">Hələ ki, heç bir

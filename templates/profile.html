@@ -13,7 +13,7 @@
       {% endif %}
     </div>
 
-    <div class="p-6 md:p-8">        
+    <div class="p-6 md:p-8">
       <div class="flex flex-col md:flex-row gap-6 items-start -mt-20 md:-mt-16">
         <img src="{{ user.photo or url_for('static', filename='images/default.png') }}" alt="Avatar"
           class="h-32 w-32 rounded-2xl border-4 border-[#0b1220] object-cover">
@@ -50,64 +50,245 @@
         <p class="text-slate-300">{{ user.about }}</p>
       </div>
       {% endif %}
+
+      {% if user.phone or user.website %}
+      <div class="mt-6 glass ring-soft rounded-xl p-4">
+        <h3 class="font-semibold mb-3">Əlaqə Məlumatları</h3>
+        <div class="space-y-2 text-sm">
+          {% if user.phone %}
+          <div class="flex items-center gap-2 text-slate-300">
+            <span class="material-symbols-outlined text-lg text-indigo-400">phone</span>
+            {{ user.phone }}
+          </div>
+          {% endif %}
+          {% if user.website %}
+          <div class="flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg text-indigo-400">language</span>
+            <a href="{{ user.website }}" target="_blank"
+              class="text-indigo-400 hover:text-indigo-300 transition-colors">{{ user.website }}</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+
+      {% if user.github or user.linkedin or user.twitter or user.instagram %}
+      <div class="mt-6 glass ring-soft rounded-xl p-4">
+        <h3 class="font-semibold mb-3">Sosial Media</h3>
+        <div class="flex flex-wrap gap-3">
+          {% if user.github %}
+          <a href="https://github.com/{{ user.github }}" target="_blank"
+            class="flex items-center gap-2 px-4 py-2 bg-white/5 hover:bg-white/10 rounded-xl transition-colors">
+            <i class='bx bxl-github text-xl'></i>
+            <span>{{ user.github }}</span>
+          </a>
+          {% endif %}
+          {% if user.linkedin %}
+          <a href="https://linkedin.com/in/{{ user.linkedin }}" target="_blank"
+            class="flex items-center gap-2 px-4 py-2 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl transition-colors">
+            <i class='bx bxl-linkedin text-xl text-blue-400'></i>
+            <span>{{ user.linkedin }}</span>
+          </a>
+          {% endif %}
+          {% if user.twitter %}
+          <a href="https://twitter.com/{{ user.twitter.lstrip('@') }}" target="_blank"
+            class="flex items-center gap-2 px-4 py-2 bg-sky-500/10 hover:bg-sky-500/20 rounded-xl transition-colors">
+            <i class='bx bxl-twitter text-xl text-sky-400'></i>
+            <span>{{ user.twitter }}</span>
+          </a>
+          {% endif %}
+          {% if user.instagram %}
+          <a href="https://instagram.com/{{ user.instagram.lstrip('@') }}" target="_blank"
+            class="flex items-center gap-2 px-4 py-2 bg-pink-500/10 hover:bg-pink-500/20 rounded-xl transition-colors">
+            <i class='bx bxl-instagram text-xl text-pink-400'></i>
+            <span>{{ user.instagram }}</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
     </div>
   </div>
 
-  <div id="editMode" class="glass ring-soft rounded-2xl p-6 md:p-8 hidden">
-    <h3 class="text-xl font-bold mb-6">Profil Məlumatlarını Yenilə</h3>
-
-    <form id="profileForm" class="space-y-6">
-      <div class="grid md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-sm text-slate-300 mb-1">Profil Şəkli</label>
-          <input type="file" name="profile_photo" accept="image/*" class="input w-full rounded-xl px-4 py-3">
+  <div id="editMode" class="glass ring-soft rounded-2xl overflow-hidden hidden">
+    <div class="bg-gradient-to-r from-indigo-600/20 to-cyan-600/20 p-6 border-b border-white/10">
+      <div class="flex items-center gap-3">
+        <div class="h-12 w-12 rounded-xl bg-indigo-500/20 grid place-items-center">
+          <span class="material-symbols-outlined text-indigo-400">edit</span>
         </div>
         <div>
-          <label class="block text-sm text-slate-300 mb-1">Banner Şəkli</label>
-          <input type="file" name="banner_photo" accept="image/*" class="input w-full rounded-xl px-4 py-3">
+          <h3 class="text-xl font-bold">Profil Məlumatlarını Yenilə</h3>
+          <p class="text-sm text-slate-400">Şəxsi məlumatlarınızı və sosial hesablarınızı yeniləyin</p>
+        </div>
+      </div>
+    </div>
+
+    <form id="profileForm" class="p-6 md:p-8 space-y-8">
+      <!-- Photos Section -->
+      <div class="space-y-4">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-indigo-400">photo_camera</span>
+          <h4 class="font-semibold">Şəkillər</h4>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-slate-300">Profil Şəkli</label>
+            <input type="file" id="profile_photo_input" name="profile_photo" accept="image/*"
+              class="input w-full rounded-xl px-4 py-3 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-indigo-500/20 file:text-indigo-400 file:cursor-pointer hover:file:bg-indigo-500/30">
+            <p class="text-xs text-slate-500">Tövsiyə olunan: 400x400px, max 2MB</p>
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-slate-300">Banner Şəkli</label>
+            <input type="file" id="banner_photo_input" name="banner_photo" accept="image/*"
+              class="input w-full rounded-xl px-4 py-3 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-cyan-500/20 file:text-cyan-400 file:cursor-pointer hover:file:bg-cyan-500/30">
+            <p class="text-xs text-slate-500">Tövsiyə olunan: 1200x300px, max 5MB</p>
+          </div>
         </div>
       </div>
 
-      <div>
-        <label class="block text-sm text-slate-300 mb-1">Lokasiya</label>
-        <input type="text" name="location" value="{{ user.location if user.location else '' }}"
-          placeholder="Məs: Bakı, Azərbaycan" class="input w-full rounded-xl px-4 py-3">
+      <!-- Basic Info Section -->
+      <div class="space-y-4 pt-6 border-t border-white/10">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-indigo-400">person</span>
+          <h4 class="font-semibold">Əsas Məlumatlar</h4>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Lokasiya</label>
+          <div class="relative">
+            <span
+              class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">location_on</span>
+            <input type="text" name="location" value="{{ user.location if user.location else '' }}"
+              placeholder="Məs: Bakı, Azərbaycan" class="input w-full rounded-xl pl-12 pr-4 py-3">
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-slate-300 mb-2">Haqqında</label>
+          <textarea name="about" class="input w-full rounded-xl px-4 py-3 min-h-[120px] resize-none"
+            placeholder="Özünüz, bacarıqlarınız və maraqlarınız haqqında məlumat">{{ user.about if user.about else '' }}</textarea>
+          <p class="text-xs text-slate-500 mt-1">Özünüz haqqında qısa məlumat yazın</p>
+        </div>
       </div>
 
-      <div>
-        <label class="block text-sm text-slate-300 mb-1">Haqqında</label>
-        <textarea name="about" class="input w-full rounded-xl px-4 py-3 min-h-[100px]"
-          placeholder="Özünüz haqqında məlumat">{{ user.about if user.about else '' }}</textarea>
+      <!-- Contact Section -->
+      <div class="space-y-4 pt-6 border-t border-white/10">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-indigo-400">contact_phone</span>
+          <h4 class="font-semibold">Əlaqə Məlumatları</h4>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Telefon</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">phone</span>
+              <input type="text" name="phone" value="{{ user.phone if user.phone else '' }}"
+                placeholder="+994 XX XXX XX XX" class="input w-full rounded-xl pl-12 pr-4 py-3">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">Vebsayt</label>
+            <div class="relative">
+              <span
+                class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-500">language</span>
+              <input type="url" name="website" value="{{ user.website if user.website else '' }}"
+                placeholder="https://example.com" class="input w-full rounded-xl pl-12 pr-4 py-3">
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="border-t border-white/10 pt-6">
-        <h4 class="font-semibold mb-4">Təhlükəsizlik (Şifrə dəyişimi)</h4>
+      <!-- Social Media Section -->
+      <div class="space-y-4 pt-6 border-t border-white/10">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-indigo-400">share</span>
+          <h4 class="font-semibold">Sosial Media Hesabları</h4>
+        </div>
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">
+              <i class='bx bxl-github'></i> GitHub
+            </label>
+            <div class="relative">
+              <i class='bx bxl-github absolute left-4 top-1/2 -translate-y-1/2 text-slate-500'></i>
+              <input type="text" name="github" value="{{ user.github if user.github else '' }}" placeholder="username"
+                class="input w-full rounded-xl pl-12 pr-4 py-3">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">
+              <i class='bx bxl-linkedin'></i> LinkedIn
+            </label>
+            <div class="relative">
+              <i class='bx bxl-linkedin absolute left-4 top-1/2 -translate-y-1/2 text-blue-400'></i>
+              <input type="text" name="linkedin" value="{{ user.linkedin if user.linkedin else '' }}"
+                placeholder="username" class="input w-full rounded-xl pl-12 pr-4 py-3">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">
+              <i class='bx bxl-twitter'></i> Twitter / X
+            </label>
+            <div class="relative">
+              <i class='bx bxl-twitter absolute left-4 top-1/2 -translate-y-1/2 text-sky-400'></i>
+              <input type="text" name="twitter" value="{{ user.twitter if user.twitter else '' }}"
+                placeholder="@username" class="input w-full rounded-xl pl-12 pr-4 py-3">
+            </div>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-300 mb-2">
+              <i class='bx bxl-instagram'></i> Instagram
+            </label>
+            <div class="relative">
+              <i class='bx bxl-instagram absolute left-4 top-1/2 -translate-y-1/2 text-pink-400'></i>
+              <input type="text" name="instagram" value="{{ user.instagram if user.instagram else '' }}"
+                placeholder="@username" class="input w-full rounded-xl pl-12 pr-4 py-3">
+            </div>
+          </div>
+        </div>
+        <p class="text-xs text-slate-500">Yalnız istifadəçi adınızı daxil edin (@ simvolu olmadan)</p>
+      </div>
+
+      <!-- Security Section -->
+      <div class="space-y-4 pt-6 border-t border-white/10">
+        <div class="flex items-center gap-2 mb-4">
+          <span class="material-symbols-outlined text-amber-400">lock</span>
+          <h4 class="font-semibold">Təhlükəsizlik</h4>
+        </div>
+        <p class="text-sm text-slate-400 mb-4">Şifrənizi dəyişmək istəyirsinizsə aşağıdakı sahələri doldurun</p>
 
         <div class="space-y-4">
           <div>
-            <label class="block text-sm text-slate-300 mb-1">Köhnə Şifrə</label>
-            <input type="password" name="old_password" placeholder="Cari şifrəniz"
+            <label class="block text-sm font-medium text-slate-300 mb-2">Köhnə Şifrə</label>
+            <input type="password" name="old_password" placeholder="Cari şifrənizi daxil edin"
               class="input w-full rounded-xl px-4 py-3">
           </div>
 
           <div class="grid md:grid-cols-2 gap-4">
             <div>
-              <label class="block text-sm text-slate-300 mb-1">Yeni Şifrə</label>
+              <label class="block text-sm font-medium text-slate-300 mb-2">Yeni Şifrə</label>
               <input type="password" name="new_password" placeholder="Yeni şifrə"
                 class="input w-full rounded-xl px-4 py-3">
             </div>
             <div>
-              <label class="block text-sm text-slate-300 mb-1">Yeni Şifrəni Təsdiqlə</label>
-              <input type="password" name="confirm_password" placeholder="Təkrar daxil et"
+              <label class="block text-sm font-medium text-slate-300 mb-2">Yeni Şifrəni Təsdiqlə</label>
+              <input type="password" name="confirm_password" placeholder="Yeni şifrəni təkrar daxil edin"
                 class="input w-full rounded-xl px-4 py-3">
             </div>
           </div>
         </div>
       </div>
 
-      <div class="flex gap-3">
-        <button type="button" id="cancelEditBtn" class="btn btn-muted flex-1">Ləğv Et</button>
-        <button type="submit" class="btn btn-primary flex-1">Yadda Saxla</button>
+      <!-- Action Buttons -->
+      <div class="flex flex-col-reverse md:flex-row gap-3 pt-6 border-t border-white/10">
+        <button type="button" id="cancelEditBtn" class="btn btn-muted flex-1 justify-center">
+          <span class="material-symbols-outlined">close</span>
+          Ləğv Et
+        </button>
+        <button type="submit" class="btn btn-primary flex-1 justify-center shadow-lg shadow-indigo-500/20">
+          <span class="material-symbols-outlined">save</span>
+          Yaddaşda Saxla
+        </button>
       </div>
     </form>
   </div>

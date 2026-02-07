@@ -1,5 +1,77 @@
 [
   {
+    "id": "4da3af27-ac05-4e01-85b1-578400dbdeb2",
+    "title": "dfvdfs",
+    "content": "<p>dfvsvfsdvds</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770444185211,
+    "views": 0,
+    "answers": [
+      {
+        "id": "d2e74671-ef5b-4d9e-9f52-3feeca843564",
+        "text": "**Q&A Community**\n\nYou've posted a question in the Python category, but it seems like there's been an error. The content you provided doesn't seem to be related to a specific programming issue.\n\nIf you could provide more context or clarify what you're trying to accomplish, I'd be happy to help. Alternatively, if you meant to ask a question about a specific topic, feel free to rephrase it, and I'll do my best to assist you.\n\n**Instant Answer**\n\nFor now, let's assume you're asking for help with Python basics. Here's an example of how to print \"Hello, World!\" in Python:\n\n```python\n# Print \"Hello, World!\" to the console\nprint(\"Hello, World!\")\n```\n\nThis code is a simple example of printing text to the console using Python's `print()` function.\n\n**Next Steps**\n\nPlease provide more details about your question or topic you'd like to discuss. I'm here to help!",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770444198729,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "ad0ec978-22f8-4048-8253-b6931ac847c8",
+    "title": "Flutter",
+    "content": "<p>What is flutter</p>",
+    "category": "mobile",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770443609890,
+    "views": 0,
+    "answers": [
+      {
+        "id": "b588f338-9ecc-4bdb-8c38-76ff300645d6",
+        "text": "**Flutter Overview**\n\nFlutter is an open-source, cross-platform mobile app development framework created by Google. It uses the Dart programming language to build natively compiled applications for mobile (iOS and Android), web, desktop (Windows, macOS, Linux), and embedded systems.\n\n**Key Features:**\n\n*   **Platform Independence**: Flutter allows you to build apps that run on multiple platforms from a single codebase.\n*   **Hot Reload**: This feature enables developers to see the changes they make in real-time without having to rebuild the app every time.\n*   **Rich User Interface (UI) Components**: Flutter provides a wide range of pre-built UI components, making it easier to build visually appealing and consistent interfaces across different platforms.\n\n**Flutter Ecosystem:**\n\nThe Flutter ecosystem is growing rapidly, with many tools and resources available for developers. Some notable ones include:\n\n*   **Flutter SDK**: The official SDK provided by Google that includes the Dart compiler, Android Studio plugins, and iOS development tools.\n*   **Dart Language**: A modern language used to build Flutter apps.\n*   **Pub Package Manager**: A package manager that makes it easy to discover, install, and manage dependencies for your app.\n\n**Why Use Flutter?**\n\nFlutter is a popular choice among developers due to its ease of use, high performance, and ability to build native mobile apps with a single codebase. It also provides a rich set of features and tools to help you build complex, visually appealing interfaces quickly.\n\nTo get started with Flutter, I recommend checking out the official [Flutter documentation](https://docs.flutter.dev/) or exploring some of the many tutorials and guides available online.",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770443615977,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "962d42bf-2fff-44dd-b8e3-1ae9142372c3",
+    "title": "s",
+    "content": "<p>hii</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770443483185,
+    "views": 0,
+    "answers": [
+      {
+        "id": "01c6b7c2-d318-4d6b-86cb-21c26290374e",
+        "text": "It seems like your question is missing some details.\n\nTo get help with Python-related topics, please provide more context or ask a specific question about the language, such as:\n\n* Syntax errors or issues\n* Code implementation for a particular algorithm\n* Troubleshooting an existing project\n* Best practices or recommendations for a specific task\n\nIf you're looking for general guidance on how to use TechHub's Python Playground, I can guide you through it. Here are some steps:\n\n1. Visit `/tools/python3` in your browser.\n2. Click the \"New Code\" button to create a fresh code block.\n3. Copy and paste your Python code into the editor.\n4. Run your code using the \"Run\" button or press F5.\n\nIf you have any specific questions about Python, feel free to ask, and I'll do my best to assist you!",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770443493394,
+        "votes": 0
+      }
+    ]
+  },
+  {
     "id": "42619881-4c8c-4043-b06d-94a5bdca987a",
     "title": "Ruby",
     "content": "<p>what is ruby</p><p><br></p>",

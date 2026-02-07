@@ -12,6 +12,7 @@
     opacity: 0;
     transform: translateY(18px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -23,6 +24,7 @@
     opacity: 0;
     transform: scale(1.015);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -34,6 +36,7 @@
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -45,6 +48,7 @@
     opacity: 0;
     transform: translateY(-10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -56,6 +60,7 @@
     opacity: 0;
     transform: scale(0.96);
   }
+
   to {
     opacity: 1;
     transform: scale(1);
@@ -67,6 +72,7 @@
     opacity: 0;
     transform: translateY(6px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -78,11 +84,11 @@
   animation: profileCardIn 0.6s var(--ease-out-smooth) both;
 }
 
-#viewMode > div:first-child {
+#viewMode>div:first-child {
   animation: profileBannerIn 0.55s var(--ease-out-smooth) 0.08s both;
 }
 
-#viewMode > div:last-child > div:first-child {
+#viewMode>div:last-child>div:first-child {
   animation: profileContentIn 0.52s var(--ease-out-smooth) 0.12s both;
 }
 
@@ -90,7 +96,7 @@
   animation: profileAvatarIn 0.5s var(--ease-out-smooth) 0.18s both;
 }
 
-#viewMode > div:last-child > div.glass.rounded-xl {
+#viewMode>div:last-child>div.glass.rounded-xl {
   animation: profileAboutIn 0.5s var(--ease-out-smooth) 0.3s both;
 }
 
@@ -100,24 +106,24 @@
 }
 
 .profile-wrapper {
-    width: 100%;
-    max-width: 800px;
-    display: flex;
-    justify-content: center;
-    padding-bottom: 40px;
-    /* Space for scrolling */
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  padding-bottom: 40px;
+  /* Space for scrolling */
 }
 
 .profile-card {
-    background-color: var(--logic-card-bg, white);
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--logic-card-border, #eee);
-    border-radius: 20px;
-    box-shadow: var(--logic-shadow, 0 10px 30px rgba(0, 0, 0, 0.1));
-    overflow: hidden;
-    width: 100%;
-    max-width: 600px;
-    transition: background 0.3s ease;
+  background-color: var(--logic-card-bg, white);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--logic-card-border, #eee);
+  border-radius: 20px;
+  box-shadow: var(--logic-shadow, 0 10px 30px rgba(0, 0, 0, 0.1));
+  overflow: hidden;
+  width: 100%;
+  max-width: 600px;
+  transition: background 0.3s ease;
 }
 
 #viewMode {
@@ -138,116 +144,122 @@
 }
 
 .banner-area {
-    height: 160px;
-    overflow: hidden;
+  height: 160px;
+  overflow: hidden;
 }
 
 .banner-area img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-#viewMode > div:first-child img:hover {
+#viewMode>div:first-child img:hover {
   transform: scale(1.03);
 }
 
 .profile-body {
-    padding: 0 30px 40px;
-    text-align: center;
-    color: var(--logic-text, #333);
+  padding: 0 30px 40px;
+  text-align: center;
+  color: var(--logic-text, #333);
 }
 
 .avatar-area {
-    width: 120px;
-    height: 120px;
-    margin: -60px auto 15px;
-    border-radius: 50%;
-    border: 5px solid var(--logic-card-bg, #fff);
-    overflow: hidden;
-    background: var(--logic-card-bg, #fff);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  width: 120px;
+  height: 120px;
+  margin: -60px auto 15px;
+  border-radius: 50%;
+  border: 5px solid var(--logic-card-bg, #fff);
+  overflow: hidden;
+  background: var(--logic-card-bg, #fff);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .avatar-area img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .info-area h2 {
-    margin: 0;
-    font-size: 1.8rem;
+  margin: 0;
+  font-size: 1.8rem;
 }
 
 .email-text {
-    opacity: 0.7;
-    font-size: 0.95rem;
-    margin-bottom: 20px;
+  opacity: 0.7;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
 }
 
 .meta-tags {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 15px;
-    margin-bottom: 30px;
-    font-size: 0.9rem;
-    opacity: 0.8;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 30px;
+  font-size: 0.9rem;
+  opacity: 0.8;
 }
 
 /* Edit Mode Styles */
 .card-header {
-    padding: 20px 30px;
-    border-bottom: 1px solid var(--logic-card-border, #eee);
-    text-align: left;
+  padding: 20px 30px;
+  border-bottom: 1px solid var(--logic-card-border, #eee);
+  text-align: left;
 }
 
 form {
-    padding: 30px;
+  padding: 30px;
 }
 
 .form-group {
-    margin-bottom: 20px;
-    text-align: left;
+  margin-bottom: 20px;
+  text-align: left;
 }
 
 .form-row {
-    display: flex;
-    gap: 20px;
+  display: flex;
+  gap: 20px;
 }
 
 .form-row .form-group {
-    flex: 1;
+  flex: 1;
 }
 
 label {
-    display: block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 8px;
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 8px;
 }
 
 input[type="text"],
 input[type="password"],
-input[type="file"] {
-    width: 100%;
-    padding: 12px;
-    background: var(--logic-input-bg, #f9f9f9);
-    border: 1px solid var(--logic-input-border, #ddd);
-    border-radius: 10px;
-    color: var(--logic-input-text, #333);
-    box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+input[type="url"],
+input[type="file"],
+textarea,
+.input {
+  width: 100%;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  color: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 #editMode input[type="text"]:focus,
 #editMode input[type="password"]:focus,
-#editMode textarea:focus {
-    outline: none;
-    border-color: rgba(99, 102, 241, 0.5);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+#editMode input[type="url"]:focus,
+#editMode textarea:focus,
+#editMode .input:focus {
+  outline: none;
+  border-color: rgba(99, 102, 241, 0.6);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  background: rgba(0, 0, 0, 0.4);
 }
 
 #editMode textarea {
@@ -255,108 +267,125 @@ input[type="file"] {
 }
 
 .divider {
-    margin: 30px 0 20px;
-    border-bottom: 1px solid var(--logic-card-border, #eee);
-    text-align: center;
-    line-height: 0.1em;
+  margin: 30px 0 20px;
+  border-bottom: 1px solid var(--logic-card-border, #eee);
+  text-align: center;
+  line-height: 0.1em;
 }
 
 .divider span {
-    background: var(--logic-card-bg, white);
-    padding: 0 10px;
-    opacity: 0.6;
-    font-size: 0.8rem;
+  background: var(--logic-card-bg, white);
+  padding: 0 10px;
+  opacity: 0.6;
+  font-size: 0.8rem;
 }
 
 .btn-action,
 .btn-primary,
 .btn-secondary {
-    padding: 12px 24px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    font-weight: 600;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.28s ease, background 0.28s ease;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.28s ease, background 0.28s ease;
 }
 
 .btn-action:hover,
 .btn-primary:hover,
 .btn-secondary:hover {
-    transform: translateY(-2px);
+  transform: translateY(-2px);
 }
 
 .btn-action:active,
 .btn-primary:active,
 .btn-secondary:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
 
 .form-actions {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin-top: 25px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 25px;
 }
 
 .btn-action {
-    background: #695CFE;
-    color: white;
+  background: #695CFE;
+  color: white;
 }
 
 .btn-primary {
-    background: #2ecc71;
-    color: white;
+  background: #2ecc71;
+  color: white;
 }
 
 .btn-secondary {
-    background: #e0e0e0;
-    color: #333;
+  background: #e0e0e0;
+  color: #333;
 }
 
 /* Only hide .hidden inside profile content, not in the bar (bar uses Tailwind hidden md:flex) */
 #viewMode .hidden,
 #editMode .hidden {
-    display: none;
+  display: none;
 }
 
 /* Mobile Adjustments */
 @media (max-width: 600px) {
-    .profile-card {
-        max-width: 100%;
-        border-radius: 15px;
-    }
+  .profile-card {
+    max-width: 100%;
+    border-radius: 15px;
+  }
 
-    .form-row {
-        flex-direction: column;
-        gap: 0;
-    }
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
 
-    .profile-body {
-        padding: 0 20px 30px;
-    }
+  .profile-body {
+    padding: 0 20px 30px;
+  }
 
-    .avatar-area {
-        width: 100px;
-        height: 100px;
-        margin-top: -50px;
-    }
+  .avatar-area {
+    width: 100px;
+    height: 100px;
+    margin-top: -50px;
+  }
 
-    .info-area h2 {
-        font-size: 1.5rem;
-    }
+  .info-area h2 {
+    font-size: 1.5rem;
+  }
 
-    .btn-action,
-    .btn-primary,
-    .btn-secondary {
-        width: 100%;
-        justify-content: center;
-        padding: 14px;
-    }
+  .btn-action,
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    justify-content: center;
+    padding: 14px;
+  }
 
-    .form-actions {
-        flex-direction: column;
-    }
+  .form-actions {
+    flex-direction: column;
+  }
+}
+
+/* Profile Edit Icons Fix */
+#editMode .relative {
+  position: relative;
+}
+
+#editMode .material-symbols-outlined,
+#editMode .bx {
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Ensure proper padding for inputs with icons */
+#editMode input.pl-12,
+#editMode .pl-12 {
+  padding-left: 3rem !important;
 }

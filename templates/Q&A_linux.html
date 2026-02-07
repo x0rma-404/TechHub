@@ -2,11 +2,31 @@
 
 {% block content %}
 <link rel="stylesheet" href="../static/Q&A.css">
-<div class="wrapper">
+<div class="wrapper animate-stagger">
     <main class="content-area">
-        <h1>Linux Məsələləri</h1>
-        <p>Bura Linux ilə bağlı sual-cavab bölməsidir.</p>
-        <!-- Add content here -->
+        <div class="header-section">
+            <div class="flex items-center gap-4 mb-2">
+                <button onclick="history.back()" class="cat-btn">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h1 class="page-title !mb-0">Linux Sorğuları</h1>
+            </div>
+            <p class="text-slate-400 mb-6">Sistem idarəetməsi, server konfiqurasiyası və açıq qaynaqlı texnologiyalar
+                haqqında suallar.</p>
+
+            <div class="flex flex-wrap gap-4 items-center">
+                <button onclick="openQuestionModal()" class="cat-btn active">
+                    <i class="fas fa-plus mr-2"></i> Yeni Sual Ver
+                </button>
+                <div class="search-box !max-w-none flex-1">
+                    <i class="fas fa-search text-slate-400"></i>
+                    <input type="text" id="searchInput" placeholder="Bu kategoriyada axtar..." onkeyup="filterTopics()">
+                </div>
+            </div>
+        </div>
+
+        <div class="questions-list">
+        </div>
     </main>
 </div>
 {% endblock %}

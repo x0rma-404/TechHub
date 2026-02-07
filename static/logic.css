@@ -1,21 +1,4 @@
 :root {
-    --logic-text: #2d3436;
-    --logic-card-bg: #ffffff;
-    --logic-card-border: #dfe6e9;
-    --logic-input-bg: #f5f6fa;
-    --logic-input-border: #dcdde1;
-    --logic-input-text: #2d3436;
-    --logic-table-header-bg: #f5f6fa;
-    --logic-table-header-text: #3a7bd5;
-    --logic-table-border: #dfe6e9;
-    --logic-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    --logic-accent: #3a7bd5;
-    --logic-accent-gradient: linear-gradient(45deg, #00d2ff, #3a7bd5);
-    --transition-speed: 0.4s;
-    --curve: cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.dark-mode {
     --logic-text: #fff;
     --logic-card-bg: rgba(255, 255, 255, 0.05);
     --logic-card-border: rgba(255, 255, 255, 0.1);
@@ -26,6 +9,23 @@
     --logic-table-header-text: #00d2ff;
     --logic-table-border: rgba(255, 255, 255, 0.1);
     --logic-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+    --logic-accent: #3a7bd5;
+    --logic-accent-gradient: linear-gradient(45deg, #00d2ff, #3a7bd5);
+    --transition-speed: 0.4s;
+    --curve: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.light-mode {
+    --logic-text: #2d3436;
+    --logic-card-bg: #ffffff;
+    --logic-card-border: #dfe6e9;
+    --logic-input-bg: #f5f6fa;
+    --logic-input-border: #dcdde1;
+    --logic-input-text: #2d3436;
+    --logic-table-header-bg: #f5f6fa;
+    --logic-table-header-text: #3a7bd5;
+    --logic-table-border: #dfe6e9;
+    --logic-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
 }
 
 .logic-container {
@@ -206,9 +206,12 @@ th {
     font-size: 1.1rem;
 }
 
+tbody tr:hover {
+    background: rgba(99, 102, 241, 0.1) !important;
+}
+
 tr:hover {
-    background: var(--logic-card-bg);
-    filter: brightness(0.95);
+    background: rgba(99, 102, 241, 0.1);
 }
 
 .error-message {

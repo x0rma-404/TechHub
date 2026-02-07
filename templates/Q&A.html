@@ -4,182 +4,135 @@
 <link rel="stylesheet" href="../static/Q&A.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
-<div class="max-w-7xl mx-auto px-4 py-8">
-    <div class="grid lg:grid-cols-3 gap-6">
-        <div class="lg:col-span-2 space-y-6">
-            <div class="glass ring-soft rounded-2xl p-6">
-                <div class="flex items-center gap-3 mb-6">
-                    <i class="fas fa-search text-slate-400"></i>
-                    <input type="text" id="searchInput" class="input flex-1 rounded-xl px-4 py-3"
-                        placeholder="Sorğu axtar...">
-                </div>
+<div class="wrapper animate-stagger">
+    <main class="content-area">
+        <!-- New Hero Section -->
+        <div class="qa-hero">
+            <h1 class="qa-hero-title">Q&A Community</h1>
+            <p class="qa-hero-subtitle">Mütəxəssis devlər tərəfindən cavablandırılan IT və proqramlaşdırma sorğuları
+                mərkəzi.</p>
 
-                <div class="flex flex-wrap gap-2 mb-6">
-                    <button class="btn btn-primary" onclick="switchTab('categories')">Kategoriyalar</button>
-                    <button class="btn btn-muted" onclick="switchTab('populyar')">Populyar</button>
-                    <button class="btn btn-muted" onclick="switchTab('cavabsiz')">Cavabsız</button>
-                    <button class="btn btn-muted" onclick="switchTab('yeni-sorgu')">Yeni sorğu</button>
-                </div>
+            <div class="search-box">
+                <i class="fas fa-search text-slate-400"></i>
+                <input type="text" id="searchInput" placeholder="Sorğu və ya mövzu axtar...">
             </div>
-
-            <div id="tab-categories" class="grid md:grid-cols-2 gap-4 animate-stagger">
-                <a href="/Q&A/python"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-indigo-500/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-indigo-500/10 border border-indigo-500/20 grid place-items-center group-hover:bg-indigo-500 transition-all">
-                            <i class="fab fa-python text-2xl text-indigo-400 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">Python Sorğuları</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Python sorğuları üçün nəzərdə tutulub.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/web"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-cyan-500/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 grid place-items-center group-hover:bg-cyan-500 transition-all">
-                            <i class="fab fa-html5 text-2xl text-cyan-400 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">Web Development</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Frontend və Backend mövzuları.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/linux"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 grid place-items-center group-hover:bg-emerald-500 transition-all">
-                            <i class="fab fa-linux text-2xl text-emerald-400 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">Linux</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Linux və sistem idarəetməsi.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/java"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-orange-500/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-orange-500/10 border border-orange-500/20 grid place-items-center group-hover:bg-orange-500 transition-all">
-                            <i class="fab fa-java text-2xl text-orange-400 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">Java</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Java proqramlaşdırma dili.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/cpp"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-blue-500/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-blue-500/10 border border-blue-500/20 grid place-items-center group-hover:bg-blue-500 transition-all">
-                            <i class="fas fa-code text-2xl text-blue-400 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">C++ / C</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Sistem proqramlaşdırma.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/go"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-cyan-400/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-cyan-400/10 border border-cyan-400/20 grid place-items-center group-hover:bg-cyan-400 transition-all">
-                            <i class="fas fa-rocket text-2xl text-cyan-300 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">Go (Golang)</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Müasir backend dili.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/ruby"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-red-500/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-red-500/10 border border-red-500/20 grid place-items-center group-hover:bg-red-500 transition-all">
-                            <i class="fas fa-gem text-2xl text-red-400 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">Ruby</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Ruby və Rails mövzuları.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/db"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-yellow-500/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-yellow-500/10 border border-yellow-500/20 grid place-items-center group-hover:bg-yellow-500 transition-all">
-                            <i class="fas fa-database text-2xl text-yellow-400 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">SQL & Database</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Məlumat bazaları.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/security"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-red-600/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-red-600/10 border border-red-600/20 grid place-items-center group-hover:bg-red-600 transition-all">
-                            <i class="fas fa-shield-alt text-2xl text-red-500 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">Cybersecurity</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">Təhlükəsizlik və şəbəkə.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-
-                <a href="/Q&A/mobile"
-                    class="glass ring-soft rounded-2xl p-6 hover:border-violet-500/50 transition-all group">
-                    <div class="flex items-center gap-4 mb-3">
-                        <div
-                            class="h-12 w-12 rounded-xl bg-violet-500/10 border border-violet-500/20 grid place-items-center group-hover:bg-violet-500 transition-all">
-                            <i class="fas fa-mobile-alt text-2xl text-violet-400 group-hover:text-white"></i>
-                        </div>
-                        <h3 class="font-bold">Mobile Dev</h3>
-                    </div>
-                    <p class="text-sm text-slate-400">iOS və Android inkişafı.</p>
-                    <span class="badge mt-3">Kategoriya</span>
-                </a>
-            </div>
-
-            <div id="dynamic-list" class="space-y-4 hidden"></div>
         </div>
 
-        <aside class="space-y-6">
-            <div class="glass ring-soft rounded-2xl p-6">
-                <h3 class="font-semibold mb-4">Son Aktivliklər</h3>
-                <div class="space-y-4">
-                    {% for q in recent_activity %}
-                    <div class="flex gap-3 cursor-pointer hover:bg-white/5 p-2 rounded-xl transition-all"
-                        onclick="location.href='/Q&A/view/{{ q.id }}'">
-                        <img src="{{ q.author_photo if q.author_photo else 'https://ui-avatars.com/api/?name=' + q.author_name }}"
-                            alt="user" class="h-10 w-10 rounded-full object-cover">
-                        <div class="flex-1 min-w-0">
-                            <p class="font-medium text-sm truncate">{{ q.title }}</p>
-                            <small class="text-xs text-slate-400">
-                                {{ q.author_name }} • {{ q.timestamp | format_time }}
-                            </small>
-                        </div>
-                    </div>
-                    {% else %}
-                    <p class="text-slate-400 text-sm">Hələ ki, aktivlik yoxdur.</p>
-                    {% endfor %}
+        <div class="header-section">
+            <div class="flex flex-wrap gap-3 justify-center mb-4">
+                <button class="cat-btn active" onclick="switchTab('categories')">Kategoriyalar</button>
+                <button class="cat-btn" onclick="switchTab('populyar')">Populyar</button>
+                <button class="cat-btn" onclick="switchTab('cavabsiz')">Cavabsız</button>
+                <button class="cat-btn" onclick="switchTab('yeni-sorgu')">Yeni sorğu</button>
+            </div>
+        </div>
+
+        <div id="tab-categories" class="grid-container">
+            <!-- Python Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/python'">
+                <i class="fab fa-python python-icon"></i>
+                <h3 class="font-bold text-xl">Python</h3>
+                <p>Python proqramlaşdırma dili və kitabxanaları.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- Web Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/web'">
+                <i class="fab fa-html5 web-icon"></i>
+                <h3 class="font-bold text-xl">Web Development</h3>
+                <p>Frontend, Backend və müasir web texnologiyaları.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- Linux Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/linux'">
+                <i class="fab fa-linux linux-icon"></i>
+                <h3 class="font-bold text-xl">Linux</h3>
+                <p>Sistem idarəetməsi, Bash və server mühitləri.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- Java Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/java'">
+                <i class="fab fa-java" style="color:#f89820;"></i>
+                <h3 class="font-bold text-xl">Java</h3>
+                <p>Java SE, Enterprise Edition və JVM mühiti.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- C++ Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/cpp'">
+                <i class="fas fa-code" style="color:#00599c;"></i>
+                <h3 class="font-bold text-xl">C++ / C</h3>
+                <p>Sistem proqramlaşdırma və yüksək performanslı kod.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- Go Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/go'">
+                <i class="fas fa-rocket" style="color:#00add8;"></i>
+                <h3 class="font-bold text-xl">Go (Golang)</h3>
+                <p>Müasir bulud və şəbəkə proqramlaşdırma dili.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- Ruby Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/ruby'">
+                <i class="fas fa-gem" style="color:#cc342d;"></i>
+                <h3 class="font-bold text-xl">Ruby</h3>
+                <p>Ruby proqramlaşdırma və Rails freymvorku.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- Database Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/db'">
+                <i class="fas fa-database" style="color:#e9c46a;"></i>
+                <h3 class="font-bold text-xl">SQL & Database</h3>
+                <p>RDBMS, NoSQL və effektiv verilənlər bazası dizaynı.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- Security Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/security'">
+                <i class="fas fa-shield-alt" style="color:#e76f51;"></i>
+                <h3 class="font-bold text-xl">Cybersecurity</h3>
+                <p>Şəbəkə təhlükəsizliyi, kriptoqrafiya və pentest.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+
+            <!-- Mobile Card -->
+            <div class="topic-card" onclick="location.href='/Q&A/mobile'">
+                <i class="fas fa-mobile-alt" style="color:#8b5cf6;"></i>
+                <h3 class="font-bold text-xl">Mobile Dev</h3>
+                <p>Flutter, React Native və cross-platform mobil inkişaf.</p>
+                <span class="stats">Aktiv Müzakirələr</span>
+            </div>
+        </div>
+
+        <div id="dynamic-list" class="space-y-4 hidden"></div>
+    </main>
+
+    <aside class="right-sidebar">
+        <h3 class="font-bold text-xl mb-6 flex items-center gap-2">
+            <i class="fas fa-bolt text-yellow-400"></i> Son Aktivliklər
+        </h3>
+        <div class="space-y-2">
+            {% for q in recent_activity %}
+            <div class="feed-item cursor-pointer" onclick="location.href='/Q&A/view/{{ q.id }}'">
+                <img src="{{ q.author_photo if q.author_photo else 'https://ui-avatars.com/api/?name=' + (q.author_name | urlencode) }}"
+                    alt="user" class="h-10 w-10 border border-slate-700">
+                <div class="min-w-0">
+                    <p class="font-semibold text-sm truncate text-slate-200">{{ q.title }}</p>
+                    <small class="text-xs text-slate-500">
+                        {{ q.author_name }} • {{ q.timestamp | format_time }}
+                    </small>
                 </div>
             </div>
-        </aside>
-    </div>
+            {% else %}
+            <p class="text-slate-500 text-sm text-center py-4">Hələ ki, aktivlik yoxdur.</p>
+            {% endfor %}
+        </div>
+    </aside>
 </div>
 
 <script src="../static/Q&A.js"></script>

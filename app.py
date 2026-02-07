@@ -2,7 +2,7 @@ import os
 import json
 import time
 import uuid
-from datetime import datetime, timedelta
+from datetime import datetime
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, Response
 from werkzeug.utils import secure_filename
 import ollama
@@ -993,6 +993,16 @@ def update_profile():
     
     if location := request.form.get('location'): user_data['location'] = location
     if about := request.form.get('about'): user_data['about'] = about
+    
+    # Contact information
+    if phone := request.form.get('phone'): user_data['phone'] = phone
+    if website := request.form.get('website'): user_data['website'] = website
+    
+    # Social media
+    if github := request.form.get('github'): user_data['github'] = github
+    if linkedin := request.form.get('linkedin'): user_data['linkedin'] = linkedin
+    if twitter := request.form.get('twitter'): user_data['twitter'] = twitter
+    if instagram := request.form.get('instagram'): user_data['instagram'] = instagram
     
     old_p, new_p, conf_p = request.form.get('old_password'), request.form.get('new_password'), request.form.get('confirm_password')
     if new_p:
