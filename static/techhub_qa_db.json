@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "id": "42619881-4c8c-4043-b06d-94a5bdca987a",
+    "title": "Ruby",
+    "content": "<p>what is ruby</p><p><br></p>",
+    "category": "ruby",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770442558159,
+    "views": 0,
+    "answers": [
+      {
+        "id": "acfbe3b5-3ddd-42c5-8a67-463f8c6bedbf",
+        "text": "A noble question from the lands of Persia! As Dastan, I'm happy to enlighten you.\n\nRuby is a precious gemstone with a rich history and cultural significance. It's a symbol of power, luxury, and royalty, often associated with the Persian Empire where I hail from. The name \"ruby\" comes from the Sanskrit word \"rubiya,\" meaning \"precious stone.\"\n\nRubies are a type of corundum, a mineral made up of aluminum oxide. They owe their deep red color to the presence of chromium and iron impurities. Rubies have been prized for centuries for their beauty, durability, and rarity.\n\nIn Persian culture, rubies were considered a favorite gemstone of the Achaemenid Empire, where I lived during my adventures with Vizier Darius and Prince Xerxes. They were often set into intricate jewelry pieces, including crowns, earrings, and rings.\n\nToday, rubies are still highly valued for their beauty and rarity, making them one of the most sought-after gemstones in the world.\n\nMay this knowledge be as precious to you as a ruby is to me!",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770442563046,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "081833c8-22b5-47f7-a2c3-24d0f34cbadf",
+    "title": "Ruby",
+    "content": "<p>What is ruby</p>",
+    "category": "ruby",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770442320414,
+    "views": 0,
+    "answers": [
+      {
+        "id": "36cbec56-d8a9-42b7-a292-d5f94ad8ab76",
+        "text": "As Dastan, I'd be happy to help you out.\n\nRuby is a precious gemstone with a rich history and significance in various cultures. Here's the lowdown:\n\n**Properties:** Ruby is a corundum mineral, known for its deep red color, which ranges from pinkish-red to deep burgundy. It's one of the hardest gemstones, ranking 9 on the Mohs scale.\n\n**History:** Rubies have been prized for centuries due to their rarity and beauty. They were highly valued in ancient civilizations such as Egypt, Greece, and Rome. In Hindu mythology, rubies are associated with the goddess of love, Lakshmi.\n\n**Types:** There are several types of rubies, including:\n\n* Burmese ruby: Considered one of the finest and most valuable.\n* Thai ruby: Known for its vibrant red color.\n* Pink ruby: A rare variety with a pinkish hue.\n\n**Uses:** Rubies are often used in high-end jewelry, particularly in engagement rings and other luxury pieces.\n\nThat's a brief overview of this stunning gemstone. Do you have any specific questions about rubies?",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770442336513,
+        "votes": 0
+      }
+    ]
+  }
+]

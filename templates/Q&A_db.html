@@ -1,0 +1,56 @@
+{% extends "bar.html" %}{% block content %}
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<link rel="stylesheet" href="../static/Q&A.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<div class="wrapper">
+    <main class="content-area">
+        <div class="header-section">
+            <h1 class="page-title">SQL & Database Sorğuları</h1>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;"><button onclick="history.back()"
+                    class="cat-btn"><i class="fas fa-arrow-left"></i> Geriyə</button><button
+                    onclick="openQuestionModal()" class="cat-btn active">+ Yeni Sual Ver</button></div>
+            <div class="search-box"><i class="fas fa-search"></i><input type="text" id="searchInput"
+                    placeholder="Sual axtar..." onkeyup="filterTopics()"></div>
+        </div>
+        <div class="questions-list">{% if questions|length == 0 %}<p
+                style="text-align:center; color:#666; margin-top:20px;">Hələ ki, heç bir sual yoxdur. İlk sualı sən ver!
+            </p>{% endif %}{% for q in questions %}<div class="q-list-item" id="q-{{ q.id }}">
+                <div class="q-main-info" onclick="location.href='/Q&A/view/{{ q.id }}'" style="cursor:pointer; flex:1;">
+                    <div class="q-user-meta"><img
+                            src="{{ q.author_photo.replace('../', '/') if q.author_photo else 'https://ui-avatars.com/api/?name=' + (q.author_name | urlencode) }}"
+                            onerror="this.onerror=null;this.src='https://ui-avatars.com/api/?name={{ q.author_name | urlencode }}';"
+                            alt="avatar"><span>{{ q.author_name }} • {{ q.timestamp | format_time }}</span></div>
+                    <h3>{{ q.title }}</h3>
+                    <div class="q-tags"><span class="tag">{{ q.category|upper }}</span>{% for tag in q.tags %}<span
+                            class="tag">{{ tag }}</span>{% endfor %}</div>
+                </div>
+                <div class="q-side-stats">
+                    <div class="q-replies">{{ q.answers|length }} <span>cavab</span></div>{% if user.email ==
+                    q.author_email or user.role in ['Administrator', 'Moderator', 'Staff'] %}<button class="delete-btn"
+                        onclick="deleteQuestion(event, '{{ q.id }}')"><i class="fas fa-trash"></i> Sil</button>{% endif
+                    %}
+                </div>
+            </div>{% endfor %}</div>
+    </main>
+</div>
+<div id="questionModal" style="display:none; position:fixed; z-index:1000; padding:20px; border-radius:10px;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+        <h2 style="margin:0;">Yeni DB Sualı</h2><button onclick="closeQuestionModal()"
+            style="background:none; border:none; font-size:20px; cursor:pointer; color:inherit;">&times;</button>
+    </div><label>Başlıq</label><input type="text" id="newTitle" maxlength="255"
+        style="width:100%; padding:10px; margin-bottom:15px;"><label>Sualın Mətni</label>
+    <div id="editor-container" style="height: 200px; margin-bottom: 50px;"></div>
+    <div style="text-align:right; margin-top:20px;"><button onclick="closeQuestionModal()" class="cat-btn"
+            style="background:#ccc;">Ləğv et</button><button onclick="submitQuestion('db')"
+            class="cat-btn active">Göndər</button></div>
+</div>
+<script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+<script>var quill; function initQuill() { if (quill) return; var toolbarOptions = [['bold', 'italic', 'underline'], [{ 'size': ['small', false, 'large', 'huge'] }], [{ 'list': 'ordered' }, { 'list': 'bullet' }], [{ 'background': [] }], ['link', 'image']]; quill = new Quill('#editor-container', { modules: { toolbar: toolbarOptions }, theme: 'snow', placeholder: '...' }); quill.getModule('toolbar').addHandler('image', function () { selectLocalImage(); }); }
+    function selectLocalImage() { const input = document.createElement('input'); input.setAttribute('type', 'file'); input.setAttribute('accept', 'image/*'); input.click(); input.onchange = () => { const file = input.files[0]; if (/^image\//.test(file.type)) saveToServer(file); }; }
+    function saveToServer(file) { const fd = new FormData(); fd.append('image', file); fetch('/api/upload_image', { method: 'POST', body: fd }).then(r => r.json()).then(res => { if (res.success) { const range = quill.getSelection(); quill.insertEmbed(range.index, 'image', res.url); } }); }
+    function openQuestionModal() { document.getElementById('questionModal').style.display = 'block'; initQuill(); }
+    function closeQuestionModal() { document.getElementById('questionModal').style.display = 'none'; }
+    function submitQuestion(category) { const title = document.getElementById('newTitle').value; const content = quill.root.innerHTML; if (!title || !quill.getText().trim()) return alert("Boş ola bilməz!"); fetch('/api/new_question', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ title: title, content: content, category: category, tags: [] }) }).then(res => res.json()).then(data => { if (data.success) location.href = '/Q&A/view/' + data.id; else alert("Xəta!"); }); }
+    function deleteQuestion(event, id) { event.stopPropagation(); if (!confirm('Silmək?')) return; fetch('/api/delete_question', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ id: id }) }).then(res => res.json()).then(data => { if (data.success) document.getElementById('q-' + id).remove(); }); }
+    function filterTopics() { const term = document.getElementById('searchInput').value.toLowerCase(); document.querySelectorAll('.q-list-item').forEach(item => { const title = item.querySelector('h3').textContent.toLowerCase(); item.style.display = title.includes(term) ? 'flex' : 'none'; }); }
+</script>{% endblock %}

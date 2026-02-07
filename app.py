@@ -76,6 +76,12 @@ def format_time(timestamp):
 
 app.jinja_env.filters['format_time'] = format_time
 
+def strip_html(text):
+    import re
+    if not text: return ""
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
+
 # --- 🖼️ LOGGING ---
 @app.before_request
 def log_request_info():
@@ -185,7 +191,7 @@ def Q_and_A():
 @app.route('/Q&A/<category>')
 def Q_and_A_category(category):
     if 'user' not in session: return redirect(url_for('home'))
-    if category not in ['python', 'linux', 'web']: return "Kategoriya tapılmadı", 404
+    if category not in ['python', 'linux', 'web', 'java', 'cpp', 'go', 'ruby', 'db', 'security', 'mobile']: return "Kategoriya tapılmadı", 404
     all_questions = load_json("qa")
     cat_questions = [q for q in all_questions if q.get('category') == category]
     return render_template(f'Q&A_{category}.html', questions=cat_questions, user=session['user'])
@@ -214,12 +220,18 @@ def new_question():
     save_json("qa", questions)
 
     # --- AUTO AI ANSWER (ASYNCHRONOUS) ---
-    def generate_async_answer(q_id, title, content):
+    def generate_async_answer(q_id, title, content, category):
         import threading
         def worker():
             try:
-                ai_content = f"Question Title: {title}\nContent: {content}"
-                ai_response_text = get_ai_response(ai_content, system_prompt_override="You are Dastan. Provide a helpful, concise answer to this user question on our platform.")
+                # Use AI Config for the answer
+                config = get_ai_config()
+                # Clean content for AI
+                clean_content = strip_html(content)
+                ai_content = f"Question Title: {title}\nCategory: {category}\nContent: {clean_content}"
+                
+                # Use default system prompt from config
+                ai_response_text = get_ai_response(ai_content)
                 
                 if ai_response_text:
                     ai_ans = {
@@ -245,7 +257,7 @@ def new_question():
         
         threading.Thread(target=worker, daemon=True).start()
 
-    generate_async_answer(new_q['id'], new_q['title'], new_q['content'])
+    generate_async_answer(new_q['id'], new_q['title'], new_q['content'], new_q['category'])
 
     return jsonify({'success': True, 'id': new_q['id']})
 
@@ -277,12 +289,42 @@ def add_answer():
     
     save_json("qa", questions)
     
-    # --- AUTO AI REPLY (IF MENTIONED) ---
+    # --- AUTO AI REPLY (IF MENTIONED OR REPLIED TO) ---
     ans_text = data.get('text', '')
-    if "dastan" in ans_text.lower():
+    parent_id = data.get('reply_to')
+    
+    # Check if Dastan is mentioned OR if someone replied to Dastan's message
+    should_reply = "dastan" in ans_text.lower()
+    
+    if not should_reply and parent_id:
+        for q in questions:
+            for a in q.get('answers', []):
+                if a['id'] == parent_id and a.get('author_email') == "ai@techhub.com":
+                    should_reply = True
+                    break
+            if should_reply: break
+
+    if should_reply:
         def worker():
             try:
-                ai_response = get_ai_response(ans_text, system_prompt_override="You are Dastan. A user mentioned you in a comment. Provide a short, helpful reply.")
+                # Find the context
+                context_q = next((q for q in load_json("qa") if q['id'] == q_id), None)
+                if not context_q: return
+                
+                parent_text = ""
+                if parent_id:
+                    parent_ans = next((a for a in context_q.get('answers', []) if a['id'] == parent_id), None)
+                    if parent_ans: parent_text = strip_html(parent_ans['text'])
+
+                # Format prompt with context
+                prompt_context = f"Topic/Question: {context_q['title']}\n"
+                if parent_text:
+                    prompt_context += f"You said earlier: {parent_text}\n"
+                prompt_context += f"User ({session['user']['name']}) says: {strip_html(ans_text)}"
+                
+                # Use AI Config for reply, but slightly customize behavior
+                ai_response = get_ai_response(prompt_context, system_prompt_override="You are Dastan. A user mentioned you or replied to your comment in a Q&A thread. Provide a short, direct, and helpful reply based on the context.")
+                
                 if ai_response:
                     ai_ans = {
                         "id": str(uuid.uuid4()), "text": ai_response, "reply_to": new_ans['id'],
@@ -296,7 +338,8 @@ def add_answer():
                             q['answers'].append(ai_ans)
                             break
                     save_json("qa", curr_q)
-            except: pass
+            except Exception as e:
+                print(f"❌ Auto-reply error: {e}")
         import threading
         threading.Thread(target=worker, daemon=True).start()
 
