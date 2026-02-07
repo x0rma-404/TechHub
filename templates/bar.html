@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/simple-icons-font@v15/font/simple-icons.min.css">
   <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="{{ url_for('static', filename='menu.css') }}">
+  <!-- Syntax Highlighting & Markdown Parsing -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 
 <body class="min-h-dvh antialiased selection:bg-indigo-500/30 bg-[#0b1220] text-slate-200">
@@ -34,6 +38,11 @@
             <a href="/Q&A" class="hover:text-indigo-400 transition-colors">Q&A</a>
             <a href="/profile" class="hover:text-indigo-400 transition-colors">Profile</a>
           </div>
+
+          <a href="/chatbot" class="btn btn-muted hidden md:flex">
+            <i class='bx bx-show'></i>
+            Dastan
+          </a>
 
           <a href="https://github.com/x0rma-404/TechHub" target="_blank" class="btn btn-muted hidden md:flex">
             <i class='bx bxl-github'></i>

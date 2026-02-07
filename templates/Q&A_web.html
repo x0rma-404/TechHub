@@ -24,7 +24,8 @@
 
         <div class="questions-list">
             {% if questions|length == 0 %}
-            <p style="text-align:center; color:#666; margin-top:20px;">Hələ ki, heç bir sual yoxdur. İlk sualı sən ver!</p>
+            <p style="text-align:center; color:#666; margin-top:20px;">Hələ ki, heç bir sual yoxdur. İlk sualı sən ver!
+            </p>
             {% endif %}
 
             {% for q in questions %}
@@ -130,15 +131,15 @@
             method: 'POST',
             body: fd
         })
-        .then(response => response.json())
-        .then(result => {
-            if (result.success) {
-                const range = quill.getSelection();
-                quill.insertEmbed(range.index, 'image', result.url);
-            } else {
-                alert('Şəkil yüklənə bilmədi');
-            }
-        });
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    const range = quill.getSelection();
+                    quill.insertEmbed(range.index, 'image', result.url);
+                } else {
+                    alert('Şəkil yüklənə bilmədi');
+                }
+            });
     }
 
     function openQuestionModal() {
@@ -167,14 +168,14 @@
                 tags: []
             })
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                location.reload();
-            } else {
-                alert("Xəta: " + data.message);
-            }
-        });
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    location.href = '/Q&A/view/' + data.id;
+                } else {
+                    alert("Xəta: " + data.message);
+                }
+            });
     }
 
     function deleteQuestion(event, id) {
@@ -186,14 +187,14 @@
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: id })
         })
-        .then(res => res.json())
-        .then(data => {
-            if (data.success) {
-                document.getElementById('q-' + id).remove();
-            } else {
-                alert(data.message);
-            }
-        });
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('q-' + id).remove();
+                } else {
+                    alert(data.message);
+                }
+            });
     }
 
     function filterTopics() {

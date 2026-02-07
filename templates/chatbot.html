@@ -1,0 +1,428 @@
+{% extends "bar.html" %}
+
+{% block content %}
+
+<div class="max-w-7xl mx-auto h-[calc(100vh-100px)] flex flex-col page-content">
+
+    <!-- Chat Header -->
+    <div class="glass ring-soft mb-6 p-6 rounded-2xl">
+        <div class="flex items-center gap-4">
+            <div
+                class="w-14 h-14 rounded-2xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-indigo-500/20">
+                <i class='bx bx-bot text-3xl text-white'></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                    Dastan Assistant</h1>
+                <p class="text-slate-400 text-sm flex items-center gap-2">
+                    <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                    Powered by Llama 3.2 • Online
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chat Messages Container -->
+    <div class="flex-1 glass ring-soft rounded-3xl overflow-hidden flex flex-col relative mb-4">
+
+        <!-- Messages Area -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-8 scroll-smooth" id="chatMessages">
+
+            <!-- Welcome Message -->
+            <div class="flex gap-4 items-start animate-stagger">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                    <i class='bx bx-bot text-white text-lg'></i>
+                </div>
+                <div class="flex-1 max-w-2xl">
+                    <div class="font-bold mb-2 text-indigo-400 text-xs uppercase tracking-widest">Dastan</div>
+                    <div
+                        class="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none p-4 text-slate-300 leading-relaxed shadow-sm">
+                        <p class="mb-3 font-medium text-white">👋 Hello! I'm your TechHub AI assistant.</p>
+                        <p class="text-sm">I can help you with:</p>
+                        <ul class="mt-2 space-y-2 ml-2">
+                            <li class="flex items-center gap-2 text-sm">
+                                <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+                                Coding questions and debugging
+                            </li>
+                            <li class="flex items-center gap-2 text-sm">
+                                <span class="h-1.5 w-1.5 rounded-full bg-cyan-500"></span>
+                                Project ideas and architecture
+                            </li>
+                            <li class="flex items-center gap-2 text-sm">
+                                <span class="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+                                Best practices and algorithms
+                            </li>
+                            <li class="flex items-center gap-2 text-sm">
+                                <span class="h-1.5 w-1.5 rounded-full bg-cyan-500"></span>
+                                TechHub platform features
+                            </li>
+                        </ul>
+                        <p class="mt-4 text-sm font-medium text-indigo-300">How can I help you today?</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Typing Indicator -->
+        <div class="px-8 pb-6 hidden" id="typingIndicator">
+            <div class="flex gap-4 items-start">
+                <div
+                    class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center flex-shrink-0 opacity-50">
+                    <i class='bx bx-bot text-white text-lg'></i>
+                </div>
+                <div class="flex-1">
+                    <div class="font-bold mb-2 text-indigo-400 text-xs uppercase tracking-widest opacity-50">Dastan
+                    </div>
+                    <div class="flex gap-1.5 bg-white/5 border border-white/5 w-fit px-4 py-3 rounded-2xl">
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                        <span class="typing-dot"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="border-t border-white/5 p-6 bg-white/[0.02]">
+            <div class="flex gap-4 items-end max-w-4xl mx-auto">
+                <div class="flex-1 relative group">
+                    <textarea id="chatInput" rows="1"
+                        class="input w-full rounded-2xl px-5 py-4 pr-14 text-slate-200 placeholder-slate-500 focus:ring-indigo-500/30 resize-none max-h-32 transition-all"
+                        placeholder="Ask me anything..." style="min-height: 56px;"></textarea>
+                    <button id="sendBtn"
+                        class="absolute right-2 bottom-3.5 w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-30">
+                        <i class='bx bx-send text-white text-xl'></i>
+                    </button>
+                </div>
+            </div>
+            <div class="text-center text-[10px] text-slate-500 mt-3 font-medium uppercase tracking-widest">
+                AI can make mistakes. Verify important information.
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    /* Custom Scrollbar */
+    #chatMessages::-webkit-scrollbar {
+        width: 5px;
+    }
+
+    #chatMessages::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    #chatMessages::-webkit-scrollbar-thumb {
+        background: rgba(99, 102, 241, 0.2);
+        border-radius: 20px;
+    }
+
+    #chatMessages::-webkit-scrollbar-thumb:hover {
+        background: rgba(99, 102, 241, 0.4);
+    }
+
+    /* Input Scrollbar Gizle */
+    #chatInput::-webkit-scrollbar {
+        display: none;
+    }
+
+    #chatInput {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+
+    /* Message Animation */
+    .message-animation {
+        animation: messageSlide 0.4s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    @keyframes messageSlide {
+        from {
+            opacity: 0;
+            transform: translateY(15px) scale(0.98);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+
+    /* Typing Dots Animation */
+    .typing-dot {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: typing 1.4s infinite ease-in-out;
+    }
+
+    .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+
+        0%,
+        60%,
+        100% {
+            transform: translateY(0);
+            opacity: 0.4;
+        }
+
+        30% {
+            transform: translateY(-6px);
+            opacity: 1;
+        }
+    }
+
+    /* Code Block Styling */
+    .message-content pre {
+        background: rgba(15, 23, 42, 0.8) !important;
+        border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-radius: 12px;
+        padding: 1.25rem;
+        margin: 1rem 0;
+        overflow-x: auto;
+    }
+
+    .message-content code {
+        font-family: 'Fira Code', 'Cascadia Code', monospace;
+        font-size: 0.9em;
+    }
+
+    .message-content :not(pre)>code {
+        background: rgba(99, 102, 241, 0.1);
+        color: #818cf8;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+    }
+
+    .message-content ul,
+    .message-content ol {
+        margin: 1rem 0;
+        padding-left: 1.5rem;
+    }
+
+    .message-content ul {
+        list-style-type: disc;
+    }
+
+    .message-content ol {
+        list-style-type: decimal;
+    }
+
+    .message-content li {
+        margin-bottom: 0.5rem;
+    }
+
+    .message-content p {
+        margin-bottom: 0.75rem;
+    }
+
+    .message-content p:last-child {
+        margin-bottom: 0;
+    }
+</style>
+
+<script>
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const chatMessages = document.getElementById('chatMessages');
+    const typingIndicator = document.getElementById('typingIndicator');
+
+    // Auto-resize textarea
+    chatInput.addEventListener('input', function () {
+        this.style.height = 'auto';
+        this.style.height = Math.min(this.scrollHeight, 128) + 'px';
+    });
+
+    // Send message on Enter (Shift+Enter for new line)
+    chatInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    // Send button click
+    sendBtn.addEventListener('click', sendMessage);
+
+    // Send message function
+    async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (message === '') return;
+
+        // Add user message
+        addMessage(message, 'user');
+
+        // Clear input and reset height
+        chatInput.value = '';
+        chatInput.style.height = '56px';
+
+        // Show typing indicator
+        typingIndicator.classList.remove('hidden');
+        scrollToBottom();
+
+        try {
+            // Create initial bot message placeholder
+            const botMessageDiv = createBotMessagePlaceholder();
+            const contentDiv = botMessageDiv.querySelector('.message-content');
+            let fullResponse = "";
+
+            // Call Flask Streaming API
+            const response = await fetch('/api/chat/stream', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error || `Server error: ${response.status}`);
+            }
+
+            const reader = response.body.getReader();
+            const decoder = new TextDecoder();
+            let leftover = "";
+
+            // Hide typing indicator as soon as stream starts
+            typingIndicator.classList.add('hidden');
+
+            while (true) {
+                const { value, done } = await reader.read();
+                if (done) break;
+
+                const chunk = decoder.decode(value, { stream: true });
+                const lines = (leftover + chunk).split('\n');
+                leftover = lines.pop(); // Keep the last partial line
+
+                for (const line of lines) {
+                    const trimmedLine = line.trim();
+                    if (!trimmedLine || !trimmedLine.startsWith('data: ')) continue;
+
+                    try {
+                        const data = JSON.parse(trimmedLine.substring(6));
+                        if (data.content) {
+                            fullResponse += data.content;
+                            // Re-render full markdown on each chunk
+                            contentDiv.innerHTML = marked.parse(fullResponse);
+                            // Highlight newly created code blocks
+                            contentDiv.querySelectorAll('pre code').forEach((block) => {
+                                hljs.highlightElement(block);
+                            });
+                            scrollToBottom();
+                        }
+                    } catch (e) {
+                        console.error("Error parsing stream line:", trimmedLine, e);
+                    }
+                }
+            }
+
+        } catch (error) {
+            typingIndicator.classList.add('hidden');
+            addMessage('❌ Sorry, I encountered an error. Please make sure Ollama is running and try again.', 'bot');
+            console.error('Error:', error);
+        }
+
+        // Focus input
+        chatInput.focus();
+    }
+
+    function createBotMessagePlaceholder() {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'flex gap-4 items-start message-animation';
+        messageDiv.innerHTML = `
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-md">
+                <i class='bx bx-bot text-white text-lg'></i>
+            </div>
+            <div class="flex-1 max-w-2xl">
+                <div class="font-bold mb-2 text-indigo-400 text-xs uppercase tracking-widest">Dastan</div>
+                <div class="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none px-5 py-3 text-slate-300 leading-relaxed message-content shadow-sm">
+                    <span class="animate-pulse">.</span>
+                </div>
+            </div>
+            <div class="flex-1"></div>
+        `;
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
+        return messageDiv;
+    }
+
+    // Add message to chat
+    function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'flex gap-4 items-start message-animation';
+
+        if (sender === 'user') {
+            messageDiv.innerHTML = `
+      <div class="flex-1"></div>
+      <div class="flex-1 max-w-2xl">
+        <div class="font-bold mb-2 text-cyan-400 text-xs text-right uppercase tracking-widest">You</div>
+        <div class="bg-gradient-to-br from-indigo-500/10 to-cyan-500/10 border border-indigo-500/20 rounded-2xl rounded-tr-none px-5 py-3 text-slate-200 leading-relaxed shadow-sm">
+          ${escapeHtml(text)}
+        </div>
+      </div>
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-md">
+        <i class='bx bx-user text-white text-lg'></i>
+      </div>
+    `;
+        } else {
+            messageDiv.innerHTML = `
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-500 to-cyan-500 flex items-center justify-center flex-shrink-0 shadow-md">
+        <i class='bx bx-bot text-white text-lg'></i>
+      </div>
+      <div class="flex-1 max-w-2xl">
+        <div class="font-bold mb-2 text-indigo-400 text-xs uppercase tracking-widest">Dastan</div>
+        <div class="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none px-5 py-3 text-slate-300 leading-relaxed message-content shadow-sm">
+          ${marked.parse(text)}
+        </div>
+      </div>
+      <div class="flex-1"></div>
+    `;
+        }
+
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
+    }
+
+    // Format message with basic markdown
+    function formatMessage(text) {
+        // Code blocks
+        text = text.replace(/```(\w+)?\n([\s\S]*?)```/g, '<pre><code>$2</code></pre>');
+
+        // Inline code
+        text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+        // Bold
+        text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+        // Line breaks
+        text = text.replace(/\n/g, '<br>');
+
+        return text;
+    }
+
+    // Escape HTML
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Scroll to bottom
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+</script>
+
+{% endblock %}

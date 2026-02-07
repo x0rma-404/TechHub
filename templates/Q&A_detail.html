@@ -61,7 +61,8 @@
                             style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 1px solid #ddd;">
                         <div>
                             <strong>{{ ans.author_name }}</strong>
-                            <span class="user-role-badge">{{ ans.role }}</span>
+                            <span class="user-role-badge {% if ans.role == 'AI Assistant' %}role-ai{% endif %}">{{
+                                ans.role }}</span>
                             <div style="font-size: 0.8rem; color: #888;">{{ ans.timestamp | format_time }}</div>
                         </div>
                     </div>
@@ -249,6 +250,27 @@
                 if (data.success) document.getElementById('ans-' + ansId).remove();
             });
     }
+
+    // AI Markdown Parsing & Highlighting
+    document.addEventListener('DOMContentLoaded', function () {
+        // Find all AI answers
+        const aiBadges = document.querySelectorAll('.role-ai');
+        aiBadges.forEach(badge => {
+            const commentCard = badge.closest('.comment-card');
+            if (commentCard) {
+                const contentDiv = commentCard.querySelector('.comment-content');
+                if (contentDiv) {
+                    // Get raw text (Markdown)
+                    const rawMarkdown = contentDiv.textContent.trim();
+                    // Parse and set as HTML
+                    contentDiv.innerHTML = marked.parse(rawMarkdown);
+                }
+            }
+        });
+
+        // Trigger syntax highlighting for all code blocks
+        hljs.highlightAll();
+    });
 </script>
 
 {% endblock %}
