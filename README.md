@@ -10,13 +10,15 @@ TechHub is a web‑based **Project Sharing and Q&A platform** where developers c
 
 ## 🚀 Features
 
-* 📌 Share your **projects** with descriptions, tech stack, and demo links
-* ❓ Ask questions and get answers from other developers
-* 🛠 Use **professional coding tools** with advanced UI/UX
-* 🔎 Browse projects with categories & filters
-* 👤 Track user activity with profiles & badges
-* ✨ **Premium UI**: Smooth 3D effects, staggered animations, and modern glassmorphism
-* 📱 Responsive design for both desktop and mobile
+* 🤖 **Dastan AI Assistant**: Integrated Q&A bot that provides auto-answers, responds to mentions, and offers a dedicated AI chatbot interface.
+* 🛠️ **Advanced Visualizers**: Interactive Binary Search Tree (BST) and Sorting Algorithm visualizers for better learning.
+* 📌 Share your **projects** with descriptions, tech stack, and demo links.
+* ❓ Ask questions and get answers from other developers.
+* 🛠 Use **professional coding tools** with advanced UI/UX.
+* 🔎 Browse projects with categories & filters.
+* 👤 Track user activity with profiles & badges.
+* ✨ **Premium UI**: Smooth 3D effects, staggered animations, and modern glassmorphism.
+* 📱 Responsive design for both desktop and mobile.
 
 ---
 
@@ -26,6 +28,7 @@ TechHub is a web‑based **Project Sharing and Q&A platform** where developers c
 * **HTML, CSS, JavaScript** for frontend
 * **Tailwind CSS** for modern styling
 * **REST API** architecture
+* **Ollama/Godbolt API** for AI and remote code execution
 
 ---
 
@@ -45,13 +48,20 @@ cd TechHub
 pip install -r requirements.txt
 ```
 
-3. Run the server:
+3. Install and run **Ollama** (required for Dastan AI):
+   - Download from [ollama.com](https://ollama.com/)
+   - Pull the required model:
+     ```bash
+     ollama pull llama3.2:3b
+     ```
+
+4. Run the server:
 
 ```bash
 python app.py
 ```
 
-4. Open the app in your browser:
+5. Open the app in your browser:
 
 ```
 http://localhost:5000
@@ -62,24 +72,25 @@ http://localhost:5000
 ## 🛠 Usage
 
 * Register an account
-* Login and ask or answer questions
+* Login and ask or answer questions (Tag **@Dastan** for AI help!)
 * Share your own projects
 * Explore professional tools:
 
-  * **Floating Point Converter**: IEEE-754 standard visualization
+  * **Floating Point Converter**: IEEE-754 standard visualization (Decimal ↔ Binary)
   * **Python Visualizer**: Step-by-step code execution with variable tracing
-  * **Logic Evaluator**: Real-time conversion to professional symbols (e.g., `!A` → `Ā`, `->` → `→`, `^` → `⊕`)
-  * **Linux Simulator**: Command-line interface simulation
+  * **Logic Evaluator**: Real-time truth table generation and logical simplification (e.g., `!A` → `Ā`, `->` → `→`, `^` → `⊕`)
+  * **Linux Simulator**: Browser-based persistent terminal simulation
+  * **BST Visualizer**: Interactive Binary Search Tree visualization (Add/Search/Delete)
+  * **Sorting Visualizer**: Real-time animation of sorting algorithms (Bubble, Merge, Quick, etc.)
   * **IP Subnet Calculator**: Network details and mask calculations
-  * **CSV ↔ JSON Converter**: Data format transformation
-  * **Python Visualizer**: Visualize your python script
+  * **CSV ↔ JSON Converter**: Professional data format transformation
 
-## 📟 Explore mini IDEs:
-  * Python
-  * C/C++
-  * Java
-  * Ruby
-  * Go
+## 📟 Mini IDEs (Execution via Godbolt API):
+  * **Python 3**
+  * **C/C++ (GCC 14)**
+  * **Java (JDK 23)**
+  * **Ruby 3.3**
+  * **Go 1.22**
   * Javascript (Coming Soon)
 
 ---
