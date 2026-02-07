@@ -5,6 +5,7 @@ import uuid
 from datetime import datetime, timedelta
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for, Response
 from werkzeug.utils import secure_filename
+import ollama
 
 # --- ARAÇ IMPORTLARI ---
 from tools.logical_evaluator.algo import lex_and_consider_adjacents, create_ast
@@ -15,8 +16,13 @@ from tools.CsvJson_Converter.csv_json_converter import CsvJsonConverter
 from tools.floating_point.floating_point import FloatingPoint
 from tools.ip_subnet.subcalc import SubnetCalculator
 
+# --- DASTAN AI ---
+from dastan.ai_logic import get_ai_config, get_ai_response
+
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'your_secret_key_here'
+import threading
+db_lock = threading.Lock()
 
 UPLOAD_FOLDER = os.path.join('static', 'images', 'uploads')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -53,8 +59,9 @@ def save_json(db_type_key, data):
     db_file = USERS_DB_FILE if db_type == 'users' else QA_DB_FILE
     
     try:
-        with open(db_file, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+        with db_lock:
+            with open(db_file, 'w', encoding='utf-8') as f:
+                json.dump(data, f, indent=2, ensure_ascii=False)
         return True
     except Exception as e:
         print(f"❌ Save Error: {e}")
@@ -167,7 +174,6 @@ def register():
 def logout():
     session.pop('user', None)
     return jsonify({'success': True})
-
 # --- ❓ Q&A SİSTEMİ ---
 @app.route('/Q&A')
 def Q_and_A():
@@ -206,7 +212,45 @@ def new_question():
     }
     questions.insert(0, new_q)
     save_json("qa", questions)
+
+    # --- AUTO AI ANSWER (ASYNCHRONOUS) ---
+    def generate_async_answer(q_id, title, content):
+        import threading
+        def worker():
+            try:
+                ai_content = f"Question Title: {title}\nContent: {content}"
+                ai_response_text = get_ai_response(ai_content, system_prompt_override="You are Dastan. Provide a helpful, concise answer to this user question on our platform.")
+                
+                if ai_response_text:
+                    ai_ans = {
+                        "id": str(uuid.uuid4()), 
+                        "text": ai_response_text,
+                        "reply_to": None,
+                        "author_email": "ai@techhub.com", 
+                        "author_name": "Dastan",
+                        "author_photo": "/static/images/logo.png",
+                        "role": "AI Assistant",
+                        "timestamp": get_timestamp() + 1000, 
+                        "votes": 0
+                    }
+                    # We need a fresh load because DB might have changed
+                    current_questions = load_json("qa")
+                    for q in current_questions:
+                        if q['id'] == q_id:
+                            q['answers'].append(ai_ans)
+                            break
+                    save_json("qa", current_questions)
+            except Exception as e:
+                print(f"⚠️ Auto-answer error: {e}")
+        
+        threading.Thread(target=worker, daemon=True).start()
+
+    generate_async_answer(new_q['id'], new_q['title'], new_q['content'])
+
     return jsonify({'success': True, 'id': new_q['id']})
+
+
+
 
 @app.route('/api/add_answer', methods=['POST'])
 def add_answer():
@@ -232,6 +276,30 @@ def add_answer():
     else: return jsonify({'success': False, 'message': 'Sual tapılmadı'}), 404
     
     save_json("qa", questions)
+    
+    # --- AUTO AI REPLY (IF MENTIONED) ---
+    ans_text = data.get('text', '')
+    if "dastan" in ans_text.lower():
+        def worker():
+            try:
+                ai_response = get_ai_response(ans_text, system_prompt_override="You are Dastan. A user mentioned you in a comment. Provide a short, helpful reply.")
+                if ai_response:
+                    ai_ans = {
+                        "id": str(uuid.uuid4()), "text": ai_response, "reply_to": new_ans['id'],
+                        "author_email": "ai@techhub.com", "author_name": "Dastan",
+                        "author_photo": "/static/images/logo.png", "role": "AI Assistant",
+                        "timestamp": get_timestamp() + 1000, "votes": 0
+                    }
+                    curr_q = load_json("qa")
+                    for q in curr_q:
+                        if q['id'] == q_id:
+                            q['answers'].append(ai_ans)
+                            break
+                    save_json("qa", curr_q)
+            except: pass
+        import threading
+        threading.Thread(target=worker, daemon=True).start()
+
     user = users[user_email]
     user['answerCount'] = user.get('answerCount', 0) + 1
     user['role'] = update_role_logic(user)
@@ -822,6 +890,56 @@ def convert_file():
             return Response(result, mimetype="text/csv", headers={"Content-Disposition": "attachment; filename=converted.csv"})
         return jsonify({"error": "Only .csv and .json are supported."}), 400
     except Exception as e: return jsonify({"error": str(e)}), 400
+
+@app.route('/chatbot')
+def chatbot():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('chatbot.html', user=session['user'])
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    try:
+        user_message = request.json.get('message')
+        ai_response = get_ai_response(user_message)
+        
+        if ai_response:
+            return jsonify({'response': ai_response})
+        else:
+            return jsonify({'response': 'Sorry, I am currently unavailable. Please check if Ollama is running.'}), 500
+            
+    except Exception as e:
+        return jsonify({'response': f'Error: {str(e)}'}), 500
+
+@app.route('/api/chat/stream', methods=['POST'])
+def chat_stream():
+    try:
+        user_message = request.json.get('message')
+        config = get_ai_config()
+        
+        def generate():
+            try:
+                response = ollama.chat(
+                    model=config.get('model', 'llama3.2:3b'),
+                    messages=[
+                        {'role': 'system', 'content': config.get('system_prompt')},
+                        {'role': 'user', 'content': user_message}
+                    ],
+                    options={'temperature': config.get('temperature', 0.7)},
+                    stream=True
+                )
+                for chunk in response:
+                    content = chunk.get('message', {}).get('content', '')
+                    if content:
+                        yield f"data: {json.dumps({'content': content})}\n\n"
+            except Exception as stream_error:
+                print(f"❌ Stream Generation Error: {stream_error}")
+                yield f"data: {json.dumps({'error': str(stream_error)})}\n\n"
+            
+        return Response(generate(), mimetype='text/event-stream')
+            
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 @app.route('/update_profile', methods=['POST'])
 def update_profile():

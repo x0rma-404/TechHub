@@ -659,6 +659,18 @@
     padding: 5px;
 }
 
+/* AI Assistant Special Badge */
+.user-role-badge.role-ai {
+    background: linear-gradient(135deg, #6366f1, #0ea5e9);
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 2px 8px rgba(99, 102, 241, 0.4);
+    border: none;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+}
+
 /* Profil Şəkli Fix (Point 7) */
 .comment-avatar {
     width: 40px;
