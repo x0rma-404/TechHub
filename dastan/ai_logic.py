@@ -3,10 +3,11 @@ import json
 import ollama
 
 def get_ai_config():
-    """Load AI configuration from ai_config/config"""
+    """Load AI configuration from ai_config/config and ai_config/prompt.txt"""
     # Use absolute path relative to this file's directory to ensure it's found
     base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     config_file = os.path.join(base_dir, 'ai_config', 'config')
+    prompt_file = os.path.join(base_dir, 'ai_config', 'prompt.txt')
     
     default_config = {
         "model": "llama3.2:3b",
@@ -21,7 +22,19 @@ def get_ai_config():
         
     try:
         with open(config_file, 'r', encoding='utf-8') as f:
-            return json.load(f)
+            config = json.load(f)
+        
+        # Load system prompt from separate file if specified
+        if 'prompt_file' in config:
+            prompt_path = os.path.join(base_dir, 'ai_config', config['prompt_file'])
+            if os.path.exists(prompt_path):
+                with open(prompt_path, 'r', encoding='utf-8') as pf:
+                    config['system_prompt'] = pf.read().strip()
+            else:
+                print(f"⚠️ Prompt File Not Found at: {prompt_path}")
+                config['system_prompt'] = default_config['system_prompt']
+        
+        return config
     except Exception as e:
         print(f"⚠️ Config Load Error: {e}")
         return default_config

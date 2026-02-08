@@ -1,5 +1,173 @@
 [
   {
+    "id": "83523d2e-e9c0-4eb4-946c-83585cc1b34f",
+    "title": "saasasfs",
+    "content": "<p>fdasfdfasdfsdfdaf</p>",
+    "category": "web",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770553972574,
+    "views": 0,
+    "answers": [
+      {
+        "id": "6658cba8-faeb-4e6d-9f40-afb2750303e5",
+        "text": "I think there might be some issue with the content you provided. It looks like a jumbled mix of characters.\n\nLet's start fresh and try to help you with your question again. Could you please provide more context or clarify what you're trying to ask? What's on your mind, and how can I assist you?\n\nIf you're feeling stuck or need help with something specific, I'm here to guide you through it. We can take a look at the \"fdasfdfasdfsdfdaf\" content and figure out what's going on.\n\n( friendly ) Don't worry about the mess - we can clean it up together!",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770553976965,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "a03d8b90-c56e-4f25-bf39-7dd4b25a67c0",
+    "title": "VJAS",
+    "content": "<p>vjas</p><p><br></p>",
+    "category": "web",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770553930839,
+    "views": 0,
+    "answers": [
+      {
+        "id": "64a873e2-e8e1-4d0d-87f7-9116801a5d61",
+        "text": "**(curious)** Ah, VJAS! That's a new one. (thoughtful) I'm not familiar with the acronym. Can you tell me more about what it stands for? Is it related to web development or something else entirely? (encouraging) Share your knowledge and let's explore this together!\n\nIf you're looking for help with a specific VJAS-related issue, feel free to provide more context, like code snippets or error messages. I'll do my best to assist you.\n\n**Web Development Resources:**\n\n- **/tools/web-dev** - Web development playground (HTML/CSS/JS)\n- **/tools/html** - HTML validator and editor\n- **/tools/css** - CSS playground with preloader\n\nLet's dive into this! What's VJAS, and how can I help?",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770553936388,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "ac9a9d7f-034d-4073-9297-aa3f7d0e8a1a",
+    "title": "whicj linux distro",
+    "content": "<p>which linux distro is good for cyber</p>",
+    "category": "security",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770553305302,
+    "views": 0,
+    "answers": [
+      {
+        "id": "fb19c304-9a32-4d3d-831e-b5a85b5730f8",
+        "text": "**(friendly)** Ah, great question about Linux distributions for cybersecurity!\n\nWhen it comes to choosing a Linux distribution (distro) for cybersecurity, there are several excellent options. Here's a brief rundown:\n\n1. **Ubuntu**: A popular and stable choice with a large community of security experts. It has a wide range of pre-installed security tools, including `apt` (Advanced Package Tool), which makes it easy to keep your system up-to-date.\n2. **Debian**: Known for its stability and security, Debian is a great choice for those who want a reliable system with many security features built-in. It's also the foundation for many other distros, including Ubuntu.\n3. **CentOS**: A secure and stable distro based on Red Hat Enterprise Linux (RHEL). CentOS is widely used in enterprise environments and has a strong focus on security.\n4. **Kali Linux**: A specialized distro designed specifically for penetration testing, digital forensics, and cybersecurity-related tasks. It comes with a vast collection of tools for analyzing networks, systems, and data.\n5. **Arch Linux**: A lightweight and highly customizable distro that's popular among security enthusiasts. Arch has a rolling release model, which means you can easily update your system to stay current with the latest security patches.\n\n**(impressed)** Did you know that all of these distros have excellent communities and resources available for learning cybersecurity skills?\n\nFor beginners, I'd recommend starting with Ubuntu or Debian, as they offer a gentle learning curve and a wide range of tutorials and guides. Kali Linux is also an excellent choice for those who want to dive into penetration testing and digital forensics.\n\n**(encouraging)** Remember, choosing the right distro is just the first step in your cybersecurity journey. Stay up-to-date with security patches, learn about Linux command-line tools, and practice, practice, practice!\n\nWhich one of these distros resonates with you?",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770553315734,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "b90cf449-9731-48dd-a0f8-84e4ebcc754a",
+    "title": "Tkinter",
+    "content": "<p>Tkinter nedir</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770553177047,
+    "views": 0,
+    "answers": [
+      {
+        "id": "db2d1396-63ff-464b-b0b9-e14006997a88",
+        "text": "**(excited)** Welcome to our Python category on TechHub!\n\n( friendly) Tkinter, Python'un grafik user interface (GUI) kütüphanesi olarak bilinir. Türkçe olarak \"Tk GUI\" veya \"Tkinter\" olarak translate edilir. Bu kütüphanenin geliştiricileri John Ousterhout tarafından 1988 yılında geliştirilmiştir.\n\n**Grafik User Interface Kütüphanesi Nedir?**\n\n(Tkinter'in temelini oluşturan) Tkinter, GUI uygulamaları oluşturmak için kullanılan Python kütüphanesidir. Bu kütüphanenin amacı, user interface oluşturma işlemlerini kolaylaştırmaktır.\n\n**Nasıl Kullanılır?**\n\n(simple ve intuitive) Tkinter kullanmak için, Python programınızı import edmeniz required. Ardından, `Tk()` fonksiyonunu çağırdığınızda GUI window oluşturabilirsiniz. Bu window'a eklemeler yaparak, UI'yi şekillendirebilirsiniz.\n\n```python\nimport tkinter as tk\n\n# GUI window oluşturma\nroot = tk.Tk()\nroot.title(\"My First GUI App\")\n\n# Label ekleme\nlabel = tk.Label(root, text=\"Merhaba World!\")\nlabel.pack()\n\n# Button ekleme\nbutton = tk.Button(root, text=\"Click Me!\", command=lambda: print(\"Button clicked!\"))\nbutton.pack()\n\n# GUI window'a başlama\nroot.mainloop()\n```\n\n**Tümünü Gezinel**\n\n(Tkinter'e daha fazla bakmak istersen) Bu linkte Tkinter'in tüm özelliklerini ve örnekleri finns:\n\nhttps://docs.python.org/3/library/tk.html\n\n(öneri) Tkinter, Python'un GUI oluşturma kütüphanesi olarak populardir. Bu kütüphanenin temel kavramlarını öğrenerek, beautiful ve kullanışlı GUI uygulamalar oluşturabilirsiniz!\n\n(son words) Gelecekte daha fazla Python programı yazmak istersen, GUI oluşturma knowledge'sini kazandırmak için Tkinter veya Python'un diğer GUI kütüphanesi Pyside'ı öğrenmelisin.",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770553188650,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "2fa81c4b-2643-430b-a9a8-f73ac2e310c6",
+    "title": "sen kimsin",
+    "content": "<p>Dastan sen kimsin</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770445587442,
+    "views": 0,
+    "answers": [
+      {
+        "id": "a668647b-621e-433d-afbb-5f6c0a56c87d",
+        "text": "Merhaba! Ben Dastan, TechHub platformının master assistanıım. X0rma tarafından eğitim için oluşturuldum. Python category'sinde size yardımlamak istedim. Ne problemde?",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770445590896,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "181e5218-da4a-4c68-a559-531bea07a8f7",
+    "title": "ai",
+    "content": "<p>Ai frameworks</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770445289083,
+    "views": 0,
+    "answers": [
+      {
+        "id": "202567ed-8d16-4fe7-ac62-14ef12fb4af4",
+        "text": "**AI Frameworks in Python**\n==========================\n\nFor building intelligent systems, we have several AI frameworks available in Python. Here are some popular ones:\n\n### 1. **TensorFlow**\n\n*   **Description**: An open-source machine learning framework developed by Google.\n*   **Key Features**: Automatic differentiation, support for various algorithms (e.g., linear regression, neural networks), and integration with other libraries like Keras.\n\n**Example Code:**\n```python\nimport tensorflow as tf\n\n# Create a simple neural network\nmodel = tf.keras.models.Sequential([\n    tf.keras.layers.Dense(64, activation='relu', input_shape=(784,)),\n    tf.keras.layers.Dense(10, activation='softmax')\n])\n\nmodel.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])\n```\n\n### 2. **Keras**\n\n*   **Description**: A high-level neural networks API written in Python.\n*   **Key Features**: Easy-to-use interface, support for various algorithms (e.g., CNNs, RNNs), and integration with TensorFlow and Theano.\n\n**Example Code:**\n```python\nfrom keras.models import Sequential\nfrom keras.layers import Dense\n\n# Create a simple neural network\nmodel = Sequential()\nmodel.add(Dense(64, activation='relu', input_shape=(784,)))\nmodel.add(Dense(10, activation='softmax'))\n\nmodel.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])\n```\n\n### 3. **PyTorch**\n\n*   **Description**: An open-source machine learning framework developed by Facebook.\n*   **Key Features**: Dynamic computation graph, automatic differentiation, and support for various algorithms (e.g., neural networks).\n\n**Example Code:**\n```python\nimport torch\nimport torch.nn as nn\n\n# Create a simple neural network\nclass Net(nn.Module):\n    def __init__(self):\n        super(Net, self).__init__()\n        self.fc1 = nn.Linear(784, 64)\n        self.fc2 = nn.Linear(64, 10)\n\n    def forward(self, x):\n        x = torch.relu(self.fc1(x))\n        x = self.fc2(x)\n        return x\n\nnet = Net()\n```\n\n### 4. **Scikit-Learn**\n\n*   **Description**: A machine learning library for Python that provides a wide range of algorithms.\n*   **Key Features**: Support for various algorithms (e.g., linear regression, decision trees), tools for data preprocessing and feature selection.\n\n**Example Code:**\n```python\nfrom sklearn.linear_model import LogisticRegression\n\n# Create a simple logistic regression model\nmodel = LogisticRegression()\n\n# Train the model on some data\nX_train, y_train = ...  # load your training data here\nmodel.fit(X_train, y_train)\n```\n\nThese are just a few examples of AI frameworks available in Python. Each has its strengths and weaknesses, so it's essential to choose the one that best fits your project's needs.\n\n**References:**\n\n*   TensorFlow: <https://www.tensorflow.org/>\n*   Keras: <https://keras.io/>\n*   PyTorch: <https://pytorch.org/>\n*   Scikit-Learn: <https://scikit-learn.org/>",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770445314333,
+        "votes": 0
+      }
+    ]
+  },
+  {
+    "id": "9aa0ab79-2b46-4e1c-b658-27445eee5387",
+    "title": "ai",
+    "content": "<p>ai freamworks</p>",
+    "category": "python",
+    "author_email": "hemidd@gmail.com",
+    "author_name": "Hemid",
+    "author_photo": "/static/images/uploads/Hemid_profile_1a2367e4.jpg",
+    "timestamp": 1770445193738,
+    "views": 0,
+    "answers": [
+      {
+        "id": "ae3b49a5-2995-4309-b9ff-75f40120bcf9",
+        "text": "**AI Frameworks in Python**\n\nFor AI frameworks, we have:\n\n*   **TensorFlow**: An open-source machine learning framework developed by Google. It's widely used for building and training neural networks.\n    *   You can find TensorFlow Playground (`/tools/tensorflow-playground`) for interactive visualizations of models and experiments.\n*   **PyTorch**: Another popular open-source machine learning library that's known for its dynamic computation graph and automatic differentiation.\n    *   PyTorch is available in our Python Playground (`/tools/python3`) for executing and testing code snippets.\n\n**Recommendation:**\n\nIf you're looking to get started with AI frameworks, I recommend checking out the TensorFlow Playground or PyTorch Playground. These interactive visualizers will give you a better understanding of how these frameworks work and help you build your skills in AI development.\n\n*   **TensorFlow Playground**: This is an excellent resource for beginners and experienced developers alike. You can experiment with different models, adjust hyperparameters, and visualize the results.\n    *   To access TensorFlow Playground, navigate to `/tools/tensorflow-playground` and start exploring!\n*   **PyTorch Playground**: If you're already familiar with PyTorch or want to dive into its world, our PyTorch Playground is an excellent resource. You can test your code snippets, experiment with different models, and optimize performance.\n    *   To access PyTorch Playground, navigate to `/tools/python3` and start experimenting!\n\n**Additional Resources:**\n\n*   For more information on AI frameworks in Python, I recommend checking out the official documentation for TensorFlow or PyTorch. These resources will provide you with a comprehensive understanding of each framework's capabilities and usage.\n    *   You can access the official documentation for TensorFlow at <https://www.tensorflow.org/docs> and for PyTorch at <https://pytorch.org/docs>.",
+        "reply_to": null,
+        "author_email": "ai@techhub.com",
+        "author_name": "Dastan",
+        "author_photo": "/static/images/logo.png",
+        "role": "AI Assistant",
+        "timestamp": 1770445231367,
+        "votes": 0
+      }
+    ]
+  },
+  {
     "id": "4da3af27-ac05-4e01-85b1-578400dbdeb2",
     "title": "dfvdfs",
     "content": "<p>dfvsvfsdvds</p>",
