@@ -20,6 +20,3 @@ instance/
 static/techhub_users_db.json
 static/techhub_qa_db.json
 static/techhub_projects.json
-
-# Uploads
-static/images/uploads/
