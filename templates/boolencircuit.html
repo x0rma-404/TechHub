@@ -1,0 +1,750 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="../static/logic.css">
+<style>
+    /* Specific overrides/additions for Circuit Simulator */
+    .circuit-canvas-container {
+        background: rgba(15, 23, 42, 0.6);
+        border: 2px solid var(--logic-card-border);
+        border-radius: 1rem;
+        backdrop-filter: blur(10px);
+        overflow: hidden;
+        position: relative;
+    }
+
+    #circuitCanvas {
+        background: rgba(13, 17, 23, 0.8);
+        cursor: crosshair;
+        display: block;
+        touch-action: none;
+        width: 100%;
+    }
+
+    .gate-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .gate-btn {
+        background: var(--logic-input-bg);
+        border: 1px solid var(--logic-input-border);
+        color: var(--logic-text);
+        padding: 0.75rem 0.5rem;
+        border-radius: 0.75rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.85rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.4rem;
+        text-align: center;
+    }
+
+    .gate-btn:hover {
+        border-color: var(--logic-accent);
+        background: rgba(58, 123, 213, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .gate-btn.active {
+        background: var(--logic-accent-gradient);
+        border-color: transparent;
+        color: white;
+        box-shadow: 0 4px 12px rgba(58, 123, 213, 0.3);
+    }
+
+    .gate-icon {
+        font-size: 1.4rem;
+    }
+
+    .controls-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        align-items: center;
+    }
+
+    .status-indicator {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(34, 197, 94, 0.1);
+        border: 1px solid rgba(34, 197, 94, 0.2);
+        color: #4ade80;
+        border-radius: 0.5rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .status-dot {
+        width: 8px;
+        height: 8px;
+        background: currentColor;
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+    }
+
+    .info-card {
+        background: var(--logic-input-bg);
+        border: 1px solid var(--logic-input-border);
+        border-radius: 1rem;
+        padding: 1.25rem;
+    }
+
+    .expression-box {
+        font-family: 'Courier New', monospace;
+        min-height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: #a5b4fc;
+        font-size: 1.1rem;
+    }
+
+    @keyframes pulse {
+
+        0%,
+        100% {
+            opacity: 1;
+        }
+
+        50% {
+            opacity: 0.5;
+        }
+    }
+</style>
+
+<div class="max-w-7xl mx-auto px-4 pb-12">
+    <!-- Header Section -->
+    <div class="glass ring-soft rounded-2xl p-6 md:p-8 mb-6">
+        <div class="mb-6">
+            <h1
+                class="text-3xl font-bold mb-2 bg-gradient-to-r from-blue-400 to-indigo-500 bg-clip-text text-transparent">
+                Boolean Circuit Simulator</h1>
+            <p class="text-slate-400">Design logic circuits visually and verify boolean expressions in real-time.</p>
+        </div>
+
+        <div class="flex flex-col lg:flex-row gap-6">
+            <!-- Left Column: Controls & Palette -->
+            <div class="lg:w-1/4 space-y-6">
+                <!-- Modes -->
+                <div class="space-y-3">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Tools</h3>
+                    <div class="controls-grid flex-col items-stretch">
+                        <button class="btn btn-primary active" id="modeHand">
+                            ✋ Hand / Select
+                        </button>
+                        <button class="btn"
+                            style="background: var(--logic-input-bg); border: 1px solid var(--logic-input-border);"
+                            id="modeWire">
+                            🔌 Connect Wire
+                        </button>
+                        <button class="btn"
+                            style="background: rgba(239, 68, 68, 0.1); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.2);"
+                            id="modeDelete">
+                            🗑️ Delete
+                        </button>
+                        <button class="btn"
+                            style="background: var(--logic-input-bg); border: 1px solid var(--logic-input-border);"
+                            id="clearAll">
+                            ✨ Clear Canvas
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Gates Palette -->
+                <div class="space-y-3">
+                    <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider">Gates</h3>
+                    <div class="gate-grid">
+                        <button class="gate-btn" data-gate="INPUT"><span class="gate-icon">🔵</span>INPUT</button>
+                        <button class="gate-btn" data-gate="OUTPUT"><span class="gate-icon">🎯</span>OUTPUT</button>
+                        <button class="gate-btn" data-gate="AND"><span class="gate-icon">∧</span>AND</button>
+                        <button class="gate-btn" data-gate="OR"><span class="gate-icon">∨</span>OR</button>
+                        <button class="gate-btn" data-gate="NOT"><span class="gate-icon">¬</span>NOT</button>
+                        <button class="gate-btn" data-gate="NAND"><span class="gate-icon">⊼</span>NAND</button>
+                        <button class="gate-btn" data-gate="NOR"><span class="gate-icon">⊽</span>NOR</button>
+                        <button class="gate-btn" data-gate="XOR"><span class="gate-icon">⊕</span>XOR</button>
+                        <button class="gate-btn" data-gate="XNOR"><span class="gate-icon">⊙</span>XNOR</button>
+                    </div>
+                </div>
+
+                <!-- Circuit Info -->
+                <div class="info-card">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-slate-400 text-sm">Status</span>
+                        <div class="status-indicator">
+                            <span class="status-dot"></span>
+                            <span id="currentStatus" class="text-xs">Ready</span>
+                        </div>
+                    </div>
+                    <div class="space-y-2 text-sm text-slate-300 mt-4">
+                        <div class="flex justify-between"><span>Gates:</span> <span id="statGates"
+                                class="font-mono text-white">0</span></div>
+                        <div class="flex justify-between"><span>Wires:</span> <span id="statWires"
+                                class="font-mono text-white">0</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Canvas & Results -->
+            <div class="lg:w-3/4 space-y-6">
+                <!-- Canvas Area -->
+                <div class="circuit-canvas-container h-[600px] relative group">
+                    <canvas id="circuitCanvas" width="1200" height="800"></canvas>
+                    <div class="absolute bottom-4 right-4 text-xs text-slate-500 pointer-events-none opacity-50">
+                        Drag to move • Click to toggle inputs • Outputs connect to inputs
+                    </div>
+                </div>
+
+                <!-- Results Area -->
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Boolean Expression -->
+                    <div class="glass ring-soft rounded-xl p-5">
+                        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-3">Boolean
+                            Expression</h3>
+                        <div id="booleanExpression" class="expression-box">
+                            <span class="text-slate-500 italic">Build a circuit...</span>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+                    <div class="glass ring-soft rounded-xl p-5 flex flex-col justify-center gap-3">
+                        <h3 class="text-sm font-semibold text-slate-400 uppercase tracking-wider mb-1">Analysis</h3>
+                        <button id="btnTruthTable" class="btn w-full"
+                            style="background: var(--logic-input-bg); border: 1px solid var(--logic-input-border);">
+                            📊 Generate Truth Table & Simplify
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Truth Table Modal (Hidden) -->
+    <div id="truthTableModal"
+        class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+        <div
+            class="glass ring-soft rounded-2xl p-6 w-full max-w-4xl max-h-[80vh] overflow-hidden flex flex-col animate-cardIn">
+            <div class="flex justify-between items-center mb-4 border-b border-white/10 pb-4">
+                <h3 class="text-xl font-bold text-white">Truth Table</h3>
+                <button id="closeTruthTable" class="text-slate-400 hover:text-white transition-colors">✕</button>
+            </div>
+            <div class="overflow-auto custom-scrollbar flex-1">
+                <table class="w-full text-center border-collapse">
+                    <thead id="ttHead" class="bg-white/5 text-blue-300 sticky top-0"></thead>
+                    <tbody id="ttBody" class="text-slate-300"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    class CircuitSimulator {
+        constructor() {
+            this.canvas = document.getElementById('circuitCanvas');
+            this.ctx = this.canvas.getContext('2d');
+            this.gates = [];
+            this.wires = [];
+            this.mode = 'HAND'; // HAND, ADD_GATE, ADD_WIRE, DELETE
+            this.selectedGateType = null;
+
+            this.isDragging = false;
+            this.draggedGate = null;
+            this.dragOffset = { x: 0, y: 0 };
+            this.hoveredGate = null;
+            this.wireStart = null;
+            this.lastMousePos = { x: 0, y: 0 };
+
+            this.setupListeners();
+            this.resizeCanvas();
+            window.addEventListener('resize', () => this.resizeCanvas());
+            this.updateStats();
+        }
+
+        resizeCanvas() {
+            // Keep internal resolution high but fit container
+            const container = this.canvas.parentElement;
+            this.canvas.width = container.clientWidth;
+            this.canvas.height = container.clientHeight;
+            this.draw();
+        }
+
+        setupListeners() {
+            // Mode Buttons
+            document.getElementById('modeHand').onclick = () => this.setMode('HAND');
+            document.getElementById('modeWire').onclick = () => this.setMode('ADD_WIRE');
+            document.getElementById('modeDelete').onclick = () => this.setMode('DELETE');
+            document.getElementById('clearAll').onclick = () => {
+                if (confirm('Clear entire circuit?')) {
+                    this.gates = [];
+                    this.wires = [];
+                    this.updateStats();
+                    this.draw();
+                    this.updateExpressionFromOutput();
+                }
+            };
+
+            // Gate Palette
+            document.querySelectorAll('.gate-btn').forEach(btn => {
+                btn.onclick = () => {
+                    this.selectedGateType = btn.dataset.gate;
+                    this.setMode('ADD_GATE');
+
+                    // Visual feedback
+                    document.querySelectorAll('.gate-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                };
+            });
+
+            // Canvas Interactions
+            this.canvas.addEventListener('mousedown', e => this.handleMouseDown(e));
+            this.canvas.addEventListener('mousemove', e => this.handleMouseMove(e));
+            this.canvas.addEventListener('mouseup', e => this.handleMouseUp(e));
+            this.canvas.addEventListener('click', e => this.handleClick(e));
+
+            // Truth Table
+            document.getElementById('btnTruthTable').onclick = () => this.generateTruthTable();
+            document.getElementById('closeTruthTable').onclick = () => document.getElementById('truthTableModal').classList.add('hidden');
+        }
+
+        setMode(mode) {
+            this.mode = mode;
+            this.wireStart = null;
+
+            // Update UI
+            document.querySelectorAll('.btn').forEach(b => {
+                if (b.id.startsWith('mode')) b.classList.remove('btn-primary', 'active');
+                if (b.id.startsWith('mode')) b.style.background = '';
+            });
+
+            const btnMap = {
+                'HAND': 'modeHand',
+                'ADD_WIRE': 'modeWire',
+                'DELETE': 'modeDelete'
+            };
+
+            if (btnMap[mode]) {
+                const btn = document.getElementById(btnMap[mode]);
+                btn.classList.add('btn-primary', 'active');
+                btn.style.background = ''; // Allow class to override
+            }
+
+            // Reset gate palette if not adding gate
+            if (mode !== 'ADD_GATE') {
+                document.querySelectorAll('.gate-btn').forEach(b => b.classList.remove('active'));
+                this.selectedGateType = null;
+            }
+
+            const descriptions = {
+                'HAND': 'Drag gates • Click inputs to toggle',
+                'ADD_WIRE': 'Check Output -> Check Input to connect',
+                'DELETE': 'Click gate or wire to remove',
+                'ADD_GATE': `Click to place ${this.selectedGateType || 'Gate'}`
+            };
+            document.getElementById('currentStatus').innerText = descriptions[mode] || mode;
+        }
+
+        getMousePos(e) {
+            const rect = this.canvas.getBoundingClientRect();
+            return {
+                x: e.clientX - rect.left,
+                y: e.clientY - rect.top
+            };
+        }
+
+        handleMouseDown(e) {
+            const pos = this.getMousePos(e);
+            this.lastMousePos = pos;
+            this.isDragging = false;
+
+            if (this.mode === 'HAND') {
+                const gate = this.getGateAt(pos);
+                if (gate) {
+                    this.draggedGate = gate;
+                    this.dragOffset = { x: pos.x - gate.x, y: pos.y - gate.y };
+                }
+            }
+        }
+
+        handleMouseMove(e) {
+            const pos = this.getMousePos(e);
+
+            // Drag check threshold
+            if (this.draggedGate && !this.isDragging) {
+                const dist = Math.hypot(pos.x - this.lastMousePos.x, pos.y - this.lastMousePos.y);
+                if (dist > 3) this.isDragging = true;
+            }
+
+            if (this.isDragging && this.draggedGate) {
+                this.draggedGate.x = pos.x - this.dragOffset.x;
+                this.draggedGate.y = pos.y - this.dragOffset.y;
+                this.draw();
+                return;
+            }
+
+            this.hoveredGate = this.getGateAt(pos);
+        }
+
+        handleMouseUp(e) {
+            if (this.isDragging && this.draggedGate) {
+                this.propagateSignals();
+            }
+
+            setTimeout(() => {
+                this.isDragging = false;
+                this.draggedGate = null;
+            }, 0);
+        }
+
+        handleClick(e) {
+            if (this.isDragging) return;
+
+            const pos = this.getMousePos(e);
+
+            if (this.mode === 'ADD_GATE' && this.selectedGateType) {
+                this.addGate(pos.x - 40, pos.y - 30, this.selectedGateType);
+            }
+            else if (this.mode === 'DELETE') {
+                this.deleteAt(pos);
+            }
+            else if (this.mode === 'ADD_WIRE') {
+                this.handleWireClick(pos);
+            }
+            else {
+                // Use 'HAND' logic
+                const gate = this.getGateAt(pos);
+                if (gate && gate.type === 'INPUT') {
+                    gate.value = gate.value ? 0 : 1;
+                    this.propagateSignals();
+                    this.draw();
+                }
+            }
+        }
+
+        addGate(x, y, type) {
+            const gate = {
+                id: Date.now(),
+                type,
+                x, y,
+                w: 80, h: 60,
+                inputs: (type === 'NOT' || type === 'INPUT' || type === 'OUTPUT') ? 1 : 2,
+                outputs: (type === 'OUTPUT') ? 0 : 1,
+                value: (type === 'INPUT') ? 0 : null,
+                inputValues: []
+            };
+            this.gates.push(gate);
+            this.updateStats();
+            this.assignLabels();
+            this.draw();
+            this.updateExpressionFromOutput();
+        }
+
+        assignLabels() {
+            // Sort inputs by Y position for logical A, B, C ordering
+            const inputs = this.gates.filter(g => g.type === 'INPUT').sort((a, b) => a.y - b.y);
+            inputs.forEach((g, i) => {
+                g.label = String.fromCharCode(65 + i);
+            });
+        }
+
+        deleteAt(pos) {
+            const gateIdx = this.gates.findIndex(g =>
+                pos.x >= g.x && pos.x <= g.x + g.w &&
+                pos.y >= g.y && pos.y <= g.y + g.h
+            );
+
+            if (gateIdx !== -1) {
+                const gateId = this.gates[gateIdx].id;
+                this.gates.splice(gateIdx, 1);
+                this.wires = this.wires.filter(w => w.from.gate.id !== gateId && w.to.gate.id !== gateId);
+                this.assignLabels();
+                this.draw();
+                this.updateStats();
+                this.updateExpressionFromOutput();
+                return;
+            }
+        }
+
+        handleWireClick(pos) {
+            const point = this.getConnectionPointAt(pos);
+            if (!point) return;
+
+            if (!this.wireStart) {
+                if (point.type === 'output') {
+                    this.wireStart = point;
+                    document.getElementById('currentStatus').innerText = 'Wire started... Select an INPUT';
+                }
+            } else {
+                if (point.type === 'input' && point.gate.id !== this.wireStart.gate.id) {
+                    this.wires.push({ from: this.wireStart, to: point });
+                    this.wireStart = null; // Corrected
+                    this.setMode('ADD_WIRE');
+                    this.propagateSignals();
+                    this.updateStats();
+                    this.draw();
+                }
+            }
+        }
+
+        getGateAt(pos) {
+            return this.gates.toReversed().find(g =>
+                pos.x >= g.x && pos.x <= g.x + g.w &&
+                pos.y >= g.y && pos.y <= g.y + g.h
+            );
+        }
+
+        getConnectionPointAt(pos) {
+            const threshold = 15;
+            for (const g of this.gates) {
+                if (g.outputs) {
+                    if (Math.hypot(pos.x - (g.x + g.w), pos.y - (g.y + g.h / 2)) < threshold) {
+                        return { type: 'output', gate: g, idx: 0 };
+                    }
+                }
+                for (let i = 0; i < g.inputs; i++) {
+                    const y = g.y + (g.h * (i + 1)) / (g.inputs + 1);
+                    if (Math.hypot(pos.x - g.x, pos.y - y) < threshold) {
+                        return { type: 'input', gate: g, idx: i };
+                    }
+                }
+            }
+            return null;
+        }
+
+        draw() {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+            this.ctx.strokeStyle = 'rgba(255,255,255,0.05)';
+            this.ctx.lineWidth = 1;
+            const gridSize = 40;
+            this.ctx.beginPath();
+            for (let x = 0; x < this.canvas.width; x += gridSize) { this.ctx.moveTo(x, 0); this.ctx.lineTo(x, this.canvas.height); }
+            for (let y = 0; y < this.canvas.height; y += gridSize) { this.ctx.moveTo(0, y); this.ctx.lineTo(this.canvas.width, y); }
+            this.ctx.stroke();
+
+            this.wires.forEach(w => {
+                const startX = w.from.gate.x + w.from.gate.w;
+                const startY = w.from.gate.y + w.from.gate.h / 2;
+
+                const endX = w.to.gate.x;
+                const endY = w.to.gate.y + (w.to.gate.h * (w.to.idx + 1)) / (w.to.gate.inputs + 1);
+
+                const active = w.from.gate.value === 1;
+                this.ctx.strokeStyle = active ? '#4ade80' : '#60a5fa';
+                this.ctx.lineWidth = 3;
+
+                this.ctx.beginPath();
+                this.ctx.moveTo(startX, startY);
+                this.ctx.bezierCurveTo(startX + 50, startY, endX - 50, endY, endX, endY);
+                this.ctx.stroke();
+            });
+
+            this.gates.forEach(g => {
+                this.ctx.fillStyle = (this.draggedGate === g) ? 'rgba(70, 70, 255, 0.4)' : 'rgba(30, 41, 59, 0.8)';
+                if (g.type === 'INPUT') {
+                    this.ctx.fillStyle = g.value ? '#15803d' : '#334155';
+                }
+                if (g.type === 'OUTPUT') {
+                    this.ctx.fillStyle = g.inputValues[0] ? '#15803d' : '#1e1b4b';
+                }
+
+                this.ctx.strokeStyle = (this.hoveredGate === g) ? '#a5b4fc' : '#475569';
+                this.ctx.lineWidth = 2;
+
+                this.ctx.beginPath();
+                this.ctx.roundRect(g.x, g.y, g.w, g.h, 8);
+                this.ctx.fill();
+                this.ctx.stroke();
+
+                this.ctx.fillStyle = '#fff';
+                this.ctx.font = 'bold 14px Inter, sans-serif';
+                this.ctx.textAlign = 'center';
+                this.ctx.textBaseline = 'middle';
+                let label = g.type;
+                if (g.type === 'INPUT') label = `${g.label || 'IN'} (${g.value})`;
+                if (g.type === 'OUTPUT') label = 'OUT';
+                this.ctx.fillText(label, g.x + g.w / 2, g.y + g.h / 2);
+
+                this.ctx.fillStyle = '#94a3b8';
+                for (let i = 0; i < g.inputs; i++) {
+                    const y = g.y + (g.h * (i + 1)) / (g.inputs + 1);
+                    this.ctx.beginPath(); this.ctx.arc(g.x, y, 4, 0, Math.PI * 2); this.ctx.fill();
+                }
+                if (g.outputs) {
+                    this.ctx.beginPath(); this.ctx.arc(g.x + g.w, g.y + g.h / 2, 4, 0, Math.PI * 2); this.ctx.fill();
+                }
+            });
+        }
+
+
+        propagateSignals() {
+            this.gates.filter(g => g.type !== 'INPUT').forEach(g => {
+                g.value = null; g.inputValues = [];
+            });
+
+            let changed = true;
+            let loops = 0;
+
+            while (changed && loops < 100) {
+                changed = false;
+                loops++;
+
+                this.gates.forEach(g => {
+                    if (g.type === 'INPUT') return;
+
+                    const myInputWires = this.wires.filter(w => w.to.gate.id === g.id);
+                    const currentInputs = [];
+
+                    myInputWires.forEach(w => {
+                        const srcVal = w.from.gate.value;
+                        if (srcVal !== null) currentInputs[w.to.idx] = srcVal;
+                    });
+
+                    let ready = true;
+                    for (let i = 0; i < g.inputs; i++) {
+                        if (currentInputs[i] === undefined || currentInputs[i] === null) ready = false;
+                    }
+
+                    if (ready) {
+                        const newVal = this.evaluate(g.type, currentInputs);
+                        if (g.value !== newVal) {
+                            g.value = newVal;
+                            g.inputValues = currentInputs;
+                            changed = true;
+                        }
+                    }
+                });
+            }
+
+            this.updateExpressionFromOutput();
+        }
+
+        evaluate(type, inputs) {
+            const [a, b] = inputs;
+            switch (type) {
+                case 'AND': return (a && b) ? 1 : 0;
+                case 'OR': return (a || b) ? 1 : 0;
+                case 'NOT': return (!a) ? 1 : 0;
+                case 'NAND': return (!(a && b)) ? 1 : 0;
+                case 'NOR': return (!(a || b)) ? 1 : 0;
+                case 'XOR': return (a !== b) ? 1 : 0;
+                case 'XNOR': return (a === b) ? 1 : 0;
+                case 'OUTPUT': return a ? 1 : 0;
+                default: return 0;
+            }
+        }
+
+        updateStats() {
+            document.getElementById('statGates').innerText = this.gates.length;
+            document.getElementById('statWires').innerText = this.wires.length;
+        }
+
+        getExpression(gateId) {
+            const gate = this.gates.find(g => g.id === gateId);
+            if (!gate) return "?";
+
+            if (gate.type === 'INPUT') return gate.label || "?";
+
+            const inputWires = this.wires.filter(w => w.to.gate.id === gate.id).sort((a, b) => a.to.idx - b.to.idx);
+
+            const args = [];
+            for (let i = 0; i < gate.inputs; i++) {
+                const wire = inputWires.find(w => w.to.idx === i);
+                if (wire) {
+                    args.push(this.getExpression(wire.from.gate.id));
+                } else {
+                    args.push("?");
+                }
+            }
+
+            const [a, b] = args;
+            switch (gate.type) {
+                case 'AND': return `(${a} * ${b})`;
+                case 'OR': return `(${a} + ${b})`;
+                case 'NOT': return `!(${a})`;
+                case 'NAND': return `!(${a} * ${b})`;
+                case 'NOR': return `!(${a} + ${b})`;
+                case 'XOR': return `(${a} ^ ${b})`;
+                case 'XNOR': return `!(${a} ^ ${b})`;
+                case 'OUTPUT': return a;
+                default: return "?";
+            }
+        }
+
+        updateExpressionFromOutput() {
+            const out = this.gates.find(g => g.type === 'OUTPUT');
+            const disp = document.getElementById('booleanExpression');
+
+            if (out) {
+                const expr = this.getExpression(out.id);
+                const valHtml = `<span class="${out.value ? 'text-green-400' : 'text-red-400'} font-bold ml-2"> = ${out.value !== null ? out.value : '?'}</span>`;
+
+                disp.innerHTML = `<span class="text-indigo-300">${expr}</span>${valHtml}`;
+            } else {
+                disp.innerText = "Add an OUTPUT gate to see results";
+            }
+        }
+
+        async generateTruthTable() {
+            const out = this.gates.find(g => g.type === 'OUTPUT');
+            if (!out) { alert("Please add an OUTPUT gate."); return; }
+
+            // Ensure labels are current
+            this.assignLabels();
+
+            const expr = this.getExpression(out.id);
+            if (expr.includes("?")) { alert("Circuit is incomplete. Connect all inputs."); return; }
+
+            const modal = document.getElementById('truthTableModal');
+            const thead = document.getElementById('ttHead');
+            const tbody = document.getElementById('ttBody');
+
+            modal.classList.remove('hidden');
+            tbody.innerHTML = '<tr><td colspan="100" class="p-8"><span class="animate-pulse text-xl">Calculating via Logic Engine...</span></td></tr>';
+
+            try {
+                const response = await fetch('/api/logic/evaluate', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ expression: expr })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('booleanExpression').innerHTML =
+                        `<div class="flex flex-col items-center">
+                        <span class="text-xs text-slate-500">Circuit Expression:</span>
+                        <span class="text-indigo-300 mb-1">${expr}</span>
+                        <span class="text-xs text-slate-500">Simplified:</span>
+                        <span class="text-green-400 font-bold">${data.simplified}</span>
+                    </div>`;
+
+                    thead.innerHTML = '<tr>' + data.headers.map(h => `<th class="p-3 border-b border-white/10 text-indigo-300">${h}</th>`).join('') + '</tr>';
+
+                    tbody.innerHTML = data.rows.map(row =>
+                        `<tr class="hover:bg-white/5 transition-colors">
+                        ${row.map(val => `<td class="p-3 border border-white/5 font-mono ${val == 1 || val == 'T' ? 'text-green-400 font-bold' : 'text-red-400'}">${val}</td>`).join('')}
+                    </tr>`
+                    ).join('');
+
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="100" class="p-4 text-red-400">Error: ${data.message}</td></tr>`;
+                }
+
+            } catch (err) {
+                tbody.innerHTML = `<tr><td colspan="100" class="p-4 text-red-400">API Connection Failed. ${err}</td></tr>`;
+            }
+        }
+    }
+
+    window.circuitSim = new CircuitSimulator();
+</script>
+{% endblock %}

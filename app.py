@@ -1285,6 +1285,16 @@ def logic():
     if 'user' not in session: return redirect(url_for('home'))
     return render_template('logic.html')
 
+@app.route('/tools/matrix')
+def matrix():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('matrix.html')
+
+@app.route('/tools/boolencircuit')
+def boolencircuit():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('boolencircuit.html')
+
 @app.route('/tools/terminal')
 def terminal():
     if 'user' not in session: return redirect(url_for('home'))
