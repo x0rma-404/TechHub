@@ -52,11 +52,14 @@ pip install -r requirements.txt
 ```
 
 3. Install and run **Ollama** (required for Dastan AI):
-   - Download from [ollama.com](https://ollama.com/)
-   - Pull the required model:
-     ```bash
-     ollama pull llama3.2:3b
-     ```
+- Install Ollama:
+```bash
+irm https://ollama.com/install.ps1 | iex
+```
+- Pull the required model:
+```bash
+ollama pull llama3.2:3b
+```
 
 4. Run the server:
 

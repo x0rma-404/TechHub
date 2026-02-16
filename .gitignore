@@ -16,6 +16,8 @@ instance/
 .vscode/
 .idea/
 .DS_Store
+
+
 # Database Files
 static/techhub_users_db.json
 static/techhub_qa_db.json

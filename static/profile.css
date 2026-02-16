@@ -1,391 +1,177 @@
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,600,700');
-
-/* Removed .main-content styles to prevent conflicts with bar.html */
-
-/* ---------- Animations — smooth easing ---------- */
+/* Variables */
 :root {
-  --ease-out-smooth: cubic-bezier(0.33, 1, 0.68, 1);
+  --profile-card-bg: rgba(15, 23, 42, 0.6);
+  --profile-border: rgba(255, 255, 255, 0.08);
+  --profile-text-muted: #94a3b8;
+  --profile-text-main: #f1f5f9;
 }
 
-@keyframes profileCardIn {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes profileBannerIn {
-  from {
-    opacity: 0;
-    transform: scale(1.015);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes profileContentIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes profileEditIn {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes profileAvatarIn {
-  from {
-    opacity: 0;
-    transform: scale(0.96);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes profileAboutIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Profile page: main card entrance */
-#viewMode {
-  animation: profileCardIn 0.6s var(--ease-out-smooth) both;
-}
-
-#viewMode>div:first-child {
-  animation: profileBannerIn 0.55s var(--ease-out-smooth) 0.08s both;
-}
-
-#viewMode>div:last-child>div:first-child {
-  animation: profileContentIn 0.52s var(--ease-out-smooth) 0.12s both;
-}
-
-#viewMode img[alt="Avatar"] {
-  animation: profileAvatarIn 0.5s var(--ease-out-smooth) 0.18s both;
-}
-
-#viewMode>div:last-child>div.glass.rounded-xl {
-  animation: profileAboutIn 0.5s var(--ease-out-smooth) 0.3s both;
-}
-
-/* Edit form entrance */
-#editMode.profile-animate-in {
-  animation: profileEditIn 0.45s var(--ease-out-smooth) both;
-}
-
+/* Base Styles */
 .profile-wrapper {
-  width: 100%;
-  max-width: 800px;
-  display: flex;
-  justify-content: center;
-  padding-bottom: 40px;
-  /* Space for scrolling */
+  animation: pageFadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+
+  /* Subtle Background Texture for Premium Feel */
+  background-image:
+    radial-gradient(circle at 100% 0%, rgba(99, 102, 241, 0.08) 0%, transparent 25%),
+    radial-gradient(circle at 0% 100%, rgba(168, 85, 247, 0.08) 0%, transparent 25%);
+  border-radius: 2rem;
 }
 
-.profile-card {
-  background-color: var(--logic-card-bg, white);
-  backdrop-filter: blur(10px);
-  border: 1px solid var(--logic-card-border, #eee);
-  border-radius: 20px;
-  box-shadow: var(--logic-shadow, 0 10px 30px rgba(0, 0, 0, 0.1));
-  overflow: hidden;
-  width: 100%;
-  max-width: 600px;
-  transition: background 0.3s ease;
+/* Glass Effect Override / refinement */
+.glass {
+  background: var(--profile-card-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--profile-border);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
 }
 
-#viewMode {
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+.ring-soft {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
-#viewMode:hover {
-  box-shadow: 0 0 0 1px rgba(255, 255, 255, .06), 0 12px 40px rgba(0, 0, 0, .3);
+/* Animations */
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-#viewMode .badge {
-  animation: profileContentIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) 0.25s both;
-  transition: transform 0.2s ease;
+@keyframes gradient-xy {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-#viewMode .badge:hover {
-  transform: scale(1.05);
+.animate-gradient-xy {
+  background-size: 200% 200%;
+  animation: gradient-xy 15s ease infinite;
 }
 
-.banner-area {
-  height: 160px;
-  overflow: hidden;
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
 }
 
-.banner-area img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+.group-hover\/btn\:animate-shimmer:hover {
+  animation: shimmer 1.5s infinite;
 }
 
-#viewMode>div:first-child img:hover {
-  transform: scale(1.03);
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-.profile-body {
-  padding: 0 30px 40px;
-  text-align: center;
-  color: var(--logic-text, #333);
+.animate-cardIn {
+  animation: cardIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-.avatar-area {
-  width: 120px;
-  height: 120px;
-  margin: -60px auto 15px;
-  border-radius: 50%;
-  border: 5px solid var(--logic-card-bg, #fff);
-  overflow: hidden;
-  background: var(--logic-card-bg, #fff);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
 
-.avatar-area img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+.animate-slide-in-right {
+  animation: slideInRight 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.info-area h2 {
+.drawer-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
   margin: 0;
-  font-size: 1.8rem;
+  border-radius: 0;
+  border-left: 1px solid var(--profile-border);
+  border-top: none;
+  border-bottom: none;
+  border-right: none;
 }
 
-.email-text {
-  opacity: 0.7;
-  font-size: 0.95rem;
-  margin-bottom: 20px;
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
-.meta-tags {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 30px;
-  font-size: 0.9rem;
-  opacity: 0.8;
-}
-
-/* Edit Mode Styles */
-.card-header {
-  padding: 20px 30px;
-  border-bottom: 1px solid var(--logic-card-border, #eee);
-  text-align: left;
-}
-
-form {
-  padding: 30px;
-}
-
-.form-group {
-  margin-bottom: 20px;
-  text-align: left;
-}
-
-.form-row {
-  display: flex;
-  gap: 20px;
-}
-
-.form-row .form-group {
-  flex: 1;
-}
-
-label {
-  display: block;
-  font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-input[type="text"],
-input[type="password"],
-input[type="url"],
-input[type="file"],
-textarea,
+/* Form Styles */
 .input {
-  width: 100%;
-  padding: 12px;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 10px;
-  color: #fff;
-  box-sizing: border-box;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--profile-border);
+  color: var(--profile-text-main);
+  transition: all 0.2s ease;
 }
 
-#editMode input[type="text"]:focus,
-#editMode input[type="password"]:focus,
-#editMode input[type="url"]:focus,
-#editMode textarea:focus,
-#editMode .input:focus {
+.input:focus {
   outline: none;
-  border-color: rgba(99, 102, 241, 0.6);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
   background: rgba(0, 0, 0, 0.4);
+  border-color: rgba(99, 102, 241, 0.5);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
 }
 
-#editMode textarea {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+.input::placeholder {
+  color: var(--profile-text-muted);
+  opacity: 0.5;
 }
 
-.divider {
-  margin: 30px 0 20px;
-  border-bottom: 1px solid var(--logic-card-border, #eee);
-  text-align: center;
-  line-height: 0.1em;
+/* Custom Scrollbar for Modal and Page */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.divider span {
-  background: var(--logic-card-bg, white);
-  padding: 0 10px;
-  opacity: 0.6;
-  font-size: 0.8rem;
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
 }
 
-.btn-action,
-.btn-primary,
-.btn-secondary {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: transform 0.3s cubic-bezier(0.33, 1, 0.68, 1), box-shadow 0.28s ease, background 0.28s ease;
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
 }
 
-.btn-action:hover,
-.btn-primary:hover,
-.btn-secondary:hover {
-  transform: translateY(-2px);
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }
 
-.btn-action:active,
-.btn-primary:active,
-.btn-secondary:active {
-  transform: translateY(0);
-}
-
-.form-actions {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 25px;
-}
-
-.btn-action {
-  background: #695CFE;
-  color: white;
-}
-
-.btn-primary {
-  background: #2ecc71;
-  color: white;
-}
-
-.btn-secondary {
-  background: #e0e0e0;
-  color: #333;
-}
-
-/* Only hide .hidden inside profile content, not in the bar (bar uses Tailwind hidden md:flex) */
-#viewMode .hidden,
-#editMode .hidden {
-  display: none;
-}
-
-/* Mobile Adjustments */
-@media (max-width: 600px) {
-  .profile-card {
-    max-width: 100%;
-    border-radius: 15px;
-  }
-
-  .form-row {
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .profile-body {
-    padding: 0 20px 30px;
-  }
-
-  .avatar-area {
-    width: 100px;
-    height: 100px;
-    margin-top: -50px;
-  }
-
-  .info-area h2 {
-    font-size: 1.5rem;
-  }
-
-  .btn-action,
-  .btn-primary,
-  .btn-secondary {
-    width: 100%;
-    justify-content: center;
-    padding: 14px;
-  }
-
-  .form-actions {
-    flex-direction: column;
-  }
-}
-
-/* Profile Edit Icons Fix */
-#editMode .relative {
-  position: relative;
-}
-
-#editMode .material-symbols-outlined,
-#editMode .bx {
+/* Profile Hero Specifics */
+.profile-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 1.5rem;
+  padding: 1px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   pointer-events: none;
-  z-index: 10;
-}
-
-/* Ensure proper padding for inputs with icons */
-#editMode input.pl-12,
-#editMode .pl-12 {
-  padding-left: 3rem !important;
 }

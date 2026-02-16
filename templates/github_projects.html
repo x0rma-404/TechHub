@@ -1,119 +1,171 @@
 {% extends "bar.html" %}
 {% block content %}
 
-<div class="max-w-7xl mx-auto page-content">
+<link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
 
-    <!-- Header -->
-    <div class="glass ring-soft p-8 rounded-2xl mb-6 animate-fadeIn">
-        <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
+<div class="max-w-7xl mx-auto page-content px-4 py-8 profile-wrapper">
+
+    <!-- Hero Header -->
+    <div class="glass ring-soft p-10 rounded-3xl mb-12 relative overflow-hidden group">
+        <!-- Background Decor -->
+        <div
+            class="absolute top-0 right-0 -mt-10 -mr-10 w-64 h-64 bg-indigo-600/20 rounded-full blur-3xl group-hover:bg-indigo-600/30 transition-colors duration-700">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 -mb-10 -ml-10 w-64 h-64 bg-purple-600/20 rounded-full blur-3xl group-hover:bg-purple-600/30 transition-colors duration-700">
+        </div>
+
+        <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="flex items-center gap-6">
                 <div
-                    class="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center shadow-lg">
-                    <i class='bx bxl-github text-3xl text-white'></i>
+                    class="w-20 h-20 rounded-2xl bg-gradient-to-br from-[#24292e] to-[#0b1220] flex items-center justify-center shadow-2xl border border-white/5 relative group/icon">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-br from-indigo-500/20 to-purple-500/20 opacity-0 group-hover/icon:opacity-100 transition-opacity rounded-2xl">
+                    </div>
+                    <i class='bx bxl-github text-5xl text-white relative z-10'></i>
                 </div>
                 <div>
-                    <h1
-                        class="text-3xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
-                        GitHub Projects
+                    <h1 class="text-4xl md:text-5xl font-bold text-white tracking-tight mb-2">
+                        GitHub <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-purple-400">Hub</span>
                     </h1>
-                    <p class="text-slate-400 text-sm">Explore synced repositories from the community</p>
+                    <p class="text-slate-400 text-lg max-w-lg leading-relaxed">
+                        Discover, sync, and collaborate on community projects.
+                    </p>
                 </div>
             </div>
-            <div class="flex gap-2">
-                <a href="/github/settings" class="btn btn-muted">
-                    <i class='bx bx-cog'></i>
-                    Settings
+
+            <div class="flex flex-wrap gap-3">
+                <a href="/github/settings"
+                    class="btn bg-white/5 hover:bg-white/10 text-white border border-white/10 px-5 py-3 rounded-xl transition-all flex items-center gap-2">
+                    <i class='bx bx-cog text-xl'></i>
+                    <span>Settings</span>
                 </a>
                 <button onclick="openNewProjectModal()"
-                    class="btn bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 text-white">
-                    <i class='bx bx-plus'></i>
-                    New Project
+                    class="btn bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-6 py-3 rounded-xl shadow-lg shadow-indigo-900/30 transition-all transform hover:-translate-y-1 flex items-center gap-2 font-bold">
+                    <i class='bx bx-plus text-xl'></i>
+                    <span>New Project</span>
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Features / Stats (Premium) -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
+        <div class="glass ring-soft rounded-2xl p-4 flex items-center gap-4 hover:bg-white/5 transition-colors group">
+            <div
+                class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition-transform">
+                <i class='bx bx-code-alt text-2xl'></i></div>
+            <div>
+                <p class="text-xs text-slate-500 uppercase font-bold tracking-wider">Total Projects</p>
+                <p class="text-xl font-bold text-white">{{ projects|length }}</p>
             </div>
         </div>
     </div>
 
     <!-- Projects Grid -->
     {% if projects %}
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {% for project in projects %}
-        <div class="glass ring-soft rounded-2xl overflow-hidden hover:ring-purple-500/30 transition-all duration-300 group cursor-pointer"
+        <div class="glass ring-soft rounded-3xl overflow-hidden hover:ring-indigo-500/30 transition-all duration-500 group cursor-pointer flex flex-col h-full bg-[#0f172a]/60"
             onclick="openProject('{{ project.github_repo }}', '{{ project.title }}')">
 
-            <!-- Repository Banner -->
-            <div class="relative h-40 bg-gradient-to-br from-purple-600/20 to-blue-600/20 overflow-hidden">
+            <!-- Card Header / Banner -->
+            <div class="relative h-48 overflow-hidden">
+                <!-- Fallback Gradient or Image -->
+                <div
+                    class="absolute inset-0 bg-gradient-to-br from-indigo-900/40 to-purple-900/40 group-hover:scale-110 transition-transform duration-700">
+                </div>
+                <!-- Try to use project open graph image if available, otherwise just gradient -->
                 <img src="https://opengraph.githubassets.com/1/{{ project.github_repo }}" alt="{{ project.title }}"
-                    class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300"
+                    class="w-full h-full object-cover relative z-10 opacity-90 group-hover:opacity-100 transition-opacity duration-300"
                     onerror="this.style.display='none'">
-                <div class="absolute inset-0 bg-gradient-to-t from-[#0b1220] via-transparent to-transparent"></div>
+
+                <!-- Overlay Gradient -->
+                <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-[#0f172a]/40 to-transparent z-20">
+                </div>
+
+                <!-- Top Badges -->
+                <div class="absolute top-4 right-4 z-30 flex gap-2">
+                    {% if project.get('private') %}
+                    <span
+                        class="px-2 py-1 rounded-lg bg-black/60 backdrop-blur-md text-xs font-bold text-yellow-400 flex items-center gap-1 border border-white/5 shadow-lg">
+                        <i class='bx bx-lock-alt'></i> Private
+                    </span>
+                    {% endif %}
+                </div>
             </div>
 
-            <!-- Project Info -->
-            <div class="p-6">
-                <!-- Author Info -->
-                <div class="flex items-center gap-2 mb-3">
+            <!-- Card Body -->
+            <div class="p-6 flex-1 flex flex-col relative z-30 -mt-10">
+                <!-- Author Avatar (Floating) -->
+                <div class="mb-4">
                     {% if project.author_photo %}
-                    <img src="{{ project.author_photo }}" alt="{{ project.author_name }}" class="w-6 h-6 rounded-full">
+                    <img src="{{ project.author_photo }}" alt="{{ project.author_name }}"
+                        class="w-12 h-12 rounded-xl border-4 border-[#0f172a] shadow-lg object-cover bg-slate-800">
                     {% else %}
                     <div
-                        class="w-6 h-6 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white text-xs">
+                        class="w-12 h-12 rounded-xl border-4 border-[#0f172a] shadow-lg bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center text-white font-bold text-lg">
                         {{ project.author_name[0] if project.author_name else '?' }}
                     </div>
                     {% endif %}
-                    <span class="text-sm text-slate-400">{{ project.author_name }}</span>
-                    {% if current_user and project.author_email == current_user.email %}
-                    <span class="text-xs bg-indigo-500/20 text-indigo-300 px-2 py-0.5 rounded-full">Your Project</span>
-                    {% endif %}
                 </div>
 
-                <h3 class="font-bold text-xl text-white mb-2 flex items-center gap-2">
-                    {{ project.title }}
-                    {% if project.get('private') %}
-                    <span class="text-xs bg-yellow-500/20 text-yellow-300 px-2 py-0.5 rounded-full">🔒 Private</span>
-                    {% endif %}
-                </h3>
+                <div class="flex-1">
+                    <h3
+                        class="font-bold text-xl text-white mb-2 group-hover:text-indigo-400 transition-colors flex items-center gap-2">
+                        {{ project.title }}
+                        <i
+                            class='bx bx-chevron-right opacity-0 -ml-2 group-hover:opacity-100 group-hover:ml-0 transition-all duration-300 text-indigo-400'></i>
+                    </h3>
 
-                <p class="text-slate-400 text-sm mb-4 line-clamp-2">
-                    {{ project.description or 'No description' }}
-                </p>
+                    <p class="text-slate-400 text-sm mb-6 line-clamp-3 leading-relaxed font-light">
+                        {{ project.description or 'No description provided.' }}
+                    </p>
 
-                <div class="flex items-center gap-4 text-xs text-slate-400 mb-4">
-                    {% if project.tech_stack %}
-                    <span class="flex items-center gap-1">
-                        <i class='bx bx-code-alt'></i>
-                        {{ project.tech_stack }}
-                    </span>
-                    {% endif %}
-                    <span class="flex items-center gap-1">
-                        <i class='bx bx-star'></i>
-                        {{ project.stars or 0 }}
-                    </span>
+                    <!-- Tech Stack & Stars -->
+                    <div class="flex items-center flex-wrap gap-2 mb-6">
+                        {% if project.tech_stack %}
+                        <span
+                            class="px-2 py-1 rounded-md bg-indigo-500/10 border border-indigo-500/10 text-xs font-medium text-indigo-300">
+                            {{ project.tech_stack }}
+                        </span>
+                        {% endif %}
+                        <span
+                            class="px-2 py-1 rounded-md bg-white/5 border border-white/5 text-xs font-medium text-slate-300 flex items-center gap-1">
+                            <i class='bx bxs-star text-yellow-400'></i> {{ project.stars or 0 }}
+                        </span>
+                        <span
+                            class="px-2 py-1 rounded-md bg-white/5 border border-white/5 text-xs font-medium text-slate-400 flex items-center gap-1">
+                            <i class='bx bx-git-branch'></i> {{ project.forks or 0 }}
+                        </span>
+                    </div>
                 </div>
 
-                <div class="flex gap-2">
+                <!-- Actions Footer -->
+                <div class="pt-4 border-t border-white/5 flex gap-2">
                     <button
                         onclick="event.stopPropagation(); openProject('{{ project.github_repo }}', '{{ project.title }}')"
-                        class="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 text-white px-4 py-2 rounded-lg transition font-semibold text-sm">
-                        <i class='bx bx-folder-open mr-1'></i>
-                        Browse Code
+                        class="flex-1 bg-white/5 hover:bg-white/10 text-white py-2.5 rounded-xl transition text-sm font-semibold border border-white/5 flex items-center justify-center gap-2 group/btn">
+                        <i class='bx bx-code-alt group-hover/btn:text-indigo-400 transition-colors'></i> Browse
                     </button>
 
                     {% if current_user and project.author_email == current_user.email %}
                     <button
                         onclick="event.stopPropagation(); openUploadModal('{{ project.id }}', '{{ project.title }}')"
-                        class="bg-green-500/20 hover:bg-green-500/30 text-green-300 px-4 py-2 rounded-lg transition border border-green-500/30 flex items-center justify-center"
+                        class="w-10 h-10 rounded-xl bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 flex items-center justify-center transition border border-emerald-500/10"
                         title="Upload Code">
-                        <i class='bx bx-upload'></i>
+                        <i class='bx bx-upload text-lg'></i>
                     </button>
                     <button onclick="event.stopPropagation(); deleteProject('{{ project.id }}', '{{ project.title }}')"
-                        class="bg-red-500/20 hover:bg-red-500/30 text-red-300 px-4 py-2 rounded-lg transition border border-red-500/30 flex items-center justify-center"
+                        class="w-10 h-10 rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 flex items-center justify-center transition border border-red-500/10"
                         title="Delete Project">
-                        <i class='bx bx-trash'></i>
+                        <i class='bx bx-trash text-lg'></i>
                     </button>
                     {% else %}
                     <a href="{{ project.github_url }}" target="_blank" onclick="event.stopPropagation()"
-                        class="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg transition border border-white/10 flex items-center justify-center">
-                        <i class='bx bx-link-external'></i>
+                        class="w-10 h-10 rounded-xl bg-white/5 hover:bg-white/10 text-white flex items-center justify-center transition border border-white/5">
+                        <i class='bx bx-link-external text-lg'></i>
                     </a>
                     {% endif %}
                 </div>
@@ -123,263 +175,220 @@
     </div>
     {% else %}
     <!-- Empty State -->
-    <div class="glass ring-soft rounded-2xl p-12 text-center">
-        <i class='bx bx-folder-open text-6xl text-slate-600 mb-4'></i>
-        <h3 class="text-xl font-bold text-white mb-2">No Projects Yet</h3>
-        <p class="text-slate-400 mb-6">No one has synced any GitHub repositories yet. Be the first!</p>
-        <a href="/github/settings" class="btn bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 text-white">
-            <i class='bx bx-plus mr-2'></i>
-            Import Your First Project
+    <div class="glass ring-soft rounded-3xl p-16 text-center max-w-2xl mx-auto mt-12 bg-white/[0.02]">
+        <div
+            class="w-24 h-24 bg-slate-800/50 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner ring-1 ring-white/10">
+            <i class='bx bx-folder-open text-6xl text-slate-600'></i>
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-3">No Projects Yet</h3>
+        <p class="text-slate-400 mb-8 max-w-md mx-auto leading-relaxed">The repository list is empty. Be the first to
+            share your work with the community!</p>
+        <a href="/github/settings"
+            class="btn bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-8 py-3 rounded-xl shadow-lg transition-transform hover:-translate-y-1">
+            Import Project
         </a>
     </div>
     {% endif %}
 
 </div>
 
-<!-- File Browser Modal -->
+<!-- File Browser Modal (Redesigned) -->
 <div id="fileBrowserModal"
-    class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass ring-soft rounded-2xl w-full max-w-6xl max-h-[90vh] flex flex-col overflow-hidden">
+    class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+    <div
+        class="w-full max-w-[90vw] h-[85vh] glass ring-soft rounded-2xl flex flex-col overflow-hidden animate-cardIn border border-white/10 shadow-2xl">
 
-        <!-- Modal Header -->
-        <div class="p-6 border-b border-white/10">
-            <div class="flex items-center justify-between mb-3">
-                <div>
-                    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
-                        <i class='bx bxl-github'></i>
-                        <span id="modalRepoName"></span>
-                    </h2>
-                    <div id="breadcrumb" class="text-sm text-slate-400 mt-1 flex items-center gap-1"></div>
+        <!-- Toolbar -->
+        <div class="h-14 bg-[#0d1117] border-b border-white/10 flex items-center justify-between px-4 sticky top-0">
+            <div class="flex items-center gap-4">
+                <div class="flex gap-2">
+                    <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+                    <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
                 </div>
-                <button onclick="closeModal()" class="text-slate-400 hover:text-white transition">
-                    <i class='bx bx-x text-3xl'></i>
-                </button>
+                <div class="h-6 w-px bg-white/10 mx-2"></div>
+                <div class="flex items-center gap-2 text-sm text-slate-400">
+                    <i class='bx bxl-github'></i>
+                    <span id="modalRepoName" class="font-bold text-slate-200">Repository</span>
+                </div>
+                <div id="breadcrumb"
+                    class="flex items-center gap-1 text-xs text-slate-500 bg-white/5 px-2 py-1 rounded-md ml-2 transition-colors hover:bg-white/10">
+                </div>
             </div>
+
+            <button onclick="closeModal()"
+                class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-white/10 text-slate-400 hover:text-white transition">
+                <i class='bx bx-x text-xl'></i>
+            </button>
         </div>
 
-        <!-- Modal Body -->
-        <div class="flex-1 overflow-hidden flex">
-
-            <!-- File List -->
-            <div id="fileList" class="w-80 border-r border-white/10 overflow-y-auto p-4">
-                <div class="text-center py-12">
-                    <i class='bx bx-loader-alt bx-spin text-4xl text-purple-400'></i>
-                    <p class="text-slate-400 mt-3">Loading...</p>
-                </div>
+        <!-- IDE Layout -->
+        <div class="flex-1 flex overflow-hidden">
+            <!-- Sidebar -->
+            <div id="fileList"
+                class="w-72 bg-[#0d1117]/80 border-r border-white/5 overflow-y-auto p-2 text-sm font-mono custom-scrollbar">
+                <!-- File tree loaded here -->
             </div>
 
-            <!-- Code Viewer -->
-            <div id="codeViewer" class="flex-1 overflow-y-auto p-6 bg-[#0a0e1a]">
-                <div class="text-center py-20 text-slate-500">
-                    <i class='bx bx-file-blank text-6xl mb-3'></i>
-                    <p>Select a file to view its contents</p>
+            <!-- Editor Area -->
+            <div id="codeViewer" class="flex-1 bg-[#0d1117] overflow-auto p-0 relative custom-scrollbar">
+                <div class="absolute inset-0 flex items-center justify-center text-slate-600 pointer-events-none">
+                    <div class="text-center">
+                        <i class='bx bx-code-block text-6xl opacity-20'></i>
+                    </div>
                 </div>
             </div>
-
         </div>
-
     </div>
 </div>
 
-<!-- New Project Modal -->
+<!-- New Project Modal (Redesigned) -->
 <div id="newProjectModal"
-    class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass ring-soft rounded-2xl w-full max-w-2xl overflow-hidden">
-
-        <!-- Modal Header -->
-        <div class="p-6 border-b border-white/10 bg-gradient-to-r from-purple-600/20 to-blue-600/20">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
-                        <i class='bx bx-plus text-2xl text-white'></i>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-white">Create New Project</h2>
-                        <p class="text-sm text-slate-400">Create and push to GitHub</p>
-                    </div>
-                </div>
-                <button onclick="closeNewProjectModal()" class="text-slate-400 hover:text-white transition">
-                    <i class='bx bx-x text-3xl'></i>
-                </button>
-            </div>
+    class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="glass ring-soft rounded-3xl w-full max-w-lg overflow-hidden animate-cardIn shadow-2xl">
+        <div class="p-8 border-b border-white/10 bg-gradient-to-br from-indigo-900/20 to-purple-900/20">
+            <h2 class="text-2xl font-bold text-white mb-2">Create New Project</h2>
+            <p class="text-slate-400 text-sm">Initialize a new repository on GitHub.</p>
         </div>
 
-        <!-- Modal Body -->
-        <form id="newProjectForm" class="p-6 space-y-4">
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Repository Name *</label>
+        <form id="newProjectForm" class="p-8 space-y-6">
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-indigo-400 uppercase tracking-widest ml-1">Repository Name</label>
                 <input type="text" id="repoName" required placeholder="my-awesome-project"
-                    class="input w-full rounded-xl px-4 py-3">
-                <p class="text-xs text-slate-500 mt-1">Lowercase letters, numbers, and hyphens only</p>
+                    class="input w-full h-12 rounded-xl px-4 bg-slate-900/50 border-white/10 focus:border-indigo-500 transition-colors">
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Description</label>
-                <textarea id="repoDescription" rows="3" placeholder="A brief description of your project..."
-                    class="input w-full rounded-xl px-4 py-3 resize-none"></textarea>
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-indigo-400 uppercase tracking-widest ml-1">Description</label>
+                <textarea id="repoDescription" rows="3" placeholder="What is this project about?"
+                    class="input w-full rounded-xl px-4 py-3 bg-slate-900/50 border-white/10 resize-none"></textarea>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Tech Stack</label>
-                <input type="text" id="repoTechStack" placeholder="e.g., Python, JavaScript, React"
-                    class="input w-full rounded-xl px-4 py-3">
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-indigo-400 uppercase tracking-widest ml-1">Tech Stack</label>
+                <input type="text" id="repoTechStack" placeholder="Python, React, etc."
+                    class="input w-full h-12 rounded-xl px-4 bg-slate-900/50 border-white/10">
             </div>
 
-            <div class="flex items-center gap-3 p-4 bg-white/5 rounded-xl">
-                <input type="checkbox" id="repoPrivate" class="w-5 h-5 rounded">
-                <label for="repoPrivate" class="text-sm text-slate-300">
-                    <i class='bx bx-lock mr-1'></i>
-                    Make this repository private
-                </label>
-            </div>
+            <label
+                class="flex items-center gap-3 p-4 rounded-xl bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                <input type="checkbox" id="repoPrivate" class="w-5 h-5 rounded accent-indigo-500">
+                <span class="text-sm font-medium text-slate-300">Make this repository private</span>
+            </label>
 
-            <div class="flex gap-3 pt-4 border-t border-white/10">
-                <button type="button" onclick="closeNewProjectModal()" class="flex-1 btn btn-muted justify-center">
-                    Cancel
-                </button>
+            <div class="flex gap-4 pt-2">
+                <button type="button" onclick="closeNewProjectModal()"
+                    class="flex-1 btn bg-slate-800 text-slate-300 hover:text-white py-3 rounded-xl border border-white/5">Cancel</button>
                 <button type="submit"
-                    class="flex-1 btn bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 text-white justify-center">
-                    <i class='bx bx-plus mr-2'></i>
-                    Create Project
-                </button>
+                    class="flex-[2] btn bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-indigo-900/20 border border-indigo-400/20">Create
+                    Project</button>
             </div>
         </form>
-
     </div>
 </div>
 
-<!-- Upload Code Modal -->
+<!-- Upload Code Modal (Redesigned) -->
 <div id="uploadCodeModal"
-    class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="glass ring-soft rounded-2xl w-full max-w-2xl overflow-hidden">
-
-        <!-- Modal Header -->
-        <div class="p-6 border-b border-white/10 bg-gradient-to-r from-green-600/20 to-emerald-600/20">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-3">
-                    <div
-                        class="w-12 h-12 rounded-xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                        <i class='bx bx-upload text-2xl text-white'></i>
-                    </div>
-                    <div>
-                        <h2 class="text-2xl font-bold text-white">Upload Code</h2>
-                        <p class="text-sm text-slate-400" id="uploadProjectName"></p>
-                    </div>
-                </div>
-                <button onclick="closeUploadModal()" class="text-slate-400 hover:text-white transition">
-                    <i class='bx bx-x text-3xl'></i>
-                </button>
-            </div>
+    class="fixed inset-0 z-[60] hidden flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+    <div class="glass ring-soft rounded-3xl w-full max-w-lg overflow-hidden animate-cardIn shadow-2xl">
+        <div class="p-8 border-b border-white/10 bg-gradient-to-br from-emerald-900/20 to-teal-900/20">
+            <h2 class="text-2xl font-bold text-white mb-2">Upload Code</h2>
+            <p class="text-emerald-400/80 text-sm font-mono" id="uploadProjectName">Project Name</p>
         </div>
-
-        <!-- Modal Body -->
-        <form id="uploadCodeForm" class="p-6 space-y-4" enctype="multipart/form-data">
+        <form id="uploadCodeForm" class="p-8 space-y-6" enctype="multipart/form-data">
             <input type="hidden" id="uploadProjectId">
-
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Select File *</label>
-                <input type="file" id="codeFile" required
-                    class="input w-full rounded-xl px-4 py-3 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-green-500/20 file:text-green-400 file:cursor-pointer hover:file:bg-green-500/30">
-                <p class="text-xs text-slate-500 mt-1">Choose a code file to upload</p>
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-emerald-400 uppercase tracking-widest ml-1">File</label>
+                <div
+                    class="relative group cursor-pointer border-2 border-dashed border-slate-700 hover:border-emerald-500/50 transition-colors rounded-xl bg-slate-900/30 p-1">
+                    <input type="file" id="codeFile" required
+                        class="input w-full h-full rounded-lg px-4 py-3 bg-transparent border-none file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-emerald-500/10 file:text-emerald-400 hover:file:bg-emerald-500/20 cursor-pointer">
+                </div>
             </div>
-
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Directory Path</label>
-                <input type="text" id="filePath" placeholder="src/components (leave empty for root)"
-                    class="input w-full rounded-xl px-4 py-3">
-                <p class="text-xs text-slate-500 mt-1">Optional: specify a directory path</p>
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-emerald-400 uppercase tracking-widest ml-1">Path (Optional)</label>
+                <input type="text" id="filePath" placeholder="src/components"
+                    class="input w-full h-12 rounded-xl px-4 bg-slate-900/50 border-white/10">
             </div>
-
-            <div>
-                <label class="block text-sm font-medium text-slate-300 mb-2">Commit Message</label>
+            <div class="space-y-2">
+                <label class="text-xs font-bold text-emerald-400 uppercase tracking-widest ml-1">Commit Message</label>
                 <input type="text" id="commitMessage" value="Upload from TechHub"
-                    class="input w-full rounded-xl px-4 py-3">
+                    class="input w-full h-12 rounded-xl px-4 bg-slate-900/50 border-white/10">
             </div>
-
-            <div class="flex gap-3 pt-4 border-t border-white/10">
-                <button type="button" onclick="closeUploadModal()" class="flex-1 btn btn-muted justify-center">
-                    Cancel
-                </button>
+            <div class="flex gap-4 pt-2">
+                <button type="button" onclick="closeUploadModal()"
+                    class="flex-1 btn bg-slate-800 text-slate-300 hover:text-white py-3 rounded-xl border border-white/5">Cancel</button>
                 <button type="submit"
-                    class="flex-1 btn bg-gradient-to-r from-green-500 to-emerald-500 hover:opacity-90 text-white justify-center">
-                    <i class='bx bx-upload mr-2'></i>
-                    Upload File
-                </button>
+                    class="flex-[2] btn bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl shadow-lg shadow-emerald-900/20 border border-emerald-400/20">Upload</button>
             </div>
         </form>
-
     </div>
 </div>
 
 <style>
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(-10px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .custom-scrollbar::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
     }
 
-    .animate-fadeIn {
-        animation: fadeIn 0.5s ease-out;
+    .custom-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
     }
 
-    .line-clamp-2 {
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
     }
 
-    #codeViewer pre {
-        margin: 0;
-        background: transparent !important;
-        padding: 0 !important;
-    }
-
-    #codeViewer code {
-        font-size: 14px;
-        line-height: 1.6;
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.2);
     }
 </style>
 
 <script>
-    let currentRepo = '';
-    let currentPath = '';
+    // --- Scrollbar / Layout Shift Helper ---
+    // Ensure overflow is clean on load
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+
+    function disableScroll() {
+        const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+        document.body.style.paddingRight = `${scrollbarWidth}px`;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function enableScroll() {
+        document.body.style.paddingRight = '';
+        document.body.style.overflow = '';
+    }
+
+    let currentRepo = '', currentPath = '';
+
+    // --- Navigation & Modal Logic ---
 
     function openProject(repoFullName, repoTitle) {
         currentRepo = repoFullName;
         currentPath = '';
-
         document.getElementById('modalRepoName').textContent = repoTitle;
-        document.getElementById('fileBrowserModal').classList.remove('hidden');
-        document.getElementById('fileBrowserModal').classList.add('flex');
-
+        const modal = document.getElementById('fileBrowserModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        disableScroll();
         loadDirectory('');
     }
 
     function closeModal() {
-        document.getElementById('fileBrowserModal').classList.add('hidden');
-        document.getElementById('fileBrowserModal').classList.remove('flex');
+        const modal = document.getElementById('fileBrowserModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+        enableScroll();
     }
 
     async function loadDirectory(path) {
         currentPath = path;
         updateBreadcrumb();
-
         const fileList = document.getElementById('fileList');
-        fileList.innerHTML = `
-            <div class="text-center py-12">
-                <i class='bx bx-loader-alt bx-spin text-4xl text-purple-400'></i>
-                <p class="text-slate-400 mt-3">Loading...</p>
-            </div>
-        `;
+        fileList.innerHTML = `<div class="p-8 text-center text-slate-500 animate-pulse"><i class='bx bx-loader-alt bx-spin text-2xl'></i><p class="mt-2 text-xs">Loading...</p></div>`;
 
         try {
             const response = await fetch(`/api/github/repo/${currentRepo}/contents?path=${encodeURIComponent(path)}`);
@@ -387,150 +396,123 @@
 
             if (data.success) {
                 let html = '';
-
-                // Add back button if not in root
                 if (path) {
                     const parentPath = path.split('/').slice(0, -1).join('/');
                     html += `
-                        <div onclick="loadDirectory('${parentPath}')" 
-                             class="p-3 hover:bg-white/5 rounded-lg cursor-pointer transition flex items-center gap-2 text-slate-400 mb-2">
-                            <i class='bx bx-arrow-back'></i>
-                            <span>..</span>
-                        </div>
-                    `;
+                        <div onclick="loadDirectory('${parentPath}')" class="flex items-center gap-2 p-2 hover:bg-white/5 rounded cursor-pointer text-slate-400 group mb-1">
+                             <i class='bx bx-turn-left text-lg group-hover:text-indigo-400'></i> <span class="group-hover:text-indigo-400 font-medium">..</span>
+                        </div>`;
                 }
 
-                // Display items
-                data.items.forEach(item => {
-                    const icon = item.type === 'dir' ? 'bx-folder' : 'bx-file';
-                    const color = item.type === 'dir' ? 'text-yellow-400' : 'text-blue-400';
+                // Sort: Directories first, then files
+                const items = data.items.sort((a, b) => {
+                    if (a.type === b.type) return a.name.localeCompare(b.name);
+                    return a.type === 'dir' ? -1 : 1;
+                });
+
+                items.forEach(item => {
+                    const isDir = item.type === 'dir';
+                    const icon = isDir ? 'bxs-folder' : 'bx-file';
+                    const colorClass = isDir ? 'text-indigo-400' : 'text-slate-400';
 
                     html += `
-                        <div onclick="${item.type === 'dir' ? `loadDirectory('${item.path}')` : `loadFile('${item.path}')`}" 
-                             class="p-3 hover:bg-white/5 rounded-lg cursor-pointer transition flex items-center gap-2 group">
-                            <i class='bx ${icon} ${color}'></i>
-                            <span class="text-slate-300 group-hover:text-white truncate">${item.name}</span>
+                        <div onclick="${isDir ? `loadDirectory('${item.path}')` : `loadFile('${item.path}')`}" 
+                             class="flex items-center gap-2 p-2.5 hover:bg-white/5 rounded-lg cursor-pointer group transition-colors">
+                             <i class='bx ${icon} ${colorClass} opacity-80 group-hover:opacity-100 text-lg'></i>
+                             <span class="truncate text-slate-300 group-hover:text-white transition-colors">${item.name}</span>
                         </div>
                     `;
                 });
-
-                fileList.innerHTML = html || '<p class="text-slate-500 text-center py-4">Empty directory</p>';
+                fileList.innerHTML = html || '<div class="p-8 text-center text-slate-600 text-sm">Empty directory</div>';
             } else {
-                fileList.innerHTML = `<p class="text-red-400 text-center py-4">Error: ${data.message}</p>`;
+                fileList.innerHTML = `<div class="p-4 text-center text-red-400 text-sm bg-red-500/10 rounded-lg m-2">${data.message}</div>`;
             }
-        } catch (error) {
-            fileList.innerHTML = `<p class="text-red-400 text-center py-4">Error: ${error}</p>`;
+        } catch (e) {
+            fileList.innerHTML = `<div class="p-4 text-center text-red-400 text-sm">Connection error</div>`;
         }
     }
 
     async function loadFile(filePath) {
-        const codeViewer = document.getElementById('codeViewer');
-        codeViewer.innerHTML = `
-            <div class="text-center py-12">
-                <i class='bx bx-loader-alt bx-spin text-4xl text-purple-400'></i>
-                <p class="text-slate-400 mt-3">Loading file...</p>
-            </div>
-        `;
+        const viewer = document.getElementById('codeViewer');
+        viewer.innerHTML = `<div class="flex flex-col items-center justify-center h-full text-slate-500"><i class='bx bx-loader-alt bx-spin text-4xl mb-2'></i><p>Loading file...</p></div>`;
 
         try {
             const response = await fetch(`/api/github/repo/${currentRepo}/file?path=${encodeURIComponent(filePath)}`);
             const data = await response.json();
-
             if (data.success) {
-                // Detect language from file extension
                 const ext = data.name.split('.').pop().toLowerCase();
-                const langMap = {
-                    'py': 'python', 'js': 'javascript', 'html': 'html', 'css': 'css',
-                    'java': 'java', 'cpp': 'cpp', 'c': 'c', 'go': 'go', 'rs': 'rust',
-                    'rb': 'ruby', 'php': 'php', 'ts': 'typescript', 'json': 'json',
-                    'md': 'markdown', 'sh': 'bash', 'yml': 'yaml', 'yaml': 'yaml'
-                };
-                const language = langMap[ext] || 'plaintext';
+                viewer.innerHTML = `
+                    <div class="min-h-full">
+                        <pre class="m-0 p-4 min-h-full"><code class="language-${ext} bg-transparent">${escapeHtml(data.content)}</code></pre>
+                    </div>`;
 
-                // Display code with syntax highlighting
-                codeViewer.innerHTML = `
-                    <div class="mb-3 pb-3 border-b border-white/10">
-                        <h3 class="text-white font-semibold">${data.name}</h3>
-                        <p class="text-slate-400 text-sm">${data.size} bytes</p>
-                    </div>
-                    <pre><code class="language-${language}">${escapeHtml(data.content)}</code></pre>
-                `;
-
-                // Apply syntax highlighting
-                document.querySelectorAll('#codeViewer pre code').forEach((block) => {
-                    hljs.highlightElement(block);
-                });
+                // Trigger Highlight.js if available
+                if (window.hljs) {
+                    hljs.highlightElement(viewer.querySelector('code'));
+                }
             } else {
-                codeViewer.innerHTML = `
-                    <div class="text-center py-20 text-red-400">
-                        <i class='bx bx-error-circle text-6xl mb-3'></i>
-                        <p>${data.message}</p>
-                    </div>
-                `;
+                viewer.innerHTML = `<div class="flex items-center justify-center h-full text-red-400 bg-red-500/5 p-4 text-center"><p>${data.message}</p></div>`;
             }
-        } catch (error) {
-            codeViewer.innerHTML = `
-                <div class="text-center py-20 text-red-400">
-                    <i class='bx bx-error-circle text-6xl mb-3'></i>
-                    <p>Error: ${error}</p>
-                </div>
-            `;
+        } catch (e) {
+            viewer.innerHTML = `<div class="flex items-center justify-center h-full text-red-400">Error loading file content</div>`;
         }
     }
 
     function updateBreadcrumb() {
-        const breadcrumb = document.getElementById('breadcrumb');
-
-        if (!currentPath) {
-            breadcrumb.innerHTML = '<i class="bx bx-home"></i> <span>Root</span>';
-            return;
-        }
-
+        const el = document.getElementById('breadcrumb');
+        if (!currentPath) { el.innerHTML = '<span class="text-slate-500">root</span>'; return; }
         const parts = currentPath.split('/');
-        let html = '<i class="bx bx-home"></i> <span onclick="loadDirectory(\'\')" class="cursor-pointer hover:text-white">Root</span>';
-
-        let path = '';
-        parts.forEach((part, index) => {
-            path += (path ? '/' : '') + part;
-            const isLast = index === parts.length - 1;
-            html += ` <i class="bx bx-chevron-right text-xs"></i> `;
-
-            if (isLast) {
-                html += `<span class="text-white">${part}</span>`;
-            } else {
-                const p = path;
-                html += `<span onclick="loadDirectory('${p}')" class="cursor-pointer hover:text-white">${part}</span>`;
-            }
+        let html = '<span onclick="loadDirectory(\'\')" class="cursor-pointer hover:text-white text-slate-500 transition-colors">root</span>';
+        let acc = '';
+        parts.forEach(p => {
+            acc += (acc ? '/' : '') + p;
+            html += ` <i class='bx bx-chevron-right text-slate-600 text-[10px]'></i> <span onclick="loadDirectory('${acc}')" class="cursor-pointer hover:text-white text-slate-300 transition-colors">${p}</span>`;
         });
-
-        breadcrumb.innerHTML = html;
+        el.innerHTML = html;
     }
 
     function escapeHtml(text) {
-        const map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        return text.replace(/[&<>"']/g, m => map[m]);
+        if (!text) return "";
+        return text.replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
+    // --- Modal Toggles ---
 
-    // New Project Modal Functions
     function openNewProjectModal() {
         document.getElementById('newProjectModal').classList.remove('hidden');
         document.getElementById('newProjectModal').classList.add('flex');
+        disableScroll();
     }
 
     function closeNewProjectModal() {
         document.getElementById('newProjectModal').classList.add('hidden');
         document.getElementById('newProjectModal').classList.remove('flex');
         document.getElementById('newProjectForm').reset();
+        enableScroll();
     }
 
-    // Handle new project form submission
+    function openUploadModal(id, name) {
+        document.getElementById('uploadProjectId').value = id;
+        document.getElementById('uploadProjectName').textContent = name;
+        document.getElementById('uploadCodeModal').classList.remove('hidden');
+        document.getElementById('uploadCodeModal').classList.add('flex');
+        disableScroll();
+    }
+
+    function closeUploadModal() {
+        document.getElementById('uploadCodeModal').classList.add('hidden');
+        document.getElementById('uploadCodeModal').classList.remove('flex');
+        document.getElementById('uploadCodeForm').reset();
+        enableScroll();
+    }
+
+    // --- Form Handlers ---
+
+    // Create New Project
     document.getElementById('newProjectForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -539,22 +521,16 @@
         const techStack = document.getElementById('repoTechStack').value.trim();
         const isPrivate = document.getElementById('repoPrivate').checked;
 
-        if (!repoName) {
-            alert('⚠️ Repository name is required!');
-            return;
-        }
-
-        // Validate repo name format
-        if (!/^[a-z0-9-]+$/.test(repoName)) {
-            alert('⚠️ Repository name can only contain lowercase letters, numbers, and hyphens');
-            return;
-        }
+        if (!repoName) { alert('⚠️ Repository name is required!'); return; }
+        if (!/^[a-z0-9-]+$/.test(repoName)) { alert('⚠️ Repository name can only contain lowercase letters, numbers, and hyphens'); return; }
 
         const btn = e.submitter;
+        const originalText = btn.innerHTML;
         btn.disabled = true;
-        btn.innerHTML = '<i class="bx bx-loader-alt bx-spin mr-2"></i>Creating...';
+        btn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Creating...';
 
         try {
+            // Using a generic approach since specific endpoint might vary, but assuming /api/github/create-project exists from context
             const response = await fetch('/api/github/create-project', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -571,63 +547,20 @@
             if (data.success) {
                 alert('✅ ' + data.message);
                 closeNewProjectModal();
-                location.reload(); // Reload to show new project
+                location.reload();
             } else {
-                alert('❌ ' + data.message);
+                alert('❌ ' + (data.message || 'Failed to create project'));
                 btn.disabled = false;
-                btn.innerHTML = '<i class="bx bx-plus mr-2"></i>Create Project';
+                btn.innerHTML = originalText;
             }
         } catch (error) {
-            alert('❌ Error: ' + error);
+            alert('❌ System Error: ' + error);
             btn.disabled = false;
-            btn.innerHTML = '<i class="bx bx-plus mr-2"></i>Create Project';
+            btn.innerHTML = originalText;
         }
     });
 
-    // Delete Project Function
-    async function deleteProject(projectId, projectTitle) {
-        const confirmDelete = confirm(`🗑️ Delete "${projectTitle}"?\n\nThis will remove the project from TechHub.`);
-        if (!confirmDelete) return;
-
-        const deleteFromGitHub = confirm('❓ Also delete from GitHub?\n\nYes = Delete repository from GitHub too\nNo = Keep on GitHub, only remove from TechHub');
-
-        try {
-            const response = await fetch(`/api/github/delete-project/${projectId}`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    delete_from_github: deleteFromGitHub
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                alert('✅ ' + data.message);
-                location.reload();
-            } else {
-                alert('❌ ' + data.message);
-            }
-        } catch (error) {
-            alert('❌ Error: ' + error);
-        }
-    }
-
-    // Upload Code Modal Functions
-    function openUploadModal(projectId, projectTitle) {
-        document.getElementById('uploadProjectId').value = projectId;
-        document.getElementById('uploadProjectName').textContent = projectTitle;
-        document.getElementById('uploadCodeModal').classList.remove('hidden');
-        document.getElementById('uploadCodeModal').classList.add('flex');
-    }
-
-    function closeUploadModal() {
-        document.getElementById('uploadCodeModal').classList.add('hidden');
-        document.getElementById('uploadCodeModal').classList.remove('flex');
-        document.getElementById('uploadCodeForm').reset();
-    }
-
-    // Handle upload form submission
+    // Upload Code
     document.getElementById('uploadCodeForm').addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -636,10 +569,7 @@
         const filePath = document.getElementById('filePath').value.trim();
         const commitMessage = document.getElementById('commitMessage').value.trim();
 
-        if (!file) {
-            alert('⚠️ Please select a file!');
-            return;
-        }
+        if (!file) { alert('⚠️ Please select a file!'); return; }
 
         const formData = new FormData();
         formData.append('file', file);
@@ -648,8 +578,9 @@
         formData.append('commit_message', commitMessage);
 
         const btn = e.submitter;
+        const originalText = btn.innerHTML;
         btn.disabled = true;
-        btn.innerHTML = '<i class="bx bx-loader-alt bx-spin mr-2"></i>Uploading...';
+        btn.innerHTML = '<i class="bx bx-loader-alt bx-spin"></i> Uploading...';
 
         try {
             const response = await fetch('/api/github/upload-code', {
@@ -662,20 +593,43 @@
             if (data.success) {
                 alert('✅ ' + data.message);
                 closeUploadModal();
-                // Optionally reload to refresh file browser
             } else {
-                alert('❌ ' + data.message);
+                alert('❌ ' + (data.message || 'Upload failed'));
                 btn.disabled = false;
-                btn.innerHTML = '<i class="bx bx-upload mr-2"></i>Upload File';
+                btn.innerHTML = originalText;
             }
         } catch (error) {
-            alert('❌ Error: ' + error);
+            alert('❌ System Error: ' + error);
             btn.disabled = false;
-            btn.innerHTML = '<i class="bx bx-upload mr-2"></i>Upload File';
+            btn.innerHTML = originalText;
         }
     });
 
-    // Close modal on escape key
+    // Delete Project
+    async function deleteProject(id, title) {
+        if (!confirm(`🗑️ Are you sure you want to delete "${title}"?`)) return;
+
+        const deleteFromGithub = confirm("❓ Also delete repository from GitHub?\n\nOK = Yes, delete from GitHub\nCancel = No, keep on GitHub");
+
+        try {
+            const response = await fetch(`/api/github/delete-project/${id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ delete_from_github: deleteFromGithub })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('✅ Project deleted.');
+                location.reload();
+            } else {
+                alert('❌ ' + data.message);
+            }
+        } catch (e) { alert('❌ Error: ' + e); }
+    }
+
+    // Keyboard Shortcuts
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             closeModal();
