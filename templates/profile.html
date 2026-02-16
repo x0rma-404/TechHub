@@ -294,6 +294,176 @@
   </div>
 </div>
 
+<!-- GitHub Integration Section (Profile sayfanıza ekleyin) -->
+<div class="glass ring-soft p-6 rounded-2xl mb-6">
+  <div class="flex items-center justify-between mb-4">
+    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+      <i class='bx bxl-github text-white'></i>
+      GitHub Entegrasyonu
+    </h2>
+    <a href="/github/settings"
+      class="bg-gradient-to-r from-gray-700 to-gray-900 hover:opacity-90 text-white px-4 py-2 rounded-lg transition">
+      <i class='bx bx-cog mr-2'></i>Ayarlar
+    </a>
+  </div>
+
+  {% if user.github_username %}
+  <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+        <i class='bx bx-check-circle text-emerald-400 text-2xl'></i>
+      </div>
+      <div>
+        <p class="font-semibold text-white">GitHub Bağlı</p>
+        <p class="text-sm text-emerald-300">@{{ user.github_username }}</p>
+      </div>
+    </div>
+  </div>
+  {% else %}
+  <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-4">
+    <p class="text-blue-300 text-sm mb-3">
+      <i class='bx bx-info-circle mr-2'></i>
+      GitHub hesabınızı bağlayarak projelerinizi otomatik senkronize edebilirsiniz
+    </p>
+    <a href="/github/settings"
+      class="bg-gradient-to-r from-indigo-500 to-cyan-500 hover:opacity-90 text-white px-4 py-2 rounded-lg inline-flex items-center gap-2 transition">
+      <i class='bx bx-link'></i>
+      GitHub'ı Bağla
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<!-- Projects Section (Profile sayfanızdaki mevcut projeler bölümünü güncelleyin) -->
+<div class="glass ring-soft p-6 rounded-2xl">
+  <div class="flex items-center justify-between mb-6">
+    <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+      <i class='bx bx-folder text-indigo-400'></i>
+      Projelerim
+    </h2>
+    <button onclick="showPushModal()"
+      class="bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 text-white px-4 py-2 rounded-lg transition">
+      <i class='bx bx-plus mr-2'></i>Yeni Proje
+    </button>
+  </div>
+
+  {% if projects %}
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {% for project in projects %}
+    <div class="bg-white/5 border border-white/10 rounded-xl p-4 hover:border-white/20 transition">
+      <div class="flex justify-between items-start mb-3">
+        <h3 class="font-bold text-white">{{ project.title }}</h3>
+        {% if project.synced %}
+        <span class="badge-success text-xs">✓ Synced</span>
+        {% endif %}
+      </div>
+
+      <p class="text-slate-400 text-sm mb-3">{{ project.description }}</p>
+
+      <div class="flex gap-2 mb-3">
+        <span class="badge-primary text-xs">{{ project.tech_stack }}</span>
+        {% if project.stars %}
+        <span class="badge-secondary text-xs">⭐ {{ project.stars }}</span>
+        {% endif %}
+      </div>
+
+      <div class="flex gap-2">
+        {% if project.github_url %}
+        <button onclick="syncProject('{{ project.id }}')"
+          class="flex-1 bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 px-3 py-2 rounded-lg text-sm transition border border-blue-500/30">
+          <i class='bx bx-refresh mr-1'></i>Sync
+        </button>
+        <a href="{{ project.github_url }}" target="_blank"
+          class="bg-white/5 hover:bg-white/10 text-white px-3 py-2 rounded-lg transition border border-white/10">
+          <i class='bx bxl-github'></i>
+        </a>
+        {% else %}
+        <button onclick="pushProjectToGithub('{{ project.id }}', '{{ project.title }}')"
+          class="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 text-white px-3 py-2 rounded-lg text-sm transition">
+          <i class='bx bx-upload mr-1'></i>GitHub'a Yükle
+        </button>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="text-center py-12">
+    <i class='bx bx-folder-open text-6xl text-slate-600'></i>
+    <p class="text-slate-400 mt-3">Henüz proje yok</p>
+    <a href="/github/settings"
+      class="mt-4 inline-block bg-gradient-to-r from-indigo-500 to-cyan-500 hover:opacity-90 text-white px-6 py-2 rounded-lg transition">
+      GitHub'dan İçe Aktar
+    </a>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  // Sync project from GitHub
+  async function syncProject(projectId) {
+    if (!confirm('🔄 Projeyi GitHub\'dan güncellemek istiyor musunuz?')) return;
+
+    try {
+      const response = await fetch(`/api/github/sync/${projectId}`, {
+        method: 'POST'
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('✅ ' + data.message);
+        location.reload();
+      } else {
+        alert('❌ ' + data.message);
+      }
+    } catch (error) {
+      alert('❌ Hata: ' + error);
+    }
+  }
+
+  // Push project to GitHub
+  async function pushProjectToGithub(projectId, projectTitle) {
+    const repoName = prompt(`📤 Repo adı:`, projectTitle.toLowerCase().replace(/\s+/g, '-'));
+    if (!repoName) return;
+
+    const description = prompt('📝 Açıklama (opsiyonel):') || '';
+    const isPrivate = confirm('🔒 Private repo olsun mu?\n\nEvet = Private\nHayır = Public');
+
+    const btn = event.target;
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bx bx-loader-alt bx-spin mr-1"></i>Yükleniyor...';
+
+    try {
+      const response = await fetch('/api/github/push', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          project_id: projectId,
+          repo_name: repoName,
+          is_private: isPrivate
+        })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert('✅ ' + data.message);
+        window.open(data.repo_url, '_blank');
+        location.reload();
+      } else {
+        alert('❌ ' + data.message);
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bx bx-upload mr-1"></i>GitHub\'a Yükle';
+      }
+    } catch (error) {
+      alert('❌ Hata: ' + error);
+      btn.disabled = false;
+      btn.innerHTML = '<i class="bx bx-upload mr-1"></i>GitHub\'a Yükle';
+    }
+  }
+</script>
+
 <script>
   const rawDate = "{{ user.createdAt }}";
   if (rawDate) {

@@ -19,6 +19,9 @@ TechHub is a web‑based **Project Sharing and Q&A platform** where developers c
 * 👤 Track user activity with profiles & badges.
 * ✨ **Premium UI**: Smooth 3D effects, staggered animations, and modern glassmorphism.
 * 📱 Responsive design for both desktop and mobile.
+* 🔗 **GitHub Integration**: Connect your GitHub account, import repositories as projects, and sync project details (stars, description) in real-time.
+* 📂 **Project Management**: Create, view, and delete projects with specialized landing pages and sync status.
+
 
 ---
 
@@ -61,7 +64,15 @@ pip install -r requirements.txt
 python app.py
 ```
 
+### 🔐 Security Configuration
+
+> [!WARNING]
+> Before running in production, you **MUST** configure the following environment variables:
+> - `FERNET_KEY`: Used for encrypting GitHub tokens. If not set, it generates a new key on startup, which will invalidate old tokens after restart.
+> - `FLASK_SECRET_KEY`: Used for session security.
+
 5. Open the app in your browser:
+
 
 ```
 http://localhost:5000
@@ -84,6 +95,14 @@ http://localhost:5000
   * **Sorting Visualizer**: Real-time animation of sorting algorithms (Bubble, Merge, Quick, etc.)
   * **IP Subnet Calculator**: Network details and mask calculations
   * **CSV ↔ JSON Converter**: Professional data format transformation
+
+## 🔗 GitHub Synchronization
+
+* **Connect**: Securely link your GitHub account using a Personal Access Token (PAT).
+* **Import**: Select any of your repositories to instantly create a TechHub project.
+* **Sync**: Keep your project's stars, language, and description up-to-date with one click.
+* **Direct Upload**: Upload code files directly to your repositories from the TechHub interface.
+
 
 ## 📟 Mini IDEs (Execution via Godbolt API):
   * **Python 3**

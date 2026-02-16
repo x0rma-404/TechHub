@@ -1,0 +1,334 @@
+{% extends "bar.html" %}
+{% block content %}
+
+<div class="max-w-4xl mx-auto page-content">
+
+    <!-- Header -->
+    <div class="glass ring-soft p-8 rounded-2xl mb-6 animate-stagger">
+        <div class="flex items-center gap-4 mb-6">
+            <div
+                class="w-14 h-14 rounded-2xl bg-gradient-to-br from-gray-700 to-gray-900 flex items-center justify-center shadow-lg">
+                <i class='bx bxl-github text-3xl text-white'></i>
+            </div>
+            <div>
+                <h1 class="text-3xl font-bold bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
+                    GitHub Entegrasyonu
+                </h1>
+                <p class="text-slate-400 text-sm">Projelerinizi GitHub ile senkronize edin</p>
+            </div>
+        </div>
+
+        {% if github_connected %}
+        <!-- Bağlı Durum -->
+        <div class="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4 animate-fadeIn">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                        <i class='bx bx-check-circle text-emerald-400 text-2xl'></i>
+                    </div>
+                    <div>
+                        <p class="font-semibold text-white">GitHub Hesabı Bağlı</p>
+                        <p class="text-sm text-emerald-300">@{{ github_username }}</p>
+                    </div>
+                </div>
+                <button onclick="removeToken()"
+                    class="bg-red-500/20 hover:bg-red-500/30 text-red-300 px-4 py-2 rounded-lg transition border border-red-500/30">
+                    <i class='bx bx-unlink mr-2'></i>Bağlantıyı Kaldır
+                </button>
+            </div>
+        </div>
+        {% else %}
+        <!-- Token Giriş Formu -->
+        <div class="bg-blue-500/10 border border-blue-500/30 rounded-xl p-6 mb-4">
+            <h3 class="font-bold text-white mb-3 flex items-center gap-2">
+                <i class='bx bx-info-circle text-blue-400'></i>
+                GitHub Personal Access Token Nasıl Alınır?
+            </h3>
+            <ol class="text-slate-300 space-y-2 text-sm list-decimal list-inside">
+                <li>GitHub → <strong>Settings</strong> → <strong>Developer settings</strong></li>
+                <li><strong>Personal access tokens</strong> → <strong>Tokens (classic)</strong></li>
+                <li>"<strong>Generate new token (classic)</strong>" butonuna tıklayın</li>
+                <li>Token'a bir isim verin (örn: <code class="bg-white/10 px-2 py-0.5 rounded">TechHub</code>)</li>
+                <li>Expiration'ı seçin (önerilen: <strong>No expiration</strong>)</li>
+                <li>Şu yetkileri seçin:
+                    <ul class="ml-6 mt-2 space-y-1 list-disc">
+                        <li><code class="bg-white/10 px-2 py-0.5 rounded">repo</code> - Tüm repo erişimi</li>
+                        <li><code class="bg-white/10 px-2 py-0.5 rounded">user:email</code> - Email erişimi</li>
+                    </ul>
+                </li>
+                <li>"<strong>Generate token</strong>" butonuna tıklayın</li>
+                <li>Token'ı kopyalayın (<span class="text-yellow-400">bir daha gösterilmez!</span>)</li>
+            </ol>
+        </div>
+
+        <div class="space-y-4">
+            <div>
+                <label class="block text-white font-semibold mb-2">GitHub Personal Access Token</label>
+                <div class="relative">
+                    <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"
+                        class="input w-full rounded-xl pr-12">
+                    <button onclick="toggleTokenVisibility()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white transition"
+                        id="toggleBtn">
+                        <i class='bx bx-hide text-xl' id="toggleIcon"></i>
+                    </button>
+                </div>
+                <p class="text-slate-400 text-xs mt-2 flex items-center gap-1">
+                    <i class='bx bx-lock-alt'></i>
+                    Token'ınız güvenli bir şekilde şifrelenerek saklanır
+                </p>
+            </div>
+            <button onclick="saveToken()"
+                class="bg-gradient-to-r from-indigo-500 to-cyan-500 hover:opacity-90 text-white font-semibold w-full rounded-xl py-3 transition transform hover:scale-[1.02] shadow-lg">
+                <i class='bx bx-link mr-2'></i>GitHub'ı Bağla
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    {% if github_connected %}
+    <!-- GitHub Repoları -->
+    <div class="glass ring-soft p-8 rounded-2xl animate-stagger">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                <i class='bx bx-folder text-indigo-400'></i>
+                GitHub Repolarım
+            </h2>
+            <button onclick="loadRepos()"
+                class="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg transition border border-white/10">
+                <i class='bx bx-refresh mr-2'></i>Yenile
+            </button>
+        </div>
+
+        <div id="reposList" class="space-y-4">
+            <div class="text-center py-12">
+                <i class='bx bx-loader-alt bx-spin text-4xl text-indigo-400'></i>
+                <p class="text-slate-400 mt-3">Repolar yükleniyor...</p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+
+<style>
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.5s ease-out;
+    }
+
+    .animate-stagger {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    .animate-stagger:nth-child(2) {
+        animation-delay: 0.1s;
+    }
+</style>
+
+<script>
+    // Toggle password visibility
+    function toggleTokenVisibility() {
+        const input = document.getElementById('githubToken');
+        const icon = document.getElementById('toggleIcon');
+
+        if (input.type === 'password') {
+            input.type = 'text';
+            icon.classList.remove('bx-hide');
+            icon.classList.add('bx-show');
+        } else {
+            input.type = 'password';
+            icon.classList.remove('bx-show');
+            icon.classList.add('bx-hide');
+        }
+    }
+
+    // Save GitHub token
+    async function saveToken() {
+        const token = document.getElementById('githubToken').value.trim();
+
+        if (!token) {
+            alert('⚠️ Lütfen token girin!');
+            return;
+        }
+
+        if (!token.startsWith('ghp_') && !token.startsWith('github_pat_')) {
+            if (!confirm('⚠️ Token formatı standart değil. Devam etmek istiyor musunuz?')) {
+                return;
+            }
+        }
+
+        const btn = event.target;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="bx bx-loader-alt bx-spin mr-2"></i>Kontrol ediliyor...';
+
+        try {
+            const response = await fetch('/api/github/save-token', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ token })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('✅ ' + data.message);
+                location.reload();
+            } else {
+                alert('❌ ' + data.message);
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bx bx-link mr-2"></i>GitHub\'ı Bağla';
+            }
+        } catch (error) {
+            alert('❌ Hata: ' + error);
+            btn.disabled = false;
+            btn.innerHTML = '<i class="bx bx-link mr-2"></i>GitHub\'ı Bağla';
+        }
+    }
+
+    // Remove GitHub token
+    async function removeToken() {
+        if (!confirm('⚠️ GitHub bağlantısını kaldırmak istediğinize emin misiniz?\n\nBu işlem geri alınamaz.')) return;
+
+        try {
+            const response = await fetch('/api/github/remove-token', {
+                method: 'POST'
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('✅ ' + data.message);
+                location.reload();
+            }
+        } catch (error) {
+            alert('❌ Hata: ' + error);
+        }
+    }
+
+    {% if github_connected %}
+    // Load GitHub repos
+    async function loadRepos() {
+        const reposList = document.getElementById('reposList');
+        reposList.innerHTML = `
+        <div class="text-center py-12">
+            <i class='bx bx-loader-alt bx-spin text-4xl text-indigo-400'></i>
+            <p class="text-slate-400 mt-3">Repolar yükleniyor...</p>
+        </div>
+    `;
+
+        try {
+            const response = await fetch('/api/github/repos');
+            const data = await response.json();
+
+            if (data.success && data.repos.length > 0) {
+                reposList.innerHTML = data.repos.map(repo => `
+                <div class="bg-white/5 border border-white/10 rounded-xl p-5 hover:border-white/20 transition group">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="font-bold text-white text-lg">${repo.name}</h3>
+                                ${repo.imported ? '<span class="badge-success text-xs">✓ İçe Aktarıldı</span>' : ''}
+                            </div>
+                            <p class="text-slate-400 text-sm">${repo.description || 'Açıklama yok'}</p>
+                        </div>
+                        ${repo.private ?
+                        '<span class="bg-yellow-500/20 text-yellow-300 text-xs px-3 py-1 rounded-full border border-yellow-500/30 ml-2">🔒 Private</span>' :
+                        '<span class="bg-green-500/20 text-green-300 text-xs px-3 py-1 rounded-full border border-green-500/30 ml-2">🌐 Public</span>'
+                    }
+                    </div>
+                    
+                    <div class="flex gap-2 mb-4 flex-wrap">
+                        ${repo.language ? `<span class="bg-blue-500/20 text-blue-300 text-xs px-3 py-1 rounded-full border border-blue-500/30">${repo.language}</span>` : ''}
+                        <span class="bg-purple-500/20 text-purple-300 text-xs px-3 py-1 rounded-full border border-purple-500/30">⭐ ${repo.stars}</span>
+                        <span class="bg-pink-500/20 text-pink-300 text-xs px-3 py-1 rounded-full border border-pink-500/30">🔱 ${repo.forks}</span>
+                    </div>
+                    
+                    <div class="flex gap-2 text-xs text-slate-400 mb-4">
+                        <span>📅 Oluşturulma: ${repo.created_at}</span>
+                        <span>•</span>
+                        <span>🔄 Güncelleme: ${repo.updated_at}</span>
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        ${repo.imported ?
+                        '<button class="flex-1 bg-gray-500/20 text-gray-400 px-4 py-2 rounded-lg cursor-not-allowed" disabled>✓ Zaten İçe Aktarıldı</button>' :
+                        `<button onclick="importRepo('${repo.full_name}')" class="flex-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:opacity-90 text-white px-4 py-2 rounded-lg transition font-semibold">📥 TechHub'a Aktar</button>`
+                    }
+                        <a href="${repo.html_url}" target="_blank" class="bg-white/5 hover:bg-white/10 text-white px-4 py-2 rounded-lg transition border border-white/10 flex items-center justify-center">
+                            <i class='bx bx-link-external text-lg'></i>
+                        </a>
+                    </div>
+                </div>
+            `).join('');
+            } else {
+                reposList.innerHTML = `
+                <div class="text-center py-12">
+                    <i class='bx bx-folder-open text-6xl text-slate-600'></i>
+                    <p class="text-slate-400 mt-3 text-lg">Henüz repo bulunamadı</p>
+                    <p class="text-slate-500 text-sm mt-1">GitHub hesabınızda repo oluşturun</p>
+                </div>
+            `;
+            }
+        } catch (error) {
+            reposList.innerHTML = `
+            <div class="text-center py-12">
+                <i class='bx bx-error-circle text-6xl text-red-400'></i>
+                <p class="text-red-400 mt-3 text-lg">Hata: ${error}</p>
+                <button onclick="loadRepos()" class="mt-4 bg-white/5 hover:bg-white/10 text-white px-6 py-2 rounded-lg transition">
+                    Tekrar Dene
+                </button>
+            </div>
+        `;
+        }
+    }
+
+    // Import repo from GitHub
+    async function importRepo(repoFullName) {
+        if (!confirm(`📥 ${repoFullName} projesini TechHub'a aktarmak istediğinize emin misiniz?`)) return;
+
+        const btn = event.target;
+        btn.disabled = true;
+        btn.innerHTML = '<i class="bx bx-loader-alt bx-spin mr-2"></i>İçe aktarılıyor...';
+
+        try {
+            const response = await fetch('/api/github/import', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ repo_full_name: repoFullName })
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                alert('✅ ' + data.message);
+                loadRepos(); // Reload to show "imported" badge
+            } else {
+                alert('❌ Hata: ' + data.message);
+                btn.disabled = false;
+                btn.innerHTML = '📥 TechHub\'a Aktar';
+            }
+        } catch (error) {
+            alert('❌ Hata: ' + error);
+            btn.disabled = false;
+            btn.innerHTML = '📥 TechHub\'a Aktar';
+        }
+    }
+
+    // Load repos on page load
+    loadRepos();
+    {% endif %}
+</script>
+
+{% endblock %}
