@@ -1,0 +1,628 @@
+{
+    "roadmaps": [
+        {
+            "id": "frontend",
+            "title": "Frontend Developer",
+            "description": "Master the art of building beautiful, interactive user interfaces.",
+            "icon": "dashboard",
+            "nodes": [
+                {
+                    "id": "fe_1",
+                    "title": "HTML Fundamentals",
+                    "description": "The foundation of the web.",
+                    "content": "### What is HTML?\n\nHTML stands for **HyperText Markup Language**. It's the standard markup language for creating web pages. It describes the structure of a page using tags.\n\nKey elements:\n- `<!DOCTYPE html>`: Defines the document type.\n- `<html>`: The root element.\n- `<body>`: Contains the visible page content.",
+                    "quiz": {
+                        "question": "What does HTML stand for?",
+                        "options": [
+                            "HyperText Markup Language",
+                            "HighTech Modern Language",
+                            "Hyperlink Text Management"
+                        ],
+                        "answer": 0
+                    }
+                },
+                {
+                    "id": "fe_2",
+                    "title": "Essential Tags",
+                    "description": "Headings, paragraphs, and links.",
+                    "content": "### Common HTML Tags\n\n- `<h1>` to `<h6>`: Headings.\n- `<p>`: Paragraphs.\n- `<a>`: Anchor tags for links.\n- `<img>`: For images.\n\nProperly nesting tags is crucial for valid HTML structure.",
+                    "quiz": {
+                        "question": "Which tag is used for a link?",
+                        "options": [
+                            "<link>",
+                            "<a>",
+                            "<url>"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "fe_3",
+                    "title": "CSS Introduction",
+                    "description": "Styling your web pages.",
+                    "content": "### What is CSS?\n\n**Cascading Style Sheets** (CSS) is used to style and layout web pages — for example, to alter the font, color, size, and spacing of your content.",
+                    "quiz": {
+                        "question": "What is CSS primarily used for?",
+                        "options": [
+                            "Logic",
+                            "Structure",
+                            "Styling"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "fe_4",
+                    "title": "Box Model",
+                    "description": "Understanding layout spacing.",
+                    "content": "### The Box Model\n\nEvery element in CSS is a box. It consists of:\n1. **Content**: The actual text/images.\n2. **Padding**: Space around the content.\n3. **Border**: The line around the padding.\n4. **Margin**: Space outside the border.",
+                    "quiz": {
+                        "question": "What is the space between the content and the border?",
+                        "options": [
+                            "Margin",
+                            "Padding",
+                            "Border"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "fe_5",
+                    "title": "Flexbox Mastery",
+                    "description": "Flexible layouts made easy.",
+                    "content": "### Flexbox\n\nFlexbox is a 1-dimensional layout method for arranging items in rows or columns. It makes it easier to design flexible responsive layout structure without using float or positioning.",
+                    "quiz": {
+                        "question": "Is Flexbox primarily for 1D or 2D layout?",
+                        "options": [
+                            "1D (Rows/Cols)",
+                            "2D (Grid)",
+                            "3D"
+                        ],
+                        "answer": 0
+                    }
+                },
+                {
+                    "id": "fe_6",
+                    "title": "CSS Grid",
+                    "description": "Advanced 2D layouts.",
+                    "content": "### CSS Grid\n\nUnlike Flexbox, CSS Grid is 2-dimensional. You can define rows and columns to create complex tablet-like structures easily.",
+                    "quiz": {
+                        "question": "Which property defines a grid container?",
+                        "options": [
+                            "display: block",
+                            "display: flex",
+                            "display: grid"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "fe_7",
+                    "title": "JS Basics",
+                    "description": "The logic of your site.",
+                    "content": "### JavaScript Intro\n\nJavaScript is a high-level, interpreted programming language that makes web pages interactive. You can create variables, functions, and control the browser.",
+                    "quiz": {
+                        "question": "Which keyword is modern for a variable that can change?",
+                        "options": [
+                            "var",
+                            "const",
+                            "let"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "fe_8",
+                    "title": "Functions & Arrows",
+                    "description": "Writing reusable code.",
+                    "content": "### Arrow Functions\n\nES6 introduced arrow functions. They are shorter and treat `this` differently.\n\n`const add = (a, b) => a + b;`",
+                    "quiz": {
+                        "question": "Which is a valid arrow function?",
+                        "options": [
+                            "f() => {}",
+                            "() -> {}",
+                            "() => {}"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "fe_9",
+                    "title": "DOM Manipulation",
+                    "description": "Interacting with the page.",
+                    "content": "### The DOM\n\nThe **Document Object Model** represents the page so that programs can change the document structure, style, and content. \n\n`document.getElementById('id')` is a classic way to grab an element.",
+                    "quiz": {
+                        "question": "What does DOM stand for?",
+                        "options": [
+                            "Document Object Model",
+                            "Draft Only Mode",
+                            "Data Object Manager"
+                        ],
+                        "answer": 0
+                    }
+                },
+                {
+                    "id": "fe_10",
+                    "title": "Event Listeners",
+                    "description": "Handling user clicks.",
+                    "content": "### Events\n\nUse `addEventListener` to run code when something happens, like a 'click', 'submit', or 'keydown'.",
+                    "quiz": {
+                        "question": "Which event is used for a button press?",
+                        "options": [
+                            "hover",
+                            "change",
+                            "click"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "fe_11",
+                    "title": "API Fetching",
+                    "description": "Getting external data.",
+                    "content": "### Fetch API\n\nUse the `fetch()` method to start the process of fetching a resource from the network. It returns a Promise.",
+                    "quiz": {
+                        "question": "What does fetch() return?",
+                        "options": [
+                            "A String",
+                            "A Promise",
+                            "A Number"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "fe_12",
+                    "title": "Async/Await",
+                    "description": "Handling asynchronous code.",
+                    "content": "### Asynchronous JS\n\n`async` and `await` makes asynchronous code look and behave a bit more like synchronous code, making it easier to read.",
+                    "quiz": {
+                        "question": "Which keyword is used inside an async function to wait?",
+                        "options": [
+                            "hold",
+                            "await",
+                            "wait"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "fe_13",
+                    "title": "React Components",
+                    "description": "Building with components.",
+                    "content": "### Intro to React\n\nReact is a library for building UI. Everything is a **Component**. It uses a virtual DOM for performance.",
+                    "quiz": {
+                        "question": "What is the core building block of React?",
+                        "options": [
+                            "Tag",
+                            "Function",
+                            "Component"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "fe_14",
+                    "title": "React State",
+                    "description": "Dynamic data in React.",
+                    "content": "### useState Hook\n\n`useState` allows you to have state variables in functional components.\n\n`const [count, setCount] = useState(0);` ",
+                    "quiz": {
+                        "question": "Which hook is used for local state?",
+                        "options": [
+                            "useEffect",
+                            "useState",
+                            "useContext"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "fe_15",
+                    "title": "Vite & Build Tools",
+                    "description": "Modern toolchains.",
+                    "content": "### Vite\n\nVite is a local development server that is lightning fast. It uses ES modules in the browser.",
+                    "quiz": {
+                        "question": "Vite is primarily a...?",
+                        "options": [
+                            "Database",
+                            "Build Tool / Dev Server",
+                            "Browser"
+                        ],
+                        "answer": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": "backend",
+            "title": "Backend Developer",
+            "description": "Build scalable servers and databases.",
+            "icon": "dns",
+            "nodes": [
+                {
+                    "id": "be_1",
+                    "title": "Server Basics",
+                    "description": "What is a server?",
+                    "content": "### Backend Intro\n\nThe backend is the 'server-side' of an application. It deals with databases, server logic, and APIs.",
+                    "quiz": {
+                        "question": "Which side is the backend?",
+                        "options": [
+                            "Client-side",
+                            "Server-side",
+                            "Both"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "be_2",
+                    "title": "Node.js Intro",
+                    "description": "JS on the server.",
+                    "content": "### What is Node.js?\n\nNode.js is a runtime built on Chrome's V8 engine that allows you to run JavaScript outside the browser.",
+                    "quiz": {
+                        "question": "What engine powers Node.js?",
+                        "options": [
+                            "Spidermonkey",
+                            "V8",
+                            "Chakra"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "be_3",
+                    "title": "Express Routing",
+                    "description": "Handling HTTP requests.",
+                    "content": "### Express.js\n\nExpress is a minimal and flexible Node.js web application framework that provides a robust set of features for web applications.",
+                    "quiz": {
+                        "question": "What is 'app.get()' used for in Express?",
+                        "options": [
+                            "Database query",
+                            "Handling GET requests",
+                            "Styling"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "be_4",
+                    "title": "Middleware",
+                    "description": "The logic in between.",
+                    "content": "### Middleware\n\nMiddleware functions are functions that have access to the request and response objects. They can modify them or end the cycle.",
+                    "quiz": {
+                        "question": "Does middleware run before or after the route handler?",
+                        "options": [
+                            "Before",
+                            "After",
+                            "Both potentially"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "be_5",
+                    "title": "SQL Introduction",
+                    "description": "Relational databases.",
+                    "content": "### SQL\n\n**Structured Query Language** is used to communicate with databases like PostgreSQL or MySQL.",
+                    "quiz": {
+                        "question": "What does SQL stand for?",
+                        "options": [
+                            "Simple Query List",
+                            "Structured Query Language",
+                            "Secure Quantified Logic"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "be_6",
+                    "title": "Database Joins",
+                    "description": "Connecting tables.",
+                    "content": "### Joins\n\nUse JOIN to combine rows from two or more tables based on a related column between them.",
+                    "quiz": {
+                        "question": "Which join returns all matches in both tables?",
+                        "options": [
+                            "LEFT JOIN",
+                            "INNER JOIN",
+                            "RIGHT JOIN"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "be_7",
+                    "title": "NoSQL (MongoDB)",
+                    "description": "Document-based storage.",
+                    "content": "### MongoDB\n\nMongoDB stores data in flexible, JSON-like documents, meaning fields can vary from document to document.",
+                    "quiz": {
+                        "question": "MongoDB is what type of DB?",
+                        "options": [
+                            "Relational",
+                            "Graph",
+                            "Document-based"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "be_8",
+                    "title": "Authentication",
+                    "description": "Securing your app.",
+                    "content": "### JWT\n\n**JSON Web Tokens** are an open, industry standard method for representing claims securely between two parties.",
+                    "quiz": {
+                        "question": "JWT is commonly used for...?",
+                        "options": [
+                            "Styling",
+                            "Authentication",
+                            "Caching"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "be_9",
+                    "title": "Password Hashing",
+                    "description": "Safe storage.",
+                    "content": "### Bcrypt\n\nNever store passwords in plain text! Use Bcrypt to hash them with a salt.",
+                    "quiz": {
+                        "question": "Why use Bcrypt?",
+                        "options": [
+                            "Compression",
+                            "Encryption",
+                            "Hashing"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "be_10",
+                    "title": "RESTful APIs",
+                    "description": "Standardized endpoints.",
+                    "content": "### REST\n\n**Representational State Transfer** is an architectural style that uses HTTP methods (GET, POST, etc.) to manage resources.",
+                    "quiz": {
+                        "question": "Which HTTP method is for creating a resource?",
+                        "options": [
+                            "GET",
+                            "POST",
+                            "DELETE"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "be_11",
+                    "title": "Caching with Redis",
+                    "description": "Speeding things up.",
+                    "content": "### Redis\n\nRedis is an in-memory data structure store, used as a database, cache, and message broker.",
+                    "quiz": {
+                        "question": "Where does Redis store data?",
+                        "options": [
+                            "Disk",
+                            "SSD",
+                            "RAM (Memory)"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "be_12",
+                    "title": "Docker Containers",
+                    "description": "Consistent environments.",
+                    "content": "### Docker\n\nDocker allows you to package an application with all of its dependencies into a standardized unit for software development.",
+                    "quiz": {
+                        "question": "What is the unit of deployment in Docker?",
+                        "options": [
+                            "Image",
+                            "Container",
+                            "Pod"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "be_13",
+                    "title": "Microservices",
+                    "description": "Scaling architecture.",
+                    "content": "### Microservices\n\nArchitecture where an app is built as a collection of small, independent services communicating over a network.",
+                    "quiz": {
+                        "question": "What is the opposite of a Microservice architecture?",
+                        "options": [
+                            "Distributed",
+                            "Monolith",
+                            "Serverless"
+                        ],
+                        "answer": 1
+                    }
+                }
+            ]
+        },
+        {
+            "id": "mobile",
+            "title": "Mobile Developer",
+            "description": "Build apps for iOS and Android.",
+            "icon": "smartphone",
+            "nodes": [
+                {
+                    "id": "mob_1",
+                    "title": "Mobile Platforms",
+                    "description": "iOS vs Android.",
+                    "content": "### Platform Intro\n\nNative development uses Swift/SwiftUI for iOS and Kotlin/Java for Android. Cross-platform options include Flutter and React Native.",
+                    "quiz": {
+                        "question": "Which language is primary for iOS today?",
+                        "options": [
+                            "Java",
+                            "Swift",
+                            "C#"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_2",
+                    "title": "SwiftUI Basics",
+                    "description": "Declarative iOS UI.",
+                    "content": "### SwiftUI\n\nSwiftUI is Apple's modern framework for building user interfaces across all Apple platforms.",
+                    "quiz": {
+                        "question": "Is SwiftUI imperative or declarative?",
+                        "options": [
+                            "Imperative",
+                            "Declarative",
+                            "Neither"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_3",
+                    "title": "Kotlin for Android",
+                    "description": "The Android standard.",
+                    "content": "### Kotlin\n\nKotlin is a cross-platform, statically typed, general-purpose programming language with type inference. It is fully interoperable with Java.",
+                    "quiz": {
+                        "question": "Who developed Kotlin?",
+                        "options": [
+                            "Google",
+                            "Apple",
+                            "JetBrains"
+                        ],
+                        "answer": 2
+                    }
+                },
+                {
+                    "id": "mob_4",
+                    "title": "Android Layouts",
+                    "description": "XML and Jetpack Compose.",
+                    "content": "### Compose\n\nJetpack Compose is Android’s modern toolkit for building native UI. It simplifies and accelerates UI development on Android.",
+                    "quiz": {
+                        "question": "What is the modern Android UI toolkit?",
+                        "options": [
+                            "XML",
+                            "Compose",
+                            "Vite"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_5",
+                    "title": "Flutter & Dart",
+                    "description": "Multi-platform beauty.",
+                    "content": "### Flutter\n\nFlutter is Google’s UI toolkit for building beautiful, natively compiled applications for mobile, web, and desktop from a single codebase.",
+                    "quiz": {
+                        "question": "What language does Flutter use?",
+                        "options": [
+                            "JS",
+                            "Dart",
+                            "Swift"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_6",
+                    "title": "React Native Bridge",
+                    "description": "JS for native apps.",
+                    "content": "### React Native\n\nReact Native combines the best parts of native development with React, a best-in-class JavaScript library for building user interfaces.",
+                    "quiz": {
+                        "question": "How does RN talk to native code?",
+                        "options": [
+                            "Bluetooth",
+                            "The Bridge",
+                            "HTTP"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_7",
+                    "title": "Mobile Navigation",
+                    "description": "Moving between screens.",
+                    "content": "### Navigation\n\nIn mobile, you handle a 'Stack' of screens. Users can push new screens onto the stack and pop them off to go back.",
+                    "quiz": {
+                        "question": "What data structure describes mobile screen history?",
+                        "options": [
+                            "Queue",
+                            "Stack",
+                            "Tree"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_8",
+                    "title": "Push Notifications",
+                    "description": "Keep users coming back.",
+                    "content": "### Notifications\n\nUse FCM (Firebase Cloud Messaging) or APNs (Apple Push Notification service) to send messages to devices.",
+                    "quiz": {
+                        "question": "What is Google's push service called?",
+                        "options": [
+                            "APNs",
+                            "FCM",
+                            "SMS"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_9",
+                    "title": "Local Storage",
+                    "description": "Saving data on device.",
+                    "content": "### SQLite & Preferences\n\nUse SQLite for structured data and SharedPreferences/UserDefaults for small settings.",
+                    "quiz": {
+                        "question": "Best for complex local data?",
+                        "options": [
+                            "SharedPreferences",
+                            "SQLite",
+                            "Memory"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_10",
+                    "title": "Mobile Lifecycle",
+                    "description": "Pause, Resume, Stop.",
+                    "content": "### Lifecycle\n\nMobile apps can be paused when the user switches apps. You must handle state saving correctly.",
+                    "quiz": {
+                        "question": "When is an app 'Paused'?",
+                        "options": [
+                            "When closed",
+                            "When in background",
+                            "When downloading"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_11",
+                    "title": "API Integration",
+                    "description": "Connecting to backend.",
+                    "content": "### Mobile Networking\n\nUse libraries like Retrofit (Android), Alamofire (iOS), or Axios (React Native) to fetch data from your server.",
+                    "quiz": {
+                        "question": "Is mobile networking different from web?",
+                        "options": [
+                            "Yes, completely",
+                            "No, uses same HTTP",
+                            "Maybe"
+                        ],
+                        "answer": 1
+                    }
+                },
+                {
+                    "id": "mob_12",
+                    "title": "App Store Prep",
+                    "description": "Getting ready for release.",
+                    "content": "### Deployment\n\nPreparing assets, icons, and conforming to Apple/Google guidelines for a successful submission.",
+                    "quiz": {
+                        "question": "Where do you submit Android apps?",
+                        "options": [
+                            "App Store",
+                            "Play Store",
+                            "Microsoft Store"
+                        ],
+                        "answer": 1
+                    }
+                }
+            ]
+        }
+    ]
+}

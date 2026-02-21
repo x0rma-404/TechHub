@@ -190,6 +190,72 @@ def tools():
     if 'user' not in session: return redirect(url_for('home'))
     return render_template('tools.html')
 
+@app.route('/roadmap')
+def roadmap():
+    if 'user' not in session: return redirect(url_for('home'))
+    return render_template('roadmap.html')
+
+@app.route('/api/roadmap/data')
+def get_roadmap_data():
+    try:
+        data_path = os.path.join('static', 'roadmap_data.json')
+        if os.path.exists(data_path):
+            with open(data_path, 'r', encoding='utf-8') as f:
+                return jsonify(json.load(f))
+        return jsonify({'roadmaps': []})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/roadmap/status')
+def get_roadmap_status():
+    if 'user' not in session: return jsonify({'success': False}), 401
+    user_email = session['user']['email']
+    users = load_users()
+    user = users.get(user_email, {})
+    return jsonify(user.get('roadmap_progress', {}))
+
+@app.route('/api/roadmap/complete', methods=['POST'])
+def complete_roadmap_node():
+    if 'user' not in session: return jsonify({'success': False}), 401
+    data = request.get_json()
+    roadmap_id = data.get('roadmap_id')
+    node_id = data.get('node_id')
+    
+    user_email = session['user']['email']
+    users = load_users()
+    user = users.get(user_email, {})
+    
+    progress = user.get('roadmap_progress', {})
+    if roadmap_id not in progress:
+        progress[roadmap_id] = []
+    
+    if node_id not in progress[roadmap_id]:
+        progress[roadmap_id].append(node_id)
+        
+    user['roadmap_progress'] = progress
+    
+    # Optional: Reward user
+    user['answerCount'] = user.get('answerCount', 0) + 5 # 5 points for completing a lesson
+    user['role'] = update_role_logic(user)
+    
+    users[user_email] = user
+    save_users(users)
+    session['user'] = user
+    
+    return jsonify({'success': True, 'progress': progress, 'new_role': user['role']})
+
+@app.route('/api/roadmap/hint', methods=['POST'])
+def get_roadmap_hint():
+    if 'user' not in session: return jsonify({'success': False}), 401
+    data = request.get_json()
+    topic = data.get('topic')
+    question = data.get('question')
+    
+    prompt = f"Topic: {topic}\nQuestion: {question}\nProvide a short, helpful hint for this question without giving away the exact answer."
+    hint = get_ai_response(prompt, system_prompt_override="You are Dastan, a friendly coding guide. Provide helpful hints for students.")
+    
+    return jsonify({'success': True, 'hint': hint})
+
 @app.route('/github')
 def github():
     if 'user' not in session: return redirect(url_for('home'))

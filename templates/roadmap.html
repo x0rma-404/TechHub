@@ -1,0 +1,582 @@
+{% extends "bar.html" %}
+
+{% block content %}
+<!-- GSAP & Marked Loaded -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<div class="max-w-6xl mx-auto px-4 py-8 flex flex-col lg:flex-row gap-8">
+    <!-- Main Journey Path -->
+    <div class="flex-grow">
+        <!-- Header -->
+        <div class="mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-4 tracking-tight">
+                My <span
+                    class="bg-gradient-to-br from-indigo-400 to-cyan-300 bg-clip-text text-transparent">Journey</span>
+            </h1>
+            <p class="text-slate-400 text-lg">Follow the path to master your craft.</p>
+
+            <div id="roadmap-selector" class="mt-6 flex flex-wrap gap-2">
+                <!-- Tabs injected here -->
+            </div>
+        </div>
+
+        <!-- The Path Container -->
+        <div class="relative py-10">
+            <div class="absolute left-1/2 top-0 bottom-0 w-2 bg-white/5 -translate-x-1/2 rounded-full overflow-hidden">
+                <div id="overall-progress-bar" class="w-full bg-indigo-500/50 transition-all duration-1000"
+                    style="height: 0%"></div>
+            </div>
+            <div id="path-container" class="relative z-10 space-y-24">
+                <!-- Nodes -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Dastan Guide Sidebar -->
+    <div class="w-full lg:w-80 space-y-6">
+        <div class="glass ring-soft rounded-3xl p-6 sticky top-24">
+            <div class="flex items-center gap-4 mb-6">
+                <div class="h-12 w-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 grid place-items-center">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" class="w-8 h-8 animate-float"
+                        alt="Dastan">
+                </div>
+                <div>
+                    <h3 class="font-bold text-white">Dastan Guide</h3>
+                    <div class="text-[10px] text-indigo-400 font-bold tracking-widest uppercase">Your Mentor</div>
+                </div>
+            </div>
+
+            <div id="dastan-tip" class="text-sm text-slate-400 leading-relaxed italic mb-6">
+                "Small steps every day lead to big results! Click a star to begin."
+            </div>
+
+            <div class="space-y-3">
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-indigo-400 text-sm">bolt</span>
+                    <span class="text-xs font-medium text-slate-300">Complete nodes for XP</span>
+                </div>
+                <div class="p-3 rounded-xl bg-white/5 border border-white/10 flex items-center gap-3">
+                    <span class="material-symbols-outlined text-emerald-400 text-sm">check_circle</span>
+                    <span class="text-xs font-medium text-slate-300">Unlock paths sequentially</span>
+                </div>
+                <div id="overall-stats" class="pt-4 border-t border-white/5">
+                    <div class="flex justify-between text-[10px] font-bold text-slate-500 uppercase mb-2">
+                        <span>Overall Progress</span>
+                        <span id="stat-percent">0%</span>
+                    </div>
+                    <div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+                        <div id="stat-bar" class="h-full bg-emerald-500 transition-all duration-500" style="width: 0%">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Lesson Modal -->
+    <div id="lessonModal" class="fixed inset-0 hidden z-50">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-md"></div>
+        <div class="absolute inset-0 grid place-items-center p-4">
+            <div
+                class="glass ring-soft rounded-[2.5rem] p-10 w-full max-w-2xl max-h-[90vh] overflow-y-auto relative border-t-4 border-indigo-500">
+                <div class="absolute top-0 left-0 right-0 h-1.5 bg-white/5">
+                    <div id="lessonProgress"
+                        class="h-full bg-indigo-500 transition-all duration-500 shadow-[0_0_15px_rgba(99,102,241,0.5)]"
+                        style="width: 0%"></div>
+                </div>
+
+                <div class="flex justify-between items-center mb-8">
+                    <div>
+                        <div id="lessonUnit" class="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-1">
+                            UNIT 1</div>
+                        <h2 id="lessonTitle" class="text-3xl font-extrabold text-white">Lesson</h2>
+                    </div>
+                    <button onclick="closeLesson()"
+                        class="h-10 w-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-white/10 transition-colors">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+
+                <div id="lessonContent"
+                    class="prose prose-invert max-w-none mb-8 text-slate-300 leading-relaxed text-lg"></div>
+
+                <div id="quizSection" class="hidden border-t border-white/10 pt-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 id="quizQuestion" class="text-xl font-bold text-white">Question</h3>
+                        <button id="askDastanBtn" onclick="askDastanHint()"
+                            class="flex items-center gap-2 text-indigo-400 hover:text-indigo-300 transition-colors text-sm font-bold bg-indigo-500/10 px-3 py-1.5 rounded-full border border-indigo-500/20">
+                            <span class="material-symbols-outlined text-lg">psychology</span>
+                            ASK DASTAN
+                        </button>
+                    </div>
+                    <div id="dastanHintArea"
+                        class="hidden mb-6 p-4 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-sm text-indigo-200">
+                        <div class="flex gap-3">
+                            <img src="{{ url_for('static', filename='images/logo.png') }}" class="w-6 h-6 shrink-0"
+                                alt="Dastan">
+                            <div id="dastanHintContent"></div>
+                        </div>
+                    </div>
+                    <div id="quizOptions" class="grid gap-4"></div>
+                </div>
+
+                <div class="mt-10 flex justify-center">
+                    <button id="lessonActionBtn" onclick="handleLessonAction()"
+                        class="btn btn-primary px-12 py-4 rounded-2xl text-lg font-bold shadow-xl shadow-indigo-500/20 hover:scale-105 transition-transform">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0) rotate(0);
+        }
+
+        50% {
+            transform: translateY(-10px) rotate(2deg);
+        }
+    }
+
+    .animate-float {
+        animation: float 6s infinite ease-in-out;
+    }
+
+    .node-wrapper {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        position: relative;
+    }
+
+    .node-wrapper.zigzag-left {
+        justify-content: center;
+        padding-right: 120px;
+    }
+
+    .node-wrapper.zigzag-right {
+        justify-content: center;
+        padding-left: 120px;
+    }
+
+    .node-circle {
+        width: 90px;
+        height: 80px;
+        border-radius: 50% / 45%;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 0 rgba(0, 0, 0, 0.2);
+    }
+
+    .node-circle::after {
+        content: "";
+        position: absolute;
+        inset: -8px;
+        border: 4px solid transparent;
+        border-radius: 50% / 45%;
+        transition: all 0.3s;
+    }
+
+    .node-active .node-circle {
+        background: #6366f1;
+        transform: scale(1.1);
+    }
+
+    .node-active .node-circle::after {
+        border-color: rgba(99, 102, 241, 0.3);
+        animation: pulse-border 2s infinite;
+    }
+
+    .node-completed .node-circle {
+        background: #10b981;
+    }
+
+    .node-locked .node-circle {
+        background: #334155;
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    @keyframes pulse-border {
+        0% {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        100% {
+            transform: scale(1.3);
+            opacity: 0;
+        }
+    }
+
+    .node-label {
+        position: absolute;
+        bottom: -35px;
+        white-space: nowrap;
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(4px);
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 13px;
+        font-weight: 700;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        pointer-events: none;
+    }
+
+    .quiz-option {
+        padding: 1.25rem;
+        background: rgba(255, 255, 255, 0.03);
+        border: 2px solid rgba(255, 255, 255, 0.08);
+        border-radius: 1.25rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .quiz-option:hover {
+        background: rgba(255, 255, 255, 0.08);
+        transform: translateY(-2px);
+    }
+
+    .quiz-option.selected {
+        border-color: #6366f1;
+        background: rgba(99, 102, 241, 0.1);
+    }
+
+    .quiz-option.correct {
+        border-color: #10b981;
+        background: rgba(16, 185, 129, 0.1);
+        color: #10b981;
+    }
+
+    .quiz-option.wrong {
+        border-color: #ef4444;
+        background: rgba(239, 68, 68, 0.1);
+        color: #ef4444;
+    }
+
+    .tab-btn {
+        padding: 8px 16px;
+        border-radius: 12px;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.3s;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .tab-btn.active {
+        background: #6366f1;
+        color: white;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    }
+
+    .tab-btn:not(.active) {
+        background: rgba(255, 255, 255, 0.05);
+        color: #94a3b8;
+    }
+</style>
+
+<script>
+    let roadmapsData = null;
+    let userProgress = {};
+    let currentRoadmapId = null;
+    let currentNodeId = null;
+    let currentLessonStep = 0;
+    let selectedOption = null;
+
+    const DASTAN_TIPS = [
+        "Small steps every day lead to big results!",
+        "Stuck? Try breaking the problem into smaller pieces.",
+        "Consistency is more important than speed.",
+        "Don't forget to practice what you learn here!",
+        "Mistakes are just lessons in disguise.",
+        "The Dastan Guide is always here to help!"
+    ];
+
+    async function initRoadmaps() {
+        console.log("Roadmap: Initialization started");
+        const pathContainer = document.getElementById('path-container');
+        if (pathContainer) {
+            pathContainer.innerHTML = `
+                <div class="text-center py-10">
+                    <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full mx-auto mb-4"></div>
+                    <p class="text-slate-400">Loading your journey...</p>
+                </div>`;
+        }
+
+        try {
+            console.log("Roadmap: Fetching data");
+            const [dataRes, statusRes] = await Promise.all([
+                fetch('/api/roadmap/data'),
+                fetch('/api/roadmap/status')
+            ]);
+
+            if (!dataRes.ok || !statusRes.ok) {
+                throw new Error(`Server error: ${dataRes.status} / ${statusRes.status}`);
+            }
+
+            const data = await dataRes.json();
+            const status = await statusRes.json();
+
+            console.log("Roadmap: Data received", data);
+
+            if (!data || !data.roadmaps) {
+                throw new Error("Invalid roadmap data structure");
+            }
+
+            roadmapsData = data;
+            userProgress = status || {};
+
+            renderTabs();
+            if (roadmapsData.roadmaps.length > 0) {
+                selectRoadmap(roadmapsData.roadmaps[0].id);
+            } else {
+                if (pathContainer) pathContainer.innerHTML = '<p class="text-center p-10 text-slate-500">No roadmaps found.</p>';
+            }
+            updateDastanTip();
+        } catch (err) {
+            console.error('Roadmap CRITICAL error:', err);
+            if (pathContainer) {
+                pathContainer.innerHTML = `
+                    <div class="text-center py-10 text-red-400 p-8 glass ring-soft rounded-3xl m-4">
+                        <span class="material-symbols-outlined text-4xl mb-2 text-red-500">warning</span>
+                        <h4 class="font-bold text-white mb-2">Oops! Something went wrong</h4>
+                        <p class="text-sm opacity-70 mb-4">${err.message}</p>
+                        <button onclick="location.reload()" class="btn btn-muted">Try Again</button>
+                    </div>`;
+            }
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initRoadmaps);
+    } else {
+        initRoadmaps();
+    }
+
+    function updateDastanTip() {
+        const tip = DASTAN_TIPS[Math.floor(Math.random() * DASTAN_TIPS.length)];
+        document.getElementById('dastan-tip').innerText = `"${tip}"`;
+    }
+
+    function renderTabs() {
+        const selector = document.getElementById('roadmap-selector');
+        selector.innerHTML = '';
+        roadmapsData.roadmaps.forEach(r => {
+            const btn = document.createElement('button');
+            btn.className = 'tab-btn';
+            btn.id = `tab-${r.id}`;
+            btn.innerText = r.title;
+            btn.onclick = () => selectRoadmap(r.id);
+            selector.appendChild(btn);
+        });
+    }
+
+    function selectRoadmap(id) {
+        currentRoadmapId = id;
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const activeTab = document.getElementById(`tab-${id}`);
+        if (activeTab) activeTab.classList.add('active');
+        renderPath();
+        updateDastanTip();
+    }
+
+    function renderPath() {
+        console.log("Roadmap: Rendering path for", currentRoadmapId);
+        const container = document.getElementById('path-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const roadmap = roadmapsData.roadmaps.find(r => r.id === currentRoadmapId);
+        if (!roadmap) return;
+        const completedNodes = (userProgress && userProgress[currentRoadmapId]) || [];
+
+        roadmap.nodes.forEach((node, index) => {
+            const isCompleted = completedNodes.includes(node.id);
+            const isPreviousCompleted = index === 0 || completedNodes.includes(roadmap.nodes[index - 1].id);
+            const isLocked = !isPreviousCompleted;
+            const isActive = !isCompleted && !isLocked;
+
+            const wrapper = document.createElement('div');
+            const pattern = index % 4;
+            if (pattern === 1) wrapper.className = 'node-wrapper zigzag-right';
+            else if (pattern === 3) wrapper.className = 'node-wrapper zigzag-left';
+            else wrapper.className = 'node-wrapper';
+
+            const statusClass = isCompleted ? 'node-completed' : (isActive ? 'node-active' : 'node-locked');
+            wrapper.classList.add(statusClass);
+
+            wrapper.innerHTML = `
+                <div class="node-circle" onclick="${isLocked ? "event.stopPropagation(); return false;" : `openLesson('${roadmap.id}', '${node.id}')`}">
+                    ${isCompleted ? '<span class="material-symbols-outlined text-3xl text-white">done</span>' :
+                    (isLocked ? '<span class="material-symbols-outlined text-2xl text-slate-500">lock</span>' :
+                        `<span class="material-symbols-outlined text-4xl text-white font-fill">star</span>`)}
+                    <div class="node-label">${node.title}</div>
+                </div>
+            `;
+            container.appendChild(wrapper);
+        });
+
+        const totalNodes = roadmap.nodes.length;
+        const progressPercent = totalNodes > 0 ? (completedNodes.length / totalNodes) * 100 : 0;
+
+        const overallBar = document.getElementById('overall-progress-bar');
+        if (overallBar) overallBar.style.height = `${progressPercent}%`;
+
+        const statPercent = document.getElementById('stat-percent');
+        if (statPercent) statPercent.innerText = `${Math.round(progressPercent)}%`;
+
+        const statBar = document.getElementById('stat-bar');
+        if (statBar) statBar.style.width = `${progressPercent}%`;
+    }
+
+    function openLesson(roadmapId, nodeId) {
+        console.log("Roadmap: Opening lesson", roadmapId, nodeId);
+        currentRoadmapId = roadmapId;
+        currentNodeId = nodeId;
+        currentLessonStep = 0;
+        selectedOption = null;
+
+        const roadmap = roadmapsData.roadmaps.find(r => r.id === roadmapId);
+        const node = roadmap.nodes.find(n => n.id === nodeId);
+        if (!node) return;
+
+        document.getElementById('lessonUnit').innerText = `UNIT ${nodeId.split('_').pop()}`;
+        document.getElementById('lessonTitle').innerText = node.title;
+
+        const contentArea = document.getElementById('lessonContent');
+        if (window.marked) {
+            contentArea.innerHTML = typeof marked.parse === 'function' ? marked.parse(node.content || '') : marked(node.content || '');
+        } else {
+            contentArea.innerText = node.content || '';
+        }
+
+        document.getElementById('lessonProgress').style.width = '30%';
+        document.getElementById('lessonActionBtn').innerText = 'Take Quiz';
+        document.getElementById('quizSection').classList.add('hidden');
+        document.getElementById('lessonContent').classList.remove('hidden');
+
+        const modal = document.getElementById('lessonModal');
+        modal.classList.remove('hidden');
+
+        if (window.gsap) {
+            // CRITICAL: Reset opacity and position before animating in
+            gsap.set("#lessonModal .glass", { opacity: 1, y: 0 });
+            gsap.from("#lessonModal .glass", { y: 100, opacity: 0, duration: 0.5, ease: "back.out(1.7)" });
+        }
+    }
+
+    function closeLesson() {
+        console.log("Roadmap: Closing lesson");
+        if (window.gsap) {
+            gsap.to("#lessonModal .glass", {
+                y: 100, opacity: 0, duration: 0.3, onComplete: () => {
+                    document.getElementById('lessonModal').classList.add('hidden');
+                    // Reset for next open
+                    gsap.set("#lessonModal .glass", { opacity: 1, y: 0 });
+                }
+            });
+        } else {
+            document.getElementById('lessonModal').classList.add('hidden');
+        }
+    }
+
+    function handleLessonAction() {
+        const roadmap = roadmapsData.roadmaps.find(r => r.id === currentRoadmapId);
+        const node = roadmap.nodes.find(n => n.id === currentNodeId);
+
+        if (currentLessonStep === 0) {
+            currentLessonStep = 1;
+            document.getElementById('lessonContent').classList.add('hidden');
+            document.getElementById('quizSection').classList.remove('hidden');
+            document.getElementById('lessonActionBtn').innerText = 'Check Answer';
+            document.getElementById('lessonProgress').style.width = '70%';
+            renderQuiz(node.quiz);
+        } else if (currentLessonStep === 1) {
+            if (selectedOption === null) return;
+            const options = document.querySelectorAll('.quiz-option');
+            const correctIndex = node.quiz.answer;
+            options.forEach((opt, idx) => {
+                opt.onclick = null;
+                if (idx === correctIndex) opt.classList.add('correct');
+                else if (idx === selectedOption) opt.classList.add('wrong');
+            });
+            if (selectedOption === correctIndex) {
+                document.getElementById('lessonActionBtn').innerText = 'Complete Lesson';
+                currentLessonStep = 2;
+                document.getElementById('lessonProgress').style.width = '100%';
+            } else {
+                document.getElementById('lessonActionBtn').innerText = 'Try Again';
+                currentLessonStep = 3;
+            }
+        } else if (currentLessonStep === 2) {
+            completeNode();
+        } else if (currentLessonStep === 3) {
+            currentLessonStep = 1;
+            selectedOption = null;
+            renderQuiz(node.quiz);
+            document.getElementById('lessonActionBtn').innerText = 'Check Answer';
+        }
+    }
+
+    function renderQuiz(quiz) {
+        if (!quiz) return;
+        document.getElementById('dastanHintArea').classList.add('hidden');
+        document.getElementById('askDastanBtn').classList.remove('hidden');
+        document.getElementById('quizQuestion').innerText = quiz.question;
+        const container = document.getElementById('quizOptions');
+        container.innerHTML = '';
+        quiz.options.forEach((opt, idx) => {
+            const optEl = document.createElement('div');
+            optEl.className = 'quiz-option';
+            optEl.innerText = opt;
+            optEl.onclick = () => {
+                document.querySelectorAll('.quiz-option').forEach(el => el.classList.remove('selected'));
+                optEl.classList.add('selected');
+                selectedOption = idx;
+            };
+            container.appendChild(optEl);
+        });
+    }
+
+    async function askDastanHint() {
+        const node = roadmapsData.roadmaps.find(r => r.id === currentRoadmapId).nodes.find(n => n.id === currentNodeId);
+        const hintArea = document.getElementById('dastanHintArea');
+        const hintContent = document.getElementById('dastanHintContent');
+        const askBtn = document.getElementById('askDastanBtn');
+        hintArea.classList.remove('hidden');
+        hintContent.innerText = 'Dastan is thinking...';
+        askBtn.classList.add('hidden');
+        try {
+            const res = await fetch('/api/roadmap/hint', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ topic: node.title, question: node.quiz.question }) });
+            const data = await res.json();
+            hintContent.innerText = data.success ? data.hint : 'Sorry, I couldn\'t find a hint.';
+        } catch (err) { hintContent.innerText = 'Error connecting to Dastan.'; }
+    }
+
+    async function completeNode() {
+        try {
+            const res = await fetch('/api/roadmap/complete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ roadmap_id: currentRoadmapId, node_id: currentNodeId }) });
+            const data = await res.json();
+            if (data.success) {
+                userProgress = data.progress;
+                renderPath();
+                closeLesson();
+                if (window.showToast) showToast('Lesson completed! 🚀', 'success');
+            }
+        } catch (err) { console.error('Failed to complete:', err); }
+    }
+
+    // initRoadmaps handling moved to initialization block
+</script>
+{% endblock %}

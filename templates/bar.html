@@ -35,6 +35,7 @@
         <nav class="flex items-center gap-2">
           <div class="hidden md:flex items-center gap-6 mr-4 text-sm font-medium text-slate-400">
             <a href="/tools" class="hover:text-indigo-400 transition-colors">Tools</a>
+            <a href="/roadmap" class="hover:text-indigo-400 transition-colors">Roadmap</a>
             <a href="/Q&A" class="hover:text-indigo-400 transition-colors">Q&A</a>
             <a href="/profile" class="hover:text-indigo-400 transition-colors">Profile</a>
           </div>
@@ -71,7 +72,7 @@
     </div>
   </main>
 
-  <script src="../static/script.js"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 
 </html>
