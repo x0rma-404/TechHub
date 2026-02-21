@@ -21,6 +21,7 @@ TechHub is a web‑based **Project Sharing and Q&A platform** where developers c
 * 📱 Responsive design for both desktop and mobile.
 * 🔗 **GitHub Integration**: Connect your GitHub account, import repositories as projects, and sync project details (stars, description) in real-time.
 * 📂 **Project Management**: Create, view, and delete projects with specialized landing pages and sync status.
+* 🗺️ **Gamified Learning Roadmap**: Duolingo-style learning paths with interactive lessons, quizzes, and sequential unlocking across Frontend, Backend, and Mobile tracks.
 
 
 ---
@@ -102,9 +103,12 @@ http://localhost:5000
 ## 🔗 GitHub Synchronization
 
 * **Connect**: Securely link your GitHub account using a Personal Access Token (PAT).
-* **Import**: Select any of your repositories to instantly create a TechHub project.
-* **Sync**: Keep your project's stars, language, and description up-to-date with one click.
-* **Direct Upload**: Upload code files directly to your repositories from the TechHub interface.
+* **Smarter Dastan**: Your AI mentor (Dastan) now provides contextual hints during roadmap quizzes and guides you through the curriculum.
+* **Learning Roadmap**: 
+  * Choose your path: **Frontend, Backend, or Mobile**.
+  * Complete nodes to earn points and level up your role.
+  * Interactive quizzes with AI-powered hints.
+  * Real-time progress tracking and sequential unlocking.
 
 
 ## 📟 Mini IDEs (Execution via Godbolt API):
